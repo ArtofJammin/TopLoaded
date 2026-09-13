@@ -34,7 +34,7 @@ const squareOk = (url, init, body) => new Response(JSON.stringify({
   payment_link: { id: 'PL1', url: 'https://sandbox.square.link/u/abc', long_url: 'https://sandbox.square.link/u/abc?src=x', order_id: 'SQO-1', created_at: '2026-09-04T12:00:00Z' },
 }), { status: 200, headers: { 'content-type': 'application/json' } });
 
-const squareEnv = (extra = {}) => makeEnv({ SQUARE_ACCESS_TOKEN: 'sq-token', SQUARE_LOCATION_ID: 'LOC1', ...extra });
+const squareEnv = (extra = {}) => makeEnv({ SHOP_CHECKOUT_ENABLED: 'true', SQUARE_ACCESS_TOKEN: 'sq-token', SQUARE_LOCATION_ID: 'LOC1', ...extra });
 const squareCalls = (s) => s.calls.filter(x => x.url.includes('squareup')).length;
 
 const lines = [

@@ -33,6 +33,8 @@ SITE_ORIGIN = "https://artofjammin.github.io,http://localhost:8787,http://127.0.
 SQUARE_ENV = "sandbox"
 # Enable only after the sales acceptance checklist passes; never active in the static demo.
 CLAIM_CHECKOUT_ENABLED = "false"
+# Legacy cart can be tested in sandbox only; production awaits exact SKU mapping.
+SHOP_CHECKOUT_ENABLED = "false"
 SQUARE_WEBHOOK_URL = "https://toploaded-api.REPLACE.workers.dev/square/webhook"
 GITHUB_REPO = "ArtofJammin/toploaded-demo"
 GITHUB_WORKFLOW = "inventory.yml"

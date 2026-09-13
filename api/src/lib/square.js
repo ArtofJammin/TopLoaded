@@ -16,7 +16,7 @@ export function squareBase(env) {
 
 // True when a real Payment Link can be created.
 export function squareConfigured(env) {
-  return !!(env.SQUARE_ENV && env.SQUARE_ACCESS_TOKEN && env.SQUARE_LOCATION_ID);
+  return !!(['sandbox', 'production'].includes(env.SQUARE_ENV) && env.SQUARE_ACCESS_TOKEN && env.SQUARE_LOCATION_ID);
 }
 
 export function toCents(amount) {

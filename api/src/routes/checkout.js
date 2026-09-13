@@ -19,6 +19,7 @@ import { requireRole, sha256hex } from '../lib/auth.js';
 import { squareConfigured, createPaymentLink, toCents } from '../lib/square.js';
 import { loadInventory, itemOffer } from './price.js';
 import { loadConfig } from './config.js';
+import { shopCheckoutStatus } from '../lib/readiness.js';
 
 const ORDER_TTL = 7 * 24 * 3600;
 const MAX_LINES = 40;
@@ -120,6 +121,9 @@ export function register(r) {
   r.post('/checkout', async ({ env, req, ip }) => {
     await rateLimit(env, `checkout:${ip}`, { limit: 20, windowSec: 600 });
     const body = await readJson(req, 64 * 1024);
+    if ((env.SQUARE_ACCESS_TOKEN || env.SHOP_CHECKOUT_ENABLED === 'true') && !shopCheckoutStatus(env).ready) {
+      throw new HttpError(503, shopCheckoutStatus(env).reason);
+    }
     if (typeof body.website === 'string' && body.website.trim()) throw new HttpError(400, 'spam check failed');
 
     const fulfillment = v.oneOf(body.fulfillment || 'pickup', ['pickup', 'ship'], { name: 'fulfillment' });

@@ -304,9 +304,9 @@
      that answer arrives (or when it says no) the drawer tells the demo truth up front. */
   function cartSquareLive(){
     var ints = TL.api.integrations || (TL.api.health && TL.api.health.integrations) || null;
-    return !!(TL.api.online && ints && ints.square === true);
+    return !!(TL.api.online && ints && ints.shopCheckout === true);
   }
-  function cartCheckoutLabel(){ return cartSquareLive() ? "Checkout with Square" : "Checkout · demo"; }
+  function cartCheckoutLabel(){ return cartSquareLive() ? "Test Square checkout" : TL.api.base ? "Checkout unavailable" : "Checkout · demo"; }
   var CART_ORDER_TTL = 10 * 60 * 1000;
   function cartOrderMarker(){
     var m = TL.store.get("cart-order", null);
@@ -493,6 +493,7 @@
   }
   function cartCheckout(){
     if(cartBusy) return;
+    if(TL.api.base && !cartSquareLive()){cartError("Online shop checkout is not activated. Your cart is saved; buy through TCGplayer or visit the store.",false);return;}
     cartHideError();
     var lines = cartLines();
     if(!lines.length){ toast("Cart is empty — go pull some hits"); return; }
@@ -585,9 +586,9 @@
     if(!cartBusy){ var b = $("#checkoutBtn"); if(b) b.textContent = cartCheckoutLabel(); }
     var n = $("#cartNoteLine");
     if(!n) return;
-    if(cartSquareLive()) n.textContent = "Pickup in store or ship · secure payment through Square";
-    else if(TL.api.online) n.textContent = "Demo mode — Square checkout goes live once the shop connects Square";
-    else n.textContent = "Demo mode — Square Checkout goes live with the API keys";
+    if(cartSquareLive()) n.textContent = "Square sandbox checkout — testing only, not a real purchase";
+    else if(TL.api.online) n.textContent = "Online shop checkout is not activated. Buy through TCGplayer or visit the store; live claims use a separate checkout.";
+    else n.textContent = "Demo mode — no payment or reservation. Live checkout requires a verified API and exact inventory mapping.";
   }
   /* GET /health once after the API answers; another module may already have stashed it. */
   function cartLoadIntegrations(){

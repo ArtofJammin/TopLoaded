@@ -2154,6 +2154,20 @@ td a:hover{color:var(--accent); text-decoration:underline}
   .switch,.switch::after{transition:none}
 }
 
+  .api-setup{margin-bottom:24px;min-width:0}
+  .api-setup-form{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:18px 0}
+  .api-setup-form label{display:grid;gap:8px;flex:1 1 320px;min-width:0;font-size:13px;color:var(--ink2)}
+  .api-setup-form input{width:100%;box-sizing:border-box;min-width:0}
+  .api-setup-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .api-setup .api-setup-confirm{display:flex;align-items:center;gap:10px;margin:12px 0;color:var(--ink2);font-size:13px;font-family:var(--body);letter-spacing:normal;text-transform:none;line-height:1.5}
+  .api-setup-confirm input{width:auto;flex:0 0 auto}
+  .api-setup-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .api-setup-check{border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}
+  .api-setup-check h4{font:inherit;font-weight:700;margin:0 0 8px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .api-setup-check p{font-size:13px;line-height:1.55;color:var(--ink2);margin:6px 0;overflow-wrap:anywhere}
+  .api-setup .card-note,.api-setup code{overflow-wrap:anywhere}
+  @media(max-width:640px){.api-setup-results{grid-template-columns:1fr}.api-setup-actions .btn{flex:1 1 160px}.api-setup-form .btn{width:100%}}
+
 /* ============ LIVE ============ */
 #view-live [hidden]{display:none !important}
 .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
@@ -3856,6 +3870,29 @@ a:hover .round-arrow{transform:rotate(45deg)}
       </div>
 
       <h2 class="vh">Dashboard</h2>
+      <section class="admin-card api-setup" aria-labelledby="apiSetupTitle">
+        <h3 id="apiSetupTitle">Connect the shop API</h3>
+        <p class="card-note">Prepare once, connect when ready. API keys belong in Cloudflare secrets, never in this page. Testing a URL sends no credentials and makes no changes to the shop.</p>
+        <p id="apiSetupCurrent" class="card-note"></p>
+        <form id="apiSetupForm" class="api-setup-form">
+          <label for="apiSetupUrl">Worker base URL<input id="apiSetupUrl" type="url" placeholder="https://toploaded-api.your-account.workers.dev" autocomplete="off" required aria-describedby="apiSetupHint"></label>
+          <button class="btn btn-ghost" type="submit" id="apiSetupTest">Test connection</button>
+        </form>
+        <p class="card-note" id="apiSetupHint">For everyone: set the GitHub repository variable <code>TL_API_URL</code>, then run <b>Publish site</b>. The device-only test below does not publish anything or copy local demo settings/credit.</p>
+        <div id="apiSetupConfirm" hidden>
+          <label class="api-setup-confirm"><input id="apiSetupConsent" type="checkbox"> I recognize this API address. Use it on this browser and sign out existing sessions.</label>
+          <button class="btn" type="button" id="apiSetupUse" disabled>Use on this browser</button>
+        </div>
+        <div class="api-setup-actions">
+          <button class="btn btn-ghost" type="button" id="apiSetupReset">Use published connection</button>
+          <button class="btn btn-ghost" type="button" id="apiSetupRefresh">Check configuration</button>
+          <button class="btn btn-ghost" type="button" id="apiSetupVerify">Run read-only checks</button>
+          <button class="btn btn-ghost" type="button" id="apiSetupExport" disabled>Download setup report</button>
+        </div>
+        <p id="apiSetupStatus" role="status" aria-live="polite" class="card-note"></p>
+        <div id="apiSetupResults" class="api-setup-results"></div>
+        <p class="card-note">Read-only checks contact Square and GitHub. They never take a payment, send email, start an inventory sync, or call the billable Google Places API. Configured does not mean launch-tested.</p>
+      </section>
       <div class="admin-grid">
         <div class="admin-card busy-host" id="intCard">
           <h3>Integrations <span class="pill" id="intPill"><span class="dot"></span>Checking</span></h3>
@@ -4020,7 +4057,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
 
         <div class="admin-card" id="cardLive">
           <h3>Live stream <span class="pill crit" id="liveStatusPill"><span class="dot crit"></span>Offline</span></h3>
-          <p class="card-note">Going live lights up the Live tab. Post confirmed card claims from the staff-only desk on the Live Stream page; it does not process payments.</p>
+          <p class="card-note">Going live lights up the Live tab. Post confirmed card claims from the staff-only desk on the Live Stream page. Payment links are separate and stay disabled until Square checkout is connected and tested.</p>
           <div style="margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap"><button class="btn" id="goLiveBtn" type="button">Start live stream</button><span class="save-state" id="liveState" role="status"></span></div>
           <dl class="kv" style="margin-top:18px">
             <dt><label for="setLiveTitle">Stream title</label></dt><dd><input id="setLiveTitle" style="width:100%"></dd>
@@ -4102,7 +4139,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
         </table>
       </div>
       <div class="inv-pager" id="invPager"></div>
-      <p class="card-note" id="invNote" style="margin-top:10px">Stock edits here are kept as overrides on this device (and flag the other channel) until Square is connected &mdash; TCGplayer has no seller API, so its listing still needs the same change by hand.</p>
+      <p class="card-note" id="invNote" style="margin-top:10px">Stock edits here are device-only overrides, not Square or TCGplayer inventory changes. Automatic TCGplayer listing updates require an authorized seller connector; until then, update the listing by hand.</p>
     </div>
   </section>
 
@@ -4310,6 +4347,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     </div>
   </form>
   <p class="drawer-note" id="loginHint" style="text-align:left; margin-top:14px">Demo gate &mdash; real staff accounts run through the API.</p>
+  <button class="btn btn-ghost" type="button" id="apiResetOverride" hidden>Remove device-only API override</button>
 </div>
 
 <!-- ================= QUICK VIEW ================= -->
@@ -4552,9 +4590,10 @@ a:hover .round-arrow{transform:rotate(45deg)}
   /* ---------- api client ----------
      Discovers the API base URL, first match wins:
        1. window.TL_API                                  (inline script or devtools override)
-       2. <meta name="tl-api" content="https://toploaded-api.<you>.workers.dev">
-       3. localStorage "tl-api"                          TL.store.set("api", url) points any copy of the page at a worker
-       4. same-origin "/api" when served from localhost  (tools/dev-server.mjs mounts the worker there)
+       2. localStorage "tl-api" (explicit, device-only Admin connection test)
+       3. <meta name="tl-api" content="https://toploaded-api.<you>.workers.dev">
+       4. same-origin "/api" when served from localhost
+       5. public api-config.json (GitHub repository variable TL_API_URL)
      With no base, or when GET /health fails, TL.api.online stays false and every
      feature uses its demo / localStorage fallback. Worker routes have NO /api prefix;
      the dev server strips it.
@@ -4566,13 +4605,19 @@ a:hover .round-arrow{transform:rotate(45deg)}
        TL.api.ready                              Promise<boolean online>
   */
   TL.api = (function(){
+    function baseUrl(value){
+      var u = new URL(String(value).trim());
+      var loopback = ["localhost", "127.0.0.1", "[::1]"].indexOf(u.hostname) >= 0;
+      if((u.protocol !== "https:" && !(u.protocol === "http:" && loopback && ["localhost","127.0.0.1","[::1]"].indexOf(location.hostname)>=0)) || u.username || u.password || u.search || u.hash || /REPLACE|example\./i.test(u.href)) throw new Error("Use the HTTPS API base URL, without credentials or query parameters.");
+      return u.href.replace(/\/+$/, "");
+    }
     function discover(){
       try {
-        if(window.TL_API) return String(window.TL_API).replace(/\/+$/, "");
-        var m = document.querySelector('meta[name="tl-api"]');
-        if(m && m.content && m.content.trim()) return m.content.trim().replace(/\/+$/, "");
+        if(window.TL_API) return baseUrl(window.TL_API);
         var s = TL.store.get("api", null);
-        if(s) return String(s).replace(/\/+$/, "");
+        if(s) return baseUrl(s);
+        var m = document.querySelector('meta[name="tl-api"]');
+        if(m && m.content && m.content.trim()) return baseUrl(m.content);
         var h = location.hostname;
         if(h === "localhost" || h === "127.0.0.1" || h === "[::1]") return location.origin + "/api";
       } catch(e){}
@@ -4581,12 +4626,17 @@ a:hover .round-arrow{transform:rotate(45deg)}
     var api = {
       base: discover(),
       online: false,
-      token: TL.session.get("token", null),
-      role: TL.session.get("role", null)
+      token: null,
+      role: null,
+      health: null,
+      integrations: null,
+      validateBase: baseUrl
     };
     api.request = function(method, path, body, opts){
       opts = opts || {};
       if(!api.base) return Promise.reject({status:0, error:"offline"});
+      if(!/^\/(?!\/)/.test(path)) return Promise.reject({status:0,error:"invalid API path"});
+      if(!api.online && (opts.token || (api.token && !opts.noAuth))) return Promise.reject({status:0,error:"API connection not verified"});
       var ctrl = window.AbortController ? new AbortController() : null;
       var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, opts.timeout || 8000) : null;
       var headers = {"Accept":"application/json"};
@@ -4597,7 +4647,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       return fetch(api.base + path, {
         method: method, headers: headers,
         body: hasBody ? JSON.stringify(body) : undefined,
-        signal: ctrl ? ctrl.signal : undefined, credentials: "omit", cache: "no-store"
+        signal: ctrl ? ctrl.signal : undefined, credentials: "omit", cache: "no-store", redirect: "error"
       }).then(function(r){
         clearTimeout(timer);
         return r.text().then(function(t){
@@ -4624,13 +4674,39 @@ a:hover .round-arrow{transform:rotate(45deg)}
     };
     api.setAuth = function(token, role){
       api.token = token || null; api.role = role || null;
+      TL.session.set("auth-base", api.base || "demo");
       if(api.token) TL.session.set("token", api.token); else TL.session.del("token");
       if(api.role) TL.session.set("role", api.role); else TL.session.del("role");
       TL.emit("auth:change", {role: api.role});
     };
-    api.ready = api.base
-      ? api.get("/health", {timeout: 4000, noAuth: true}).then(function(d){ api.online = !!(d && d.ok); return api.online; }).catch(function(){ api.online = false; return false; })
-      : Promise.resolve(false);
+    // Probe new endpoints anonymously: no staff/customer token is sent to a candidate.
+    api.probe = async function(value){
+      var base = baseUrl(value), ctrl = new AbortController(), timer = setTimeout(function(){ctrl.abort();}, 5000);
+      try {
+        var r = await fetch(base + "/health", {headers:{Accept:"application/json"},credentials:"omit",cache:"no-store",redirect:"error",signal:ctrl.signal});
+        var d = r.ok ? await r.json() : null;
+        if(!d || d.ok !== true || d.service !== "toploaded-api" || d.apiVersion !== 1) throw new Error("Not a compatible Top Loaded API. Check its URL, deployment and CORS settings.");
+        return {base:base,health:d};
+      } finally {clearTimeout(timer);}
+    };
+    api.ready = (async function(){
+      if(!api.base){
+        try {
+          var r = await fetch("api-config.json", {cache:"no-store",credentials:"omit",redirect:"error",signal:AbortSignal.timeout(4000)});
+          var d = r.ok ? await r.json() : null;
+          if(d && d.version === 1 && d.apiBase) api.base = baseUrl(d.apiBase);
+        } catch(e){} // Missing file keeps the disconnected static preview usable.
+      }
+      if(TL.session.get("auth-base", null) === (api.base || "demo")){
+        api.token = TL.session.get("token", null); api.role = TL.session.get("role", null);
+      } else { TL.session.del("token"); TL.session.del("role"); }
+      if(!api.base) return false;
+      try {
+        var p = await api.probe(api.base);
+        api.health = p.health; api.integrations = p.health.integrations || {}; api.online = true;
+      } catch(e){ api.online = false; }
+      return api.online;
+    })();
     return api;
   })();
 
@@ -7145,9 +7221,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
      that answer arrives (or when it says no) the drawer tells the demo truth up front. */
   function cartSquareLive(){
     var ints = TL.api.integrations || (TL.api.health && TL.api.health.integrations) || null;
-    return !!(TL.api.online && ints && ints.square === true);
+    return !!(TL.api.online && ints && ints.shopCheckout === true);
   }
-  function cartCheckoutLabel(){ return cartSquareLive() ? "Checkout with Square" : "Checkout · demo"; }
+  function cartCheckoutLabel(){ return cartSquareLive() ? "Test Square checkout" : TL.api.base ? "Checkout unavailable" : "Checkout · demo"; }
   var CART_ORDER_TTL = 10 * 60 * 1000;
   function cartOrderMarker(){
     var m = TL.store.get("cart-order", null);
@@ -7334,6 +7410,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   }
   function cartCheckout(){
     if(cartBusy) return;
+    if(TL.api.base && !cartSquareLive()){cartError("Online shop checkout is not activated. Your cart is saved; buy through TCGplayer or visit the store.",false);return;}
     cartHideError();
     var lines = cartLines();
     if(!lines.length){ toast("Cart is empty — go pull some hits"); return; }
@@ -7426,9 +7503,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
     if(!cartBusy){ var b = $("#checkoutBtn"); if(b) b.textContent = cartCheckoutLabel(); }
     var n = $("#cartNoteLine");
     if(!n) return;
-    if(cartSquareLive()) n.textContent = "Pickup in store or ship · secure payment through Square";
-    else if(TL.api.online) n.textContent = "Demo mode — Square checkout goes live once the shop connects Square";
-    else n.textContent = "Demo mode — Square Checkout goes live with the API keys";
+    if(cartSquareLive()) n.textContent = "Square sandbox checkout — testing only, not a real purchase";
+    else if(TL.api.online) n.textContent = "Online shop checkout is not activated. Buy through TCGplayer or visit the store; live claims use a separate checkout.";
+    else n.textContent = "Demo mode — no payment or reservation. Live checkout requires a verified API and exact inventory mapping.";
   }
   /* GET /health once after the API answers; another module may already have stashed it. */
   function cartLoadIntegrations(){
@@ -7938,12 +8015,12 @@ a:hover .round-arrow{transform:rotate(45deg)}
     }).join("") +
     '<div class="int-row" style="border-top:1px solid var(--line); margin-top:4px"><div class="in"><b>Square webhook events</b><span>Expected events once the webhook is registered</span></div></div>' +
     HOOK_ROWS.map(function(h){
-      return '<div class="hook-row"><span class="hn">' + esc(h) + '</span><span class="pill ' + (ints.squareWebhook ? "ok" : "") + '"><span class="dot"></span>' + (ints.squareWebhook ? "listening" : "expected event") + '</span></div>';
+      return '<div class="hook-row"><span class="hn">' + esc(h) + '</span><span class="pill"><span class="dot"></span>' + (ints.squareWebhook ? "configured · test delivery" : "expected event") + '</span></div>';
     }).join("");
     if(pill){
       var n = INT_ROWS.filter(function(r){ return r[0] === "api" ? online : !!ints[r[0]]; }).length;
       pill.className = "pill " + (online ? (n >= 4 ? "ok" : "warn") : "warn");
-      pill.innerHTML = '<span class="dot"></span>' + (online ? n + " of " + INT_ROWS.length + " live" : "Demo mode");
+      pill.innerHTML = '<span class="dot"></span>' + (online ? n + " of " + INT_ROWS.length + " configured" : "Demo mode");
     }
   }
 
@@ -8212,6 +8289,82 @@ a:hover .round-arrow{transform:rotate(45deg)}
   });
   TL.on("view:leave", function(d){ if(d && d.name === "admin") stopSyncPoll(); });
   TL.on("init", function(){ renderAdminDate(); renderConn(); renderIntegrations(); });
+
+  /* Connection tests are anonymous. Reports require a fresh server admin session. */
+  (function(){
+    var form=$("#apiSetupForm"), status=$("#apiSetupStatus"), input=$("#apiSetupUrl");
+    if(!form)return;
+    var candidate=null, report=null, seq=0, busy=false;
+    function clearSessions(){
+      ["token","role","auth-base","customer-session"].forEach(function(k){TL.session.del(k);});
+    }
+    function resetConnection(){ TL.store.del("api"); clearSessions(); location.reload(); }
+    function signedIn(){return TL.api.online && TL.api.token && TL.auth.role()==="admin";}
+    function buttons(){
+      $("#apiSetupRefresh").disabled=busy||!signedIn(); $("#apiSetupVerify").disabled=busy||!signedIn();
+      $("#apiSetupExport").disabled=!report||!signedIn();
+      $("#apiSetupReset").disabled=!TL.store.get("api",null);
+      $("#apiSetupUse").disabled=!candidate||!$("#apiSetupConsent").checked;
+    }
+    function invalidate(){candidate=null;$("#apiSetupConfirm").hidden=true;$("#apiSetupConsent").checked=false;buttons();}
+    input.addEventListener("input",function(){seq++;invalidate();});
+    $("#apiSetupConsent").addEventListener("change",buttons);
+    form.addEventListener("submit",async function(e){
+      e.preventDefault(); var version=++seq; invalidate(); $("#apiSetupTest").disabled=true;
+      status.textContent="Checking this URL without sending any session or credentials…";
+      try{
+        var p=await TL.api.probe(input.value);
+        if(version!==seq)return;
+        candidate=p.base; status.textContent="Compatible API found at "+p.base+". Confirm the address before using it. This is only a liveness check, not a payment or security acceptance test.";
+        $("#apiSetupConfirm").hidden=false;
+      }catch(err){if(version===seq)status.textContent="Could not verify this API. Check the HTTPS base URL, compatible Worker deployment and SITE_ORIGIN/CORS. No connection was saved.";}
+      finally{$("#apiSetupTest").disabled=false;buttons();}
+    });
+    $("#apiSetupUse").addEventListener("click",function(){
+      if(!candidate||!$("#apiSetupConsent").checked)return;
+      if(!TL.store.set("api",candidate)){status.textContent="Browser storage is blocked; connection was not changed.";return;}
+      clearSessions(); location.reload();
+    });
+    $("#apiSetupReset").addEventListener("click",resetConnection);
+    // Recovery remains reachable from the login dialog even if the candidate API goes down.
+    var recovery=$("#apiResetOverride");
+    if(recovery){recovery.hidden=!TL.store.get("api",null);recovery.addEventListener("click",resetConnection);}
+    function renderReport(){
+      var probes={}; (report.probes||[]).forEach(function(p){probes[p.id]=p;});
+      $("#apiSetupResults").innerHTML=(report.checks||[]).map(function(c){
+        var p=probes[c.id];
+        return '<article class="api-setup-check"><h4>'+esc(c.title)+'<span class="pill">'+esc(c.state)+'</span></h4><p>'+esc(c.detail)+'</p>'+(c.missing.length?'<p>Needed: '+c.missing.map(esc).join(', ')+'</p>':'')+(p?'<p><b>'+(p.ok?'Read verified':'Not verified')+'</b> · '+esc(p.detail)+'</p>':'')+'</article>';
+      }).join("");
+      status.textContent="Checked "+new Date(report.checkedAt).toLocaleString()+" · Square "+report.mode+". Secret values are never included. Sandbox acceptance remains required.";
+    }
+    async function check(verify){
+      if(!signedIn()||busy)return;
+      busy=true;buttons();status.textContent=verify?"Running read-only provider checks…":"Checking required configuration…";
+      try{
+        var d=await TL.api.request(verify?"POST":"GET",verify?"/setup/verify":"/setup/status",verify?{}:null,{timeout:15000});
+        if(!signedIn())return;
+        if(!d||d.version!==1||!Array.isArray(d.checks))throw new Error();
+        report=d;renderReport();
+      }catch(e){report=null;$("#apiSetupResults").textContent="";status.textContent="Setup check unavailable. Sign in as API admin and ensure the latest Worker is deployed. No shop settings were changed.";}
+      finally{busy=false;buttons();}
+    }
+    $("#apiSetupRefresh").addEventListener("click",function(){check(false);});
+    $("#apiSetupVerify").addEventListener("click",function(){check(true);});
+    $("#apiSetupExport").addEventListener("click",function(){
+      if(!report||!signedIn())return;
+      var url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:"application/json"})),a=document.createElement("a");
+      a.href=url;a.download="toploaded-api-readiness.json";a.click();setTimeout(function(){URL.revokeObjectURL(url);},1000);
+    });
+    function current(){
+      $("#apiSetupCurrent").textContent="Current: "+(TL.api.base||"No API connected")+(TL.store.get("api",null)?" · this browser only":" · published/default connection");
+      if(!input.value)input.value=TL.api.base||"";buttons();
+      if(!signedIn())status.textContent="Connect the Worker and sign in with its admin passcode to view configuration checks. No keys are needed in this page.";
+    }
+    TL.on("api:ready",current);
+    TL.on("view:change",function(d){if(d.name==="admin"){current();if(!report)check(false);}});
+    TL.on("auth:change",function(){if(!signedIn()){seq++;invalidate();report=null;$("#apiSetupResults").textContent="";}buttons();});
+    current();
+  })();
 
   /* ---------- live stream ----------
      Card-show-style claiming: cards go up on camera, a viewer claims the number, it lands in
@@ -11884,6 +12037,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     }
     async function enter(){
       await TL.api.ready;
+      if(saved && saved.base !== TL.api.base){ saved = null; reset(); }
       enabled = false;
       try { if(TL.api.online) enabled = !!(await call("GET","/account/status")).enabled; } catch(e){}
       $("#accountSend").disabled = !enabled;
@@ -11907,7 +12061,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       button.disabled = true; status.textContent = "Verifying your code…";
       try {
         var data = await call("POST","/account/verify", {challenge:challenge, code:$("#accountCode").value.trim()});
-        token = data.token; generation++; TL.session.set("customer-session",data); challenge = null;
+        token = data.token; generation++; data.base = TL.api.base; saved = data; TL.session.set("customer-session",data); challenge = null;
         $("#accountCode").value = ""; $("#accountCodeForm").hidden = true; $("#accountEmailForm").hidden = false;
         await refresh(); if(token) $("#accountLogout").focus();
       } catch(err){ status.textContent = error(err); }
@@ -11970,7 +12124,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       if(target) pendingView = target;
       var m = $("#loginModal"); if(!m) return;
       var hint = $("#loginHint");
-      if(hint) hint.textContent = TL.api.online ? "Passcodes are checked by the shop's API." : "Demo gate — real staff accounts run through the API.";
+      if(hint) hint.textContent = TL.api.online ? "Passcodes are checked by the shop's API." : TL.api.base ? "The configured API is unavailable. Reconnect before signing in." : "Demo gate — real staff accounts run through the API.";
       m.hidden = false;
       $("#loginOverlay").classList.add("open");
       $("#loginPin").value = "";
@@ -11986,6 +12140,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
       if(releaseLoginTrap){ releaseLoginTrap(); releaseLoginTrap = null; }
     },
     login: function(pin){
+      return TL.api.ready.then(function(){ return TL.auth.loginReady(pin); });
+    },
+    loginReady: function(pin){
       pin = String(pin || "");
       if(!pin) return Promise.resolve(null);
       if(TL.api.online){
@@ -11998,6 +12155,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
           return null;
         });
       }
+      if(TL.api.base) return Promise.reject({status:0,error:"The configured API is unavailable. Demo passcodes cannot unlock server access."});
       return demoRole(pin).then(function(role){
         if(role) TL.api.setAuth(null, role);
         return role;
@@ -12038,7 +12196,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       }
     }, function(err){
       if(btn) btn.disabled = false;
-      loginError(err && err.status === 429 ? "Too many tries — wait a few minutes" : "Login failed — try again");
+      loginError(err && err.status === 429 ? "Too many tries — wait a few minutes" : err && err.error ? err.error : "Login failed — try again");
     });
   });
   $("#loginCancel").addEventListener("click", closeLogin);
@@ -12048,8 +12206,14 @@ a:hover .round-arrow{transform:rotate(45deg)}
   });
   /* a role that was granted by the API is re-validated once the API answers */
   TL.on("api:ready", function(d){
-    if(!d || !d.online){ if(TL.api.token) TL.api.setAuth(null, TL.api.role); return; }
-    if(TL.api.token) TL.api.get("/auth/me").catch(function(){ /* 401 already cleared it */ });
+    var hint=$("#loginHint");
+    if(hint)hint.textContent=TL.api.online?"Passcodes are checked by the shop's API.":TL.api.base?"The configured API is unavailable. Reconnect before signing in.":"Demo gate — real staff accounts run through the API.";
+    function resumeRole(){
+      document.documentElement.setAttribute("data-role",TL.api.role||"");
+      if(pendingView && TL.auth.can(pendingView)){var target=pendingView;closeLogin();go(target,{}, {noTransition:true});}
+    }
+    if(!d || !d.online){ if(TL.api.base) TL.api.setAuth(null, null); else resumeRole(); return; }
+    if(TL.api.token) TL.api.get("/auth/me").then(function(me){if(me && me.role){TL.api.setAuth(TL.api.token,me.role);resumeRole();}}).catch(function(){TL.api.setAuth(null,null);});
     else if(TL.api.role) TL.api.setAuth(null, null); /* demo role is not valid against a live API */
   });
   TL.on("auth:change", function(d){

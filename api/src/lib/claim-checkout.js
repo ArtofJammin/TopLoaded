@@ -1,9 +1,10 @@
 import {HttpError} from './http.js';
 import {squareConfigured,squareRequest,createPaymentLink,toCents} from './square.js';
 import {putJSON} from './kv.js';
+import {webhookConfigured} from './readiness.js';
 
 export function claimCheckoutStatus(env){
-  const ready=env.CLAIM_CHECKOUT_ENABLED==='true'&&['sandbox','production'].includes(env.SQUARE_ENV)&&squareConfigured(env)&&!!env.LIVE_CLAIMS&&!!env.KV&&!!env.SQUARE_WEBHOOK_SIGNATURE_KEY&&!!env.SQUARE_WEBHOOK_URL&&!env.SQUARE_WEBHOOK_URL.includes('REPLACE');
+  const ready=env.CLAIM_CHECKOUT_ENABLED==='true'&&squareConfigured(env)&&!!env.LIVE_CLAIMS&&!!env.KV&&webhookConfigured(env);
   return {ready,mode:env.SQUARE_ENV==='production'?'production':'sandbox',inventory:'Square catalog variations; TCGplayer requires a separate authorized connector',reason:ready?'Connected: Square confirms payments and tracks catalog stock.':'Claim checkout is not activated. Connect Square, the signed webhook and shared backend, then complete the sales acceptance checks.'};
 }
 export async function claimInternal(env,id,action,body){

@@ -54,6 +54,29 @@
       </div>
 
       <h2 class="vh">Dashboard</h2>
+      <section class="admin-card api-setup" aria-labelledby="apiSetupTitle">
+        <h3 id="apiSetupTitle">Connect the shop API</h3>
+        <p class="card-note">Prepare once, connect when ready. API keys belong in Cloudflare secrets, never in this page. Testing a URL sends no credentials and makes no changes to the shop.</p>
+        <p id="apiSetupCurrent" class="card-note"></p>
+        <form id="apiSetupForm" class="api-setup-form">
+          <label for="apiSetupUrl">Worker base URL<input id="apiSetupUrl" type="url" placeholder="https://toploaded-api.your-account.workers.dev" autocomplete="off" required aria-describedby="apiSetupHint"></label>
+          <button class="btn btn-ghost" type="submit" id="apiSetupTest">Test connection</button>
+        </form>
+        <p class="card-note" id="apiSetupHint">For everyone: set the GitHub repository variable <code>TL_API_URL</code>, then run <b>Publish site</b>. The device-only test below does not publish anything or copy local demo settings/credit.</p>
+        <div id="apiSetupConfirm" hidden>
+          <label class="api-setup-confirm"><input id="apiSetupConsent" type="checkbox"> I recognize this API address. Use it on this browser and sign out existing sessions.</label>
+          <button class="btn" type="button" id="apiSetupUse" disabled>Use on this browser</button>
+        </div>
+        <div class="api-setup-actions">
+          <button class="btn btn-ghost" type="button" id="apiSetupReset">Use published connection</button>
+          <button class="btn btn-ghost" type="button" id="apiSetupRefresh">Check configuration</button>
+          <button class="btn btn-ghost" type="button" id="apiSetupVerify">Run read-only checks</button>
+          <button class="btn btn-ghost" type="button" id="apiSetupExport" disabled>Download setup report</button>
+        </div>
+        <p id="apiSetupStatus" role="status" aria-live="polite" class="card-note"></p>
+        <div id="apiSetupResults" class="api-setup-results"></div>
+        <p class="card-note">Read-only checks contact Square and GitHub. They never take a payment, send email, start an inventory sync, or call the billable Google Places API. Configured does not mean launch-tested.</p>
+      </section>
       <div class="admin-grid">
         <div class="admin-card busy-host" id="intCard">
           <h3>Integrations <span class="pill" id="intPill"><span class="dot"></span>Checking</span></h3>
@@ -218,7 +241,7 @@
 
         <div class="admin-card" id="cardLive">
           <h3>Live stream <span class="pill crit" id="liveStatusPill"><span class="dot crit"></span>Offline</span></h3>
-          <p class="card-note">Going live lights up the Live tab. Post confirmed card claims from the staff-only desk on the Live Stream page; it does not process payments.</p>
+          <p class="card-note">Going live lights up the Live tab. Post confirmed card claims from the staff-only desk on the Live Stream page. Payment links are separate and stay disabled until Square checkout is connected and tested.</p>
           <div style="margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap"><button class="btn" id="goLiveBtn" type="button">Start live stream</button><span class="save-state" id="liveState" role="status"></span></div>
           <dl class="kv" style="margin-top:18px">
             <dt><label for="setLiveTitle">Stream title</label></dt><dd><input id="setLiveTitle" style="width:100%"></dd>
@@ -300,6 +323,6 @@
         </table>
       </div>
       <div class="inv-pager" id="invPager"></div>
-      <p class="card-note" id="invNote" style="margin-top:10px">Stock edits here are kept as overrides on this device (and flag the other channel) until Square is connected &mdash; TCGplayer has no seller API, so its listing still needs the same change by hand.</p>
+      <p class="card-note" id="invNote" style="margin-top:10px">Stock edits here are device-only overrides, not Square or TCGplayer inventory changes. Automatic TCGplayer listing updates require an authorized seller connector; until then, update the listing by hand.</p>
     </div>
   </section>

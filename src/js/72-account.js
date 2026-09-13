@@ -36,6 +36,7 @@
     }
     async function enter(){
       await TL.api.ready;
+      if(saved && saved.base !== TL.api.base){ saved = null; reset(); }
       enabled = false;
       try { if(TL.api.online) enabled = !!(await call("GET","/account/status")).enabled; } catch(e){}
       $("#accountSend").disabled = !enabled;
@@ -59,7 +60,7 @@
       button.disabled = true; status.textContent = "Verifying your code…";
       try {
         var data = await call("POST","/account/verify", {challenge:challenge, code:$("#accountCode").value.trim()});
-        token = data.token; generation++; TL.session.set("customer-session",data); challenge = null;
+        token = data.token; generation++; data.base = TL.api.base; saved = data; TL.session.set("customer-session",data); challenge = null;
         $("#accountCode").value = ""; $("#accountCodeForm").hidden = true; $("#accountEmailForm").hidden = false;
         await refresh(); if(token) $("#accountLogout").focus();
       } catch(err){ status.textContent = error(err); }

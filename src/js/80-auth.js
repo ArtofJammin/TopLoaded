@@ -41,7 +41,7 @@
       if(target) pendingView = target;
       var m = $("#loginModal"); if(!m) return;
       var hint = $("#loginHint");
-      if(hint) hint.textContent = TL.api.online ? "Passcodes are checked by the shop's API." : "Demo gate — real staff accounts run through the API.";
+      if(hint) hint.textContent = TL.api.online ? "Passcodes are checked by the shop's API." : TL.api.base ? "The configured API is unavailable. Reconnect before signing in." : "Demo gate — real staff accounts run through the API.";
       m.hidden = false;
       $("#loginOverlay").classList.add("open");
       $("#loginPin").value = "";
@@ -57,6 +57,9 @@
       if(releaseLoginTrap){ releaseLoginTrap(); releaseLoginTrap = null; }
     },
     login: function(pin){
+      return TL.api.ready.then(function(){ return TL.auth.loginReady(pin); });
+    },
+    loginReady: function(pin){
       pin = String(pin || "");
       if(!pin) return Promise.resolve(null);
       if(TL.api.online){
@@ -69,6 +72,7 @@
           return null;
         });
       }
+      if(TL.api.base) return Promise.reject({status:0,error:"The configured API is unavailable. Demo passcodes cannot unlock server access."});
       return demoRole(pin).then(function(role){
         if(role) TL.api.setAuth(null, role);
         return role;
@@ -109,7 +113,7 @@
       }
     }, function(err){
       if(btn) btn.disabled = false;
-      loginError(err && err.status === 429 ? "Too many tries — wait a few minutes" : "Login failed — try again");
+      loginError(err && err.status === 429 ? "Too many tries — wait a few minutes" : err && err.error ? err.error : "Login failed — try again");
     });
   });
   $("#loginCancel").addEventListener("click", closeLogin);
@@ -119,8 +123,14 @@
   });
   /* a role that was granted by the API is re-validated once the API answers */
   TL.on("api:ready", function(d){
-    if(!d || !d.online){ if(TL.api.token) TL.api.setAuth(null, TL.api.role); return; }
-    if(TL.api.token) TL.api.get("/auth/me").catch(function(){ /* 401 already cleared it */ });
+    var hint=$("#loginHint");
+    if(hint)hint.textContent=TL.api.online?"Passcodes are checked by the shop's API.":TL.api.base?"The configured API is unavailable. Reconnect before signing in.":"Demo gate — real staff accounts run through the API.";
+    function resumeRole(){
+      document.documentElement.setAttribute("data-role",TL.api.role||"");
+      if(pendingView && TL.auth.can(pendingView)){var target=pendingView;closeLogin();go(target,{}, {noTransition:true});}
+    }
+    if(!d || !d.online){ if(TL.api.base) TL.api.setAuth(null, null); else resumeRole(); return; }
+    if(TL.api.token) TL.api.get("/auth/me").then(function(me){if(me && me.role){TL.api.setAuth(TL.api.token,me.role);resumeRole();}}).catch(function(){TL.api.setAuth(null,null);});
     else if(TL.api.role) TL.api.setAuth(null, null); /* demo role is not valid against a live API */
   });
   TL.on("auth:change", function(d){

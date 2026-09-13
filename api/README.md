@@ -45,21 +45,11 @@ See [sales connection and acceptance](../SALES-CONNECTION.md). `GET /live/checko
 
 ## Deploy
 
-```bash
-npm i -g wrangler && wrangler login
-cd api
-wrangler kv namespace create KV            # paste the id into wrangler.toml
-node -e "console.log(require('crypto').createHash('sha256').update('STAFF PASSCODE').digest('hex'))"
-wrangler secret put STAFF_PIN_HASH
-wrangler secret put ADMIN_PIN_HASH
-wrangler secret put TOKEN_SECRET           # any long random string
-wrangler deploy                            # prints https://toploaded-api.<account>.workers.dev
-```
+Follow [API-CONNECT.md](../API-CONNECT.md): it prepares an ignored `wrangler.local.json` with real bindings and strict CORS, offers hidden passcode/secret entry, keeps payments off, and connects all visitors using the public GitHub repository variable `TL_API_URL`. No frontend source edit is required. Always pass `--config api/wrangler.local.json` to deploy/secret commands from the repository root. Keep sandbox and production resources separate.
 
-Then put that URL in `src/head.html` (`<meta name="tl-api" content="…">`), rebuild,
-commit. Optional secrets: `SQUARE_ACCESS_TOKEN`, `SQUARE_LOCATION_ID`,
-`SQUARE_WEBHOOK_SIGNATURE_KEY`, `RESEND_API_KEY`, `NOTIFY_EMAIL`, `EMAIL_FROM`,
-`GITHUB_TOKEN`, `POKEMONTCG_API_KEY`. `/health` reports which are configured.
+`GET /health` identifies `service:toploaded-api`, `apiVersion:1`, and non-secret integration flags. `shopCheckout` and `claimCheckout` are independent activation flags, not merely evidence that Square keys exist. `GET /setup/status` (admin) lists configuration requirements. `POST /setup/verify` (admin, 3/minute) adds read-only Square location/catalog and GitHub workflow checks. It sends no email, dispatches no workflow, creates no payment, and makes no Google Places request. Provider response bodies and secrets are never returned.
+
+`SHOP_CHECKOUT_ENABLED=true` permits the legacy ad-hoc cart **only in sandbox**. Production cart checkout is blocked until exact condition/SKU mapping is implemented. The endpoint behavior below describes explicitly enabled sandbox checkout and the disconnected demo, not an automatic production launch when keys are added.
 
 ## Conventions
 
@@ -94,9 +84,9 @@ References: [Cloudflare delayed messages/retries](https://developers.cloudflare.
 | GET | `/config` | – | Merged site config (`config.default.json` shape ← KV `config`) |
 | PUT | `/config` | admin | Deep-merge a patch; top-level keys must exist in the defaults; `logo` must be an image data URL ≤ 200 KB |
 | DELETE | `/config` | admin | Reset to defaults |
-| POST | `/auth/login` | – | `{pin}` → `{token, role, exp}`; 8 tries / 10 min per IP |
+| POST | `/auth/login` | – | `{pin}` → `{token, role, exp}`; 5 tries / 10 min per IP |
 | GET | `/auth/me` | staff | `{role, exp}` |
-| POST | `/auth/logout` | – | no-op (client forgets token) |
+| POST | `/auth/logout` | – | Revokes the bearer token until expiration; KV revocation is eventually consistent |
 | POST | `/forms/:kind` | – | `kind` ∈ `vendor` (name, email, tables 1-3, game), `buylist` (name, contact, games, desc, photos? no), `signup` (name, seats 1-4, eventId), `newsletter` (email), `restock` (email, productId, productName), `contact` (name, email, message). Body also accepts `website` honeypot. Stores `form:<kind>:<id>` with `{id, kind, at, ip, ...fields, status:"new"}`, emails `NOTIFY_EMAIL` when configured. Returns `{ok, id, emailed}`. 5 / 10 min per IP per kind. |
 | GET | `/forms?kind=&status=&limit=` | staff | Inbox, newest first |
 | PUT | `/forms/:kind/:id` | staff | `{status:"new"|"done"|"archived", note?}` |

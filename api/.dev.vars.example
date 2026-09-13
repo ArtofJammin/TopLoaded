@@ -16,6 +16,9 @@ DEV_ADMIN_PIN=admin
 # SQUARE_ACCESS_TOKEN=
 # SQUARE_LOCATION_ID=
 # SQUARE_WEBHOOK_SIGNATURE_KEY=
+# SQUARE_WEBHOOK_URL=https://your-worker.workers.dev/square/webhook
+# CLAIM_CHECKOUT_ENABLED=false
+# SHOP_CHECKOUT_ENABLED=false
 # SHIPPING_CENTS=499
 # FREE_SHIPPING_CENTS=10000
 
@@ -27,6 +30,11 @@ DEV_ADMIN_PIN=admin
 # "Sync now" button → runs the inventory GitHub Action (token needs repo "actions: write")
 # GITHUB_TOKEN=
 # GITHUB_REPO=ArtofJammin/toploaded-demo
+
+# Automatic five-star Google reviews (requires a real Place ID in Admin and Places billing)
+# GOOGLE_PLACES_API_KEY=
+# GOOGLE_REVIEWS_TERMS_URL=https://your-public-site/terms
+# GOOGLE_REVIEWS_PRIVACY_URL=https://your-public-site/privacy
 
 # Optional: raises pokemontcg.io rate limits for the card-worth lookup
 # POKEMONTCG_API_KEY=

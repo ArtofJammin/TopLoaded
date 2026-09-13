@@ -146,12 +146,12 @@
     }).join("") +
     '<div class="int-row" style="border-top:1px solid var(--line); margin-top:4px"><div class="in"><b>Square webhook events</b><span>Expected events once the webhook is registered</span></div></div>' +
     HOOK_ROWS.map(function(h){
-      return '<div class="hook-row"><span class="hn">' + esc(h) + '</span><span class="pill ' + (ints.squareWebhook ? "ok" : "") + '"><span class="dot"></span>' + (ints.squareWebhook ? "listening" : "expected event") + '</span></div>';
+      return '<div class="hook-row"><span class="hn">' + esc(h) + '</span><span class="pill"><span class="dot"></span>' + (ints.squareWebhook ? "configured · test delivery" : "expected event") + '</span></div>';
     }).join("");
     if(pill){
       var n = INT_ROWS.filter(function(r){ return r[0] === "api" ? online : !!ints[r[0]]; }).length;
       pill.className = "pill " + (online ? (n >= 4 ? "ok" : "warn") : "warn");
-      pill.innerHTML = '<span class="dot"></span>' + (online ? n + " of " + INT_ROWS.length + " live" : "Demo mode");
+      pill.innerHTML = '<span class="dot"></span>' + (online ? n + " of " + INT_ROWS.length + " configured" : "Demo mode");
     }
   }
 

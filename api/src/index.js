@@ -18,11 +18,12 @@ import * as price from './routes/price.js';
 import * as account from './routes/account.js';
 import * as streamClaims from './routes/stream-claims.js';
 import * as reviews from './routes/reviews.js';
+import * as setup from './routes/setup.js';
 import { consumeSaleChecks } from './lib/sale-checks.js';
 export { StreamClaims } from './lib/stream-claims.js';
 
 export const router = new Router();
-for (const m of [health, config, auth, forms, checkout, square, alerts, credit, live, inventory, price, account, streamClaims, reviews]) {
+for (const m of [health, config, auth, forms, checkout, square, alerts, credit, live, inventory, price, account, streamClaims, reviews, setup]) {
   if (typeof m.register === 'function') m.register(router);
 }
 

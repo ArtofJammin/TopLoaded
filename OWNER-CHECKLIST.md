@@ -25,12 +25,14 @@ These statuses distinguish delivered page changes from services that still need 
 
 ## Verification
 
-- `node tools/check.mjs`: 92 API tests and 23 frontend regression tests pass (115 total), plus build, syntax and DOM-ID checks. One existing warning references removed optional ticker/featured IDs and dynamically generated game icons.
+- `node tools/check.mjs`: 96 API tests and 28 frontend regression tests pass (124 total), plus build, syntax and DOM-ID checks. One existing warning references removed optional ticker/featured IDs and dynamically generated game icons.
 - Browser: requested Home order, three changing game clocks, whole-set unstocked discovery, five genuine review cards, $30/$60/$90 pricing, top-of-show timer, staff posting and pre-activation payment gating.
 - Mobile: 390px viewport, no page overflow in the review section; both Google excerpts retain star and source attribution.
 - Payment tests use mocks only: access control, exact catalog linkage, tracked/in-stock validation, concurrent last-unit reservations, retry reuse, cancellation acknowledgement, signed full-payment checks, stale failure events and recovery when the checkout index is missing.
 
 ## Not a production-readiness sign-off
+
+Admin now includes connection testing, a missing-settings checklist, read-only provider checks, and a downloadable secret-free readiness report. [API-CONNECT.md](API-CONNECT.md) covers generated deployment configuration, secure credential entry, sandbox acceptance, public URL connection without source edits, and rollback. Square keys alone cannot turn on ordinary shop-cart payments.
 
 The public GitHub page still has no production Worker URL. Shared Admin publishing, claims, payment collection, credit accounts and email cannot be called operational until the owning accounts are connected and tested. Google automatic refresh similarly needs its provider setup. Real vendor assignments and the next show date are still owner inputs.
 

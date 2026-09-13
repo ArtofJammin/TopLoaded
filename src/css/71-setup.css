@@ -1,0 +1,13 @@
+  .api-setup{margin-bottom:24px;min-width:0}
+  .api-setup-form{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:18px 0}
+  .api-setup-form label{display:grid;gap:8px;flex:1 1 320px;min-width:0;font-size:13px;color:var(--ink2)}
+  .api-setup-form input{width:100%;box-sizing:border-box;min-width:0}
+  .api-setup-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .api-setup .api-setup-confirm{display:flex;align-items:center;gap:10px;margin:12px 0;color:var(--ink2);font-size:13px;font-family:var(--body);letter-spacing:normal;text-transform:none;line-height:1.5}
+  .api-setup-confirm input{width:auto;flex:0 0 auto}
+  .api-setup-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .api-setup-check{border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}
+  .api-setup-check h4{font:inherit;font-weight:700;margin:0 0 8px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .api-setup-check p{font-size:13px;line-height:1.55;color:var(--ink2);margin:6px 0;overflow-wrap:anywhere}
+  .api-setup .card-note,.api-setup code{overflow-wrap:anywhere}
+  @media(max-width:640px){.api-setup-results{grid-template-columns:1fr}.api-setup-actions .btn{flex:1 1 160px}.api-setup-form .btn{width:100%}}
