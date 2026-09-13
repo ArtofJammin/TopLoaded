@@ -1,7 +1,7 @@
 # Operator-only secret upload. Values never enter command arguments or source files.
 param(
   [Parameter(Mandatory=$true)]
-  [ValidateSet('STAFF_PIN_HASH','ADMIN_PIN_HASH','TOKEN_SECRET','SQUARE_ACCESS_TOKEN','SQUARE_LOCATION_ID','SQUARE_WEBHOOK_SIGNATURE_KEY','RESEND_API_KEY','EMAIL_FROM','NOTIFY_EMAIL','GITHUB_TOKEN','GOOGLE_PLACES_API_KEY')]
+  [ValidateSet('STAFF_PIN_HASH','ADMIN_PIN_HASH','TOKEN_SECRET','SQUARE_ACCESS_TOKEN','SQUARE_LOCATION_ID','SQUARE_WEBHOOK_SIGNATURE_KEY','RESEND_API_KEY','EMAIL_FROM','NOTIFY_EMAIL','GITHUB_TOKEN','GOOGLE_PLACES_API_KEY','TCG_NOTIFICATION_SECRET')]
   [string]$Name
 )
 $ErrorActionPreference = 'Stop'
@@ -22,6 +22,7 @@ try {
     try { $secretValue = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($pointer) }
     finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($pointer); $secured.Dispose() }
     if ([string]::IsNullOrWhiteSpace($secretValue)) { throw 'Empty secrets are not allowed.' }
+    if ($Name -eq 'TCG_NOTIFICATION_SECRET' -and $secretValue.Length -lt 32) { throw 'Use a random bridge secret of at least 32 characters, also stored securely in the trusted bridge.' }
     if ($Name -match '_PIN_HASH$') {
       if ($secretValue.Length -lt 12) { throw 'Use a unique passphrase of at least 12 characters.' }
       $confirm = Read-Host 'Repeat the passphrase' -AsSecureString

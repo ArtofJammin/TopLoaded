@@ -127,7 +127,9 @@
 .inbox-item .ia button{padding:6px 10px; font-size:.78rem}
 .inbox-item .local-tag{font-family:var(--mono); font-size:.6rem; letter-spacing:.08em; text-transform:uppercase; color:var(--warn)}
 /* alerts */
-.alert-row{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:11px 0; border-bottom:1px solid var(--line); max-height:120px; overflow:hidden}
+.alert-row{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:11px 0; border-bottom:1px solid var(--line); overflow:hidden}
+.alert-listing{display:inline-flex;align-items:center;min-height:44px;color:var(--accent);font-size:.8rem}
+@media(max-width:480px){.alert-row{flex-wrap:wrap}.alert-row .tl{flex-basis:100%}}
 .alert-row:last-child{border-bottom:0}
 .alert-row .tl{min-width:0}
 .alert-row .tl b{font-weight:600; font-size:.9rem; display:block; overflow-wrap:anywhere}

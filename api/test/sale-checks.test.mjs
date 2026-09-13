@@ -30,6 +30,7 @@ test('listing lookup validates seller and product, rejects malformed/errors inst
   let response = listingResponse();
   t.mock.method(globalThis, 'fetch', async (url, init) => {
     const body = JSON.parse(init.body);
+    assert.equal(init.redirect, 'manual'); // Cloudflare Workers rejects redirect:error
     assert.deepEqual(body.filters.term.productId, [123]);
     assert.deepEqual(body.listingSearch.filters.term.sellerKey, ['5c356cdf']);
     return response;

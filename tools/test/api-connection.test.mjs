@@ -21,6 +21,8 @@ test('runtime deployment setting connects after one anonymous health check, pres
   assert.equal(x.api.health.service,'toploaded-api');assert.equal(x.api.integrations.square,false);
   await x.api.get('/config');assert.equal(x.calls[2].opts.headers.Authorization,'Bearer private');
   assert.equal(x.calls[2].opts.redirect,'error');
+  await x.api.post('/inventory/listing/123/interest',{}, {noAuth:true,keepalive:true});
+  assert.equal(x.calls[3].opts.keepalive,true);assert.equal(x.calls[3].opts.headers.Authorization,undefined);
 });
 test('a changed API drops old staff session; probes never send credentials or alter the active connection',async()=>{
   const x=boot({base:'https://new.test',session:{token:'private',role:'admin','auth-base':'https://old.test'}});
@@ -41,6 +43,8 @@ test('deployment config generates only safe public values, isolated queue names,
   assert.equal(c.vars.CLAIM_CHECKOUT_ENABLED,'false');assert.equal(c.vars.SHOP_CHECKOUT_ENABLED,'false');
   assert.equal(c.vars.SITE_ORIGIN,'https://artofjammin.github.io');assert.equal(c.vars.SQUARE_WEBHOOK_URL,'https://toploaded-api-sandbox.shop.workers.dev/square/webhook');
   assert.equal(c.queues.producers[0].queue,'toploaded-api-sandbox-sale-checks');assert.equal(c.migrations[0].new_sqlite_classes[0],'StreamClaims');
+  assert.equal(c.migrations[1].new_sqlite_classes[0],'InventoryCoordinator');
+  assert.equal(c.vars.INVENTORY_ALERT_EMAIL_ENABLED,'false');assert.equal(c.vars.TCG_NOTIFICATION_ENABLED,'false');
   assert.doesNotMatch(JSON.stringify(c),/TOKEN_SECRET|ACCESS_TOKEN|PIN_HASH/);
   assert.throws(()=>deploymentConfig({kvId:'placeholder',apiUrl:'https://a.b.workers.dev'}));
   assert.throws(()=>deploymentConfig({kvId:'a'.repeat(32),apiUrl:'https://a.b.workers.dev/api'}));

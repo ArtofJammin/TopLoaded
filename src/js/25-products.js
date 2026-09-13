@@ -458,9 +458,9 @@
       return;
     }
     var fr = INV.freshness(gen), c = INV.counts || {};
-    if(home) home.innerHTML = '<span class="dot ' + fr.cls + '"></span>Chase cards from the case \u00b7 live from our TCGplayer store \u00b7 ' + esc(fr.text);
+    if(home) home.innerHTML = '<span class="dot ' + fr.cls + '"></span>Chase cards from the case \u00b7 TCGplayer inventory snapshot \u00b7 ' + esc(fr.text);
     if(shop){
-      shop.textContent = "Live from our TCGplayer store \u00b7 " + fmtInt(c.products || 0) + " products \u00b7 " + fmtInt(c.units || 0) + " cards in stock \u00b7 " + fr.text +
+      shop.textContent = "TCGplayer inventory snapshot \u00b7 " + fmtInt(c.products || 0) + " products \u00b7 " + fmtInt(c.units || 0) + " units at last import \u00b7 " + fr.text +
         (INV.failed ? " \u00b7 showing sample items until the full case loads" : "");
       if(sdot) sdot.className = "dot " + fr.cls;
     }

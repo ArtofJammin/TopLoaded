@@ -110,7 +110,7 @@
       mk.className = "mkt" + (diff >= 2 ? " under" : diff <= -2 ? " over" : "");
       mk.hidden = false;
     } else mk.hidden = true;
-    $("#qvStock").innerHTML = stockLabel(it) + (it.listings && it.listings.length > 1 ? ' <span class="qv-stock-note">' + fmtInt(it.stock) + ' across ' + it.listings.length + ' listings</span>' : '');
+    $("#qvStock").innerHTML = (it.tcg ? '<span class="qv-stock-note">At last import: </span>' : '') + stockLabel(it) + (it.listings && it.listings.length > 1 ? ' <span class="qv-stock-note">' + fmtInt(it.stock) + ' across ' + it.listings.length + ' listings</span>' : '');
     $("#qvListings").innerHTML = qvListings(it);
     QV.qty = 1; $("#qvQtyVal").textContent = "1";
     var add = $("#qvAdd"), qty = $("#qvQty");
@@ -125,6 +125,7 @@
     qvSyncNav();
     $("#qvStatus").textContent = "";
     if(TL.recent) TL.recent.push(it.id);
+    TL.emit("quickview:item", it);
   }
   function qvSyncWish(){
     var b = $("#qvWish"); if(!b || !QV.item) return;
@@ -172,6 +173,7 @@
     opts = opts || {};
     if(!QV.open) return;
     QV.open = false;
+    TL.emit("quickview:close");
     qvStopTilt();
     qvEl.hidden = true;
     qvOverlay.classList.remove("open");

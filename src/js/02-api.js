@@ -58,7 +58,7 @@
       return fetch(api.base + path, {
         method: method, headers: headers,
         body: hasBody ? JSON.stringify(body) : undefined,
-        signal: ctrl ? ctrl.signal : undefined, credentials: "omit", cache: "no-store", redirect: "error"
+        signal: ctrl ? ctrl.signal : undefined, credentials: "omit", cache: "no-store", redirect: "error", keepalive: !!opts.keepalive
       }).then(function(r){
         clearTimeout(timer);
         return r.text().then(function(t){

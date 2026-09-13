@@ -1,7 +1,7 @@
 // Outbound email via Resend (https://resend.com — free tier is plenty for a shop).
 // Without RESEND_API_KEY the message is logged and {sent:false} is returned, so
 // every flow still works in dev and the submission is always kept in KV.
-export async function sendEmail(env, { to, subject, text, html, replyTo }) {
+export async function sendEmail(env, { to, subject, text, html, replyTo, idempotencyKey }) {
   const dest = to || env.NOTIFY_EMAIL;
   if (!dest) return { sent: false, reason: 'no recipient' };
   if (!env.RESEND_API_KEY) {
@@ -11,7 +11,9 @@ export async function sendEmail(env, { to, subject, text, html, replyTo }) {
   const from = env.EMAIL_FROM || 'Top Loaded Website <onboarding@resend.dev>';
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
-    headers: { 'authorization': `Bearer ${env.RESEND_API_KEY}`, 'content-type': 'application/json' },
+    signal: AbortSignal.timeout(10000),
+    headers: { 'authorization': `Bearer ${env.RESEND_API_KEY}`, 'content-type': 'application/json',
+      ...(idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : {}) },
     body: JSON.stringify({ from, to: [dest], subject, text, html, reply_to: replyTo }),
   });
   if (!r.ok) {

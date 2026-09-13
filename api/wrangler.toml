@@ -16,9 +16,17 @@ workers_dev = true
 name = "LIVE_CLAIMS"
 class_name = "StreamClaims"
 
+[[durable_objects.bindings]]
+name = "INVENTORY_COORDINATOR"
+class_name = "InventoryCoordinator"
+
 [[migrations]]
 tag = "stream-claims-v1"
 new_sqlite_classes = ["StreamClaims"]
+
+[[migrations]]
+tag = "inventory-coordinator-v1"
+new_sqlite_classes = ["InventoryCoordinator"]
 
 [[kv_namespaces]]
 binding = "KV"
@@ -35,6 +43,11 @@ SQUARE_ENV = "sandbox"
 CLAIM_CHECKOUT_ENABLED = "false"
 # Legacy cart can be tested in sandbox only; production awaits exact SKU mapping.
 SHOP_CHECKOUT_ENABLED = "false"
+# Shared read-only listing checks; no TCGplayer partner credentials required.
+LISTING_CHECKS_ENABLED = "true"
+# Opt in only after the owner approves the email destination and trusted bridge.
+INVENTORY_ALERT_EMAIL_ENABLED = "false"
+TCG_NOTIFICATION_ENABLED = "false"
 SQUARE_WEBHOOK_URL = "https://toploaded-api.REPLACE.workers.dev/square/webhook"
 GITHUB_REPO = "ArtofJammin/toploaded-demo"
 GITHUB_WORKFLOW = "inventory.yml"

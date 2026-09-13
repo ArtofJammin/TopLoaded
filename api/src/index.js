@@ -19,11 +19,13 @@ import * as account from './routes/account.js';
 import * as streamClaims from './routes/stream-claims.js';
 import * as reviews from './routes/reviews.js';
 import * as setup from './routes/setup.js';
+import * as listingChecks from './routes/listing-checks.js';
 import { consumeSaleChecks } from './lib/sale-checks.js';
 export { StreamClaims } from './lib/stream-claims.js';
+export { InventoryCoordinator } from './lib/inventory-coordinator.js';
 
 export const router = new Router();
-for (const m of [health, config, auth, forms, checkout, square, alerts, credit, live, inventory, price, account, streamClaims, reviews, setup]) {
+for (const m of [health, config, auth, forms, checkout, square, alerts, credit, live, inventory, price, account, streamClaims, reviews, setup, listingChecks]) {
   if (typeof m.register === 'function') m.register(router);
 }
 

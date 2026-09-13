@@ -3,6 +3,7 @@
 import { getJSON, putJSON } from './kv.js';
 import { squareRequest } from './square.js';
 import { appendAlert } from '../routes/alerts.js';
+import { inventoryCoordinator } from './inventory-check-client.js';
 
 const TTL = 30 * 24 * 3600;
 const SELLER = '5c356cdf';
@@ -27,7 +28,9 @@ export async function scheduleSaleCheck(env, payment, ours) {
 export async function sellerListing(productId) {
   if (!/^\d+$/.test(String(productId))) throw new Error('Missing TCGplayer product mapping');
   const response = await fetch(SEARCH, {
-    method: 'POST', signal: AbortSignal.timeout(12000),
+    // Workers supports follow/manual, not redirect:error. Reject 3xx explicitly
+    // below rather than following an unexpected redirect from the fixed provider.
+    method: 'POST', signal: AbortSignal.timeout(12000), redirect: 'manual',
     headers: { 'content-type': 'application/json', origin: 'https://www.tcgplayer.com',
       referer: 'https://www.tcgplayer.com/', 'user-agent': 'TopLoaded inventory reconciliation' },
     body: JSON.stringify({ algorithm: 'sales_dismax', from: 0, size: 10,
@@ -39,7 +42,11 @@ export async function sellerListing(productId) {
       settings: { useFuzzySearch: false, didYouMean: {} },
       sort: { field: 'product-sorting-name', order: 'asc' } })
   });
-  if (!response.ok) throw new Error(`TCGplayer HTTP ${response.status}`);
+  if (!response.ok) {
+    const error = new Error(`TCGplayer HTTP ${response.status}`);
+    error.upstreamStatus = response.status;
+    throw error;
+  }
   const block = (await response.json())?.results?.[0];
   if (!block || !Array.isArray(block.results) || !Number.isInteger(block.totalResults)) {
     throw new Error('TCGplayer returned an unrecognized response');
@@ -101,7 +108,12 @@ export async function consumeSaleChecks(batch, env) {
             msg: `After-sale check: ${name} — no TCGplayer product mapping. Check the listing manually; add tcg:PRODUCT_ID to the Square variation SKU.` });
           results.push({ productId: null, status: 'needs-mapping' }); continue;
         }
-        const observed = await sellerListing(line.productId);
+        let observed;
+        if (env.INVENTORY_COORDINATOR) {
+          const check = await inventoryCoordinator(env, 'check', { id: line.productId, after: job.notBefore });
+          if (!['listed', 'not-listed'].includes(check.status) || check.checkedAt < job.notBefore) throw new Error('Listing availability unconfirmed; shared checks paused or still pending');
+          observed = { listed: check.status === 'listed', quantityShown: check.quantityShown || 0 };
+        } else observed = await sellerListing(line.productId);
         const outcome = observed.listed
           ? `still listed; ${observed.quantityShown} units shown. Confirm remaining physical stock and adjust TCGplayer if needed.`
           : 'no active listing returned for our seller. This is a listing check, not proof of a stock adjustment.';

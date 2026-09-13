@@ -1,6 +1,7 @@
 node_modules/
 api/.dev.vars
 api/.wrangler/
+.wrangler/
 api/wrangler.local.json
 tools/.dev-kv.json
 tools/update-inventory.log

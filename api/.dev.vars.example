@@ -31,6 +31,13 @@ DEV_ADMIN_PIN=admin
 # GITHUB_TOKEN=
 # GITHUB_REPO=ArtofJammin/toploaded-demo
 
+# Optional read-only public TCGplayer listing checks (no partner API key).
+# Local Node server keeps these off unless explicitly enabled. See INVENTORY-SYNC.md.
+# LISTING_CHECKS_ENABLED=true
+# INVENTORY_ALERT_EMAIL_ENABLED=false
+# TCG_NOTIFICATION_ENABLED=false
+# TCG_NOTIFICATION_SECRET=
+
 # Automatic five-star Google reviews (requires a real Place ID in Admin and Places billing)
 # GOOGLE_PLACES_API_KEY=
 # GOOGLE_REVIEWS_TERMS_URL=https://your-public-site/terms

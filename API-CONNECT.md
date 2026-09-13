@@ -37,6 +37,8 @@ Optional services, using the same helper with each name:
 
 No secret value is returned by the setup report. Sender addresses and public URLs may also be set in the Cloudflare dashboard. Google’s share URL/FID is not its Places API Place ID. Do not substitute one for the other.
 
+TCGplayer does not need partner API credentials for the prepared read-only workflow. See [INVENTORY-SYNC.md](INVENTORY-SYNC.md) for shared fifteen-minute listing checks, delayed outbound-link checks, opt-in staff email and the signed notification bridge. An existing local deployment config needs the additional `InventoryCoordinator` binding/migration; the setup generator never overwrites it automatically. No mailbox is connected by this code.
+
 ## 3. Package, deploy and test privately
 
 ```powershell

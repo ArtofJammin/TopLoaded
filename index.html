@@ -1060,6 +1060,14 @@ html.qv-open,html.qv-open body{overflow:hidden}
 }
 
 /* ============ QUICK VIEW ============ */
+.listing-check{margin:12px 0;padding:12px 14px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;background:var(--surface);color:var(--ink2)}
+.listing-check[hidden]{display:none}
+.listing-check p{margin:0 0 6px;font-size:.85rem;font-weight:600;line-height:1.5}
+.listing-check small{display:block;line-height:1.55;font-size:.75rem}
+.listing-check button{display:block;margin-top:8px;min-height:36px;color:var(--accent);text-align:left}
+.listing-check button[hidden]{display:none}
+.listing-check button:disabled{color:var(--ink2);cursor:wait}
+@media(pointer:coarse){.listing-check button{min-height:44px}}
 .qv{
   position:fixed; z-index:110; top:50%; left:50%; transform:translate(-50%,-50%);
   width:min(980px, calc(100vw - 32px)); max-height:calc(100vh - 32px); max-height:calc(100dvh - 32px);
@@ -1932,7 +1940,9 @@ form.is-done > :not(.form-done){display:none !important}
 .inbox-item .ia button{padding:6px 10px; font-size:.78rem}
 .inbox-item .local-tag{font-family:var(--mono); font-size:.6rem; letter-spacing:.08em; text-transform:uppercase; color:var(--warn)}
 /* alerts */
-.alert-row{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:11px 0; border-bottom:1px solid var(--line); max-height:120px; overflow:hidden}
+.alert-row{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:11px 0; border-bottom:1px solid var(--line); overflow:hidden}
+.alert-listing{display:inline-flex;align-items:center;min-height:44px;color:var(--accent);font-size:.8rem}
+@media(max-width:480px){.alert-row{flex-wrap:wrap}.alert-row .tl{flex-basis:100%}}
 .alert-row:last-child{border-bottom:0}
 .alert-row .tl{min-width:0}
 .alert-row .tl b{font-weight:600; font-size:.9rem; display:block; overflow-wrap:anywhere}
@@ -3320,9 +3330,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
   <section class="view" id="view-shop" aria-label="Shop">
     <div class="wrap">
       <div class="view-head">
-        <p class="eyebrow">Live inventory &middot; Singles &amp; sealed</p>
+        <p class="eyebrow">Our inventory &middot; Singles &amp; sealed</p>
         <h1>The case, online</h1>
-        <p class="lede">Every card here is a live listing from our TCGplayer store, synced every morning. Add it to your cart, buy it on TCGplayer, or call <a href="tel:+15132222573">(513) 222-2573</a> and we'll hold it at the counter.</p>
+        <p class="lede">Browse our TCGplayer inventory snapshot, refreshed three times a day. Availability can change between imports; confirm the exact listing on TCGplayer, or call <a href="tel:+15132222573">(513) 222-2573</a> to check with the shop.</p>
       </div>
 
       <div class="shop-tools" role="group" aria-label="Filters">
@@ -4255,7 +4265,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     </details>
     <div class="foot-bottom">
       <span>&copy; <span id="footYear">2026</span> Top Loaded Trading Cards</span>
-      <span>Live inventory synced from our TCGplayer store &middot; <span id="footVersion">site v2</span></span>
+      <span>Inventory snapshot from our TCGplayer store &middot; <span id="footVersion">site v2</span></span>
       <span class="spacer"></span>
       <button class="adminlink" data-go="staff">Staff</button>
       <button class="adminlink" data-go="admin">Admin</button>
@@ -4401,10 +4411,15 @@ a:hover .round-arrow{transform:rotate(45deg)}
       <span class="mkt" id="qvMarket" hidden></span>
     </div>
     <div class="qv-stock" id="qvStock"></div>
+    <div class="listing-check" id="qvListingCheck" hidden>
+      <p id="qvListingStatus" role="status" aria-live="polite"></p>
+      <small>Prices and quantities below are from our last inventory import. A listing check is not a reservation; confirm the exact condition and printing on TCGplayer.</small>
+      <button class="linklike" id="qvListingRetry" type="button" hidden>Check listing again</button>
+    </div>
 
     <div class="qv-table-wrap">
       <table class="qv-table">
-        <caption class="sr-only">Every listing of this product</caption>
+        <caption class="sr-only">Listings at the last inventory import</caption>
         <thead><tr><th scope="col">Condition</th><th scope="col">Printing</th><th scope="col">Qty</th><th scope="col">Price</th></tr></thead>
         <tbody id="qvListings"></tbody>
       </table>
@@ -4647,7 +4662,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       return fetch(api.base + path, {
         method: method, headers: headers,
         body: hasBody ? JSON.stringify(body) : undefined,
-        signal: ctrl ? ctrl.signal : undefined, credentials: "omit", cache: "no-store", redirect: "error"
+        signal: ctrl ? ctrl.signal : undefined, credentials: "omit", cache: "no-store", redirect: "error", keepalive: !!opts.keepalive
       }).then(function(r){
         clearTimeout(timer);
         return r.text().then(function(t){
@@ -6054,9 +6069,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
       return;
     }
     var fr = INV.freshness(gen), c = INV.counts || {};
-    if(home) home.innerHTML = '<span class="dot ' + fr.cls + '"></span>Chase cards from the case \u00b7 live from our TCGplayer store \u00b7 ' + esc(fr.text);
+    if(home) home.innerHTML = '<span class="dot ' + fr.cls + '"></span>Chase cards from the case \u00b7 TCGplayer inventory snapshot \u00b7 ' + esc(fr.text);
     if(shop){
-      shop.textContent = "Live from our TCGplayer store \u00b7 " + fmtInt(c.products || 0) + " products \u00b7 " + fmtInt(c.units || 0) + " cards in stock \u00b7 " + fr.text +
+      shop.textContent = "TCGplayer inventory snapshot \u00b7 " + fmtInt(c.products || 0) + " products \u00b7 " + fmtInt(c.units || 0) + " units at last import \u00b7 " + fr.text +
         (INV.failed ? " \u00b7 showing sample items until the full case loads" : "");
       if(sdot) sdot.className = "dot " + fr.cls;
     }
@@ -6652,7 +6667,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       mk.className = "mkt" + (diff >= 2 ? " under" : diff <= -2 ? " over" : "");
       mk.hidden = false;
     } else mk.hidden = true;
-    $("#qvStock").innerHTML = stockLabel(it) + (it.listings && it.listings.length > 1 ? ' <span class="qv-stock-note">' + fmtInt(it.stock) + ' across ' + it.listings.length + ' listings</span>' : '');
+    $("#qvStock").innerHTML = (it.tcg ? '<span class="qv-stock-note">At last import: </span>' : '') + stockLabel(it) + (it.listings && it.listings.length > 1 ? ' <span class="qv-stock-note">' + fmtInt(it.stock) + ' across ' + it.listings.length + ' listings</span>' : '');
     $("#qvListings").innerHTML = qvListings(it);
     QV.qty = 1; $("#qvQtyVal").textContent = "1";
     var add = $("#qvAdd"), qty = $("#qvQty");
@@ -6667,6 +6682,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     qvSyncNav();
     $("#qvStatus").textContent = "";
     if(TL.recent) TL.recent.push(it.id);
+    TL.emit("quickview:item", it);
   }
   function qvSyncWish(){
     var b = $("#qvWish"); if(!b || !QV.item) return;
@@ -6714,6 +6730,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     opts = opts || {};
     if(!QV.open) return;
     QV.open = false;
+    TL.emit("quickview:close");
     qvStopTilt();
     qvEl.hidden = true;
     qvOverlay.classList.remove("open");
@@ -6914,6 +6931,74 @@ a:hover .round-arrow{transform:rotate(45deg)}
   TL.on("inventory:loaded", function(){ if(TL.current === "shop") renderRecent(); syncHearts(); });
   TL.on("inventory:summary", syncHearts);
   TL.on("init", syncHearts);
+
+  /* Shared 15-minute observations, never authoritative stock or proof of a sale.
+     Only opening a quick view checks now. An outbound click schedules a later
+     server check and NEVER blocks navigation. No browsing trail is persisted. */
+  (function(){
+    var panel=$("#qvListingCheck"), label=$("#qvListingStatus"), retry=$("#qvListingRetry");
+    if(!panel)return;
+    var current=null, seq=0, timer=null, observations=new Map(), interests=new Map(), pending=new Map(), polls=0;
+    function idOf(item){var id=String(item && (item.tcgId || item.id) || "").replace(/^tcg-/,"");return /^[1-9]\d{0,11}$/.test(id)?id:null;}
+    function enabled(){return TL.api && TL.api.online && TL.api.integrations && TL.api.integrations.listingChecks;}
+    function remember(map,id,value){map.delete(id);map.set(id,value);if(map.size>80)map.delete(map.keys().next().value);}
+    function stop(){clearTimeout(timer);timer=null;}
+    function show(data){
+      stop(); if(!current)return;
+      var fresh=data && Number(data.expiresAt)>Date.now(), state=fresh?data.status:"unknown";
+      panel.dataset.state=state;
+      var checked=data && data.checkedAt?new Date(data.checkedAt).toLocaleTimeString([],{hour:"numeric",minute:"2-digit"}):"";
+      label.textContent=state==="listed"?"Listed by our seller · checked "+checked:
+        state==="not-listed"?"No active listing returned for our seller · checked "+checked+". Please confirm with the shop.":
+        data && data.reason==="checking"?"Checking the seller listing…":
+        "Availability unconfirmed · confirm current stock on TCGplayer.";
+      retry.hidden=!enabled() || fresh || (data && data.reason==="checking");
+      var retryAt=Number(data && data.retryAt)||0;
+      retry.disabled=retryAt>Date.now();
+      if(document.hidden)return;
+      if(fresh){timer=setTimeout(function(){check();},Math.max(1000,data.expiresAt-Date.now()+100));}
+      else if(data && data.reason==="checking" && polls++<2){timer=setTimeout(function(){check(true);},Math.max(5000,retryAt-Date.now()));}
+      else if(retryAt>Date.now()){timer=setTimeout(function(){retry.disabled=false;retry.hidden=!enabled();},retryAt-Date.now());}
+    }
+    function check(force){
+      if(!current || document.hidden)return;
+      var id=current, version=seq, cached=observations.get(id);
+      if(!enabled()){show(null);return;}
+      if(!force && cached && (cached.expiresAt>Date.now() || cached.retryAt>Date.now())){show(cached);return;}
+      stop();label.textContent="Checking the seller listing…";retry.hidden=true;
+      // Sharing in-flight work also handles rapid prev/next/back navigation.
+      var promise=pending.get(id);
+      if(!promise){
+        promise=TL.api.get("/inventory/listing/"+id,{noAuth:true,timeout:30000}).catch(function(){return {status:"unknown",retryAt:Date.now()+60000};});
+        pending.set(id,promise);
+      }
+      promise.then(function(data){
+        if(pending.get(id)===promise)pending.delete(id);
+        remember(observations,id,data);
+        if(version===seq && current===id)show(data);
+      });
+    }
+    TL.on("quickview:item",function(item){
+      seq++;stop();polls=0;current=idOf(item);panel.hidden=!current;
+      if(current)check();
+    });
+    TL.on("quickview:close",function(){seq++;current=null;stop();});
+    TL.on("api:ready",function(){if(current)check();});
+    retry.addEventListener("click",function(){if(!retry.disabled){polls=0;check(true);}});
+    document.addEventListener("visibilitychange",function(){if(document.hidden)stop();else if(current)check();});
+    function interest(e){
+      if(e.defaultPrevented || (e.type==="auxclick" && e.button!==1) || !enabled())return;
+      var link=e.target.closest && e.target.closest("a[href]");if(!link)return;
+      var url;try{url=new URL(link.href);}catch(err){return;}
+      if(url.protocol!=="https:" || url.hostname!=="www.tcgplayer.com" || url.searchParams.get("seller")!=="5c356cdf")return;
+      var match=/^\/product\/([1-9]\d{0,11})(?:\/|$)/.exec(url.pathname);if(!match)return;
+      var id=match[1];if((interests.get(id)||0)>Date.now())return;
+      remember(interests,id,Date.now()+15*60000);
+      TL.api.post("/inventory/listing/"+id+"/interest",{},{noAuth:true,keepalive:true,timeout:20000}).catch(function(){interests.delete(id);});
+    }
+    document.addEventListener("click",interest);
+    document.addEventListener("auxclick",interest);
+  })();
 
   /* ---------- cart & checkout ----------
      TL.cart = { add(item, qty, fromEl), remove(id), setQty(id, n), lines(), count(), total(),
@@ -11530,10 +11615,12 @@ a:hover .round-arrow{transform:rotate(45deg)}
     var list = $("#alertList"); if(!list) return;
     var open = alerts.filter(function(a){ return !a.ack; });
     list.innerHTML = open.length ? open.map(function(a){
+      var product=/^tcg[:-]([1-9]\d{0,11})$/.exec(String(a.sku||""));
       return '<div class="alert-row" data-alert="' + esc(a.id) + '"><div class="tl"><b>' + esc(a.msg) + (a.demo ? '<span class="demo-tag">demo</span>' : "") + '</b>' +
-        '<span>Reconcile on ' + esc(a.ch || "the other channel") + (a.at ? " · " + esc(ago(a.at)) : "") + (a.local && !a.demo ? " · this device" : "") + '</span></div>' +
-        '<button class="btn btn-ghost" data-ack="' + esc(a.id) + '" type="button" aria-label="Done: ' + esc(a.msg) + '">Done</button></div>';
-    }).join("") : '<p class="alert-empty">All channels reconciled — nothing waiting.</p>';
+        '<span>Reconcile on ' + esc(a.ch || "the other channel") + (a.at ? " · " + esc(ago(a.at)) : "") + (a.local && !a.demo ? " · this device" : "") + '</span>' +
+        (product?'<a class="alert-listing" href="https://www.tcgplayer.com/product/'+product[1]+'?seller=5c356cdf" target="_blank" rel="noopener noreferrer">Open seller listing ↗<span class="sr-only"> (new tab)</span></a>':"")+'</div>' +
+        '<button class="btn btn-ghost" data-ack="' + esc(a.id) + '" type="button" aria-label="Mark reviewed: ' + esc(a.msg) + '">Reviewed</button></div>';
+    }).join("") : '<p class="alert-empty">No alerts waiting. Listings are not adjusted automatically.</p>';
     var n = open.length;
     statNum($("#alertCount"), n);
     statNum($("#statAlerts"), n);
@@ -11568,7 +11655,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       a.ack = true;
       if(!a.server) saveLocalAlerts();
       renderAlerts();
-      toast("Alert cleared — channels reconciled");
+      toast("Marked reviewed — this does not change stock on either channel");
     }
     var p = a.server ? apiTry("POST", "/alerts/" + encodeURIComponent(id) + "/ack", {}) : Promise.resolve({ok: true});
     p.then(function(r){

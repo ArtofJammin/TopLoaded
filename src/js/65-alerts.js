@@ -22,10 +22,12 @@
     var list = $("#alertList"); if(!list) return;
     var open = alerts.filter(function(a){ return !a.ack; });
     list.innerHTML = open.length ? open.map(function(a){
+      var product=/^tcg[:-]([1-9]\d{0,11})$/.exec(String(a.sku||""));
       return '<div class="alert-row" data-alert="' + esc(a.id) + '"><div class="tl"><b>' + esc(a.msg) + (a.demo ? '<span class="demo-tag">demo</span>' : "") + '</b>' +
-        '<span>Reconcile on ' + esc(a.ch || "the other channel") + (a.at ? " · " + esc(ago(a.at)) : "") + (a.local && !a.demo ? " · this device" : "") + '</span></div>' +
-        '<button class="btn btn-ghost" data-ack="' + esc(a.id) + '" type="button" aria-label="Done: ' + esc(a.msg) + '">Done</button></div>';
-    }).join("") : '<p class="alert-empty">All channels reconciled — nothing waiting.</p>';
+        '<span>Reconcile on ' + esc(a.ch || "the other channel") + (a.at ? " · " + esc(ago(a.at)) : "") + (a.local && !a.demo ? " · this device" : "") + '</span>' +
+        (product?'<a class="alert-listing" href="https://www.tcgplayer.com/product/'+product[1]+'?seller=5c356cdf" target="_blank" rel="noopener noreferrer">Open seller listing ↗<span class="sr-only"> (new tab)</span></a>':"")+'</div>' +
+        '<button class="btn btn-ghost" data-ack="' + esc(a.id) + '" type="button" aria-label="Mark reviewed: ' + esc(a.msg) + '">Reviewed</button></div>';
+    }).join("") : '<p class="alert-empty">No alerts waiting. Listings are not adjusted automatically.</p>';
     var n = open.length;
     statNum($("#alertCount"), n);
     statNum($("#statAlerts"), n);
@@ -60,7 +62,7 @@
       a.ack = true;
       if(!a.server) saveLocalAlerts();
       renderAlerts();
-      toast("Alert cleared — channels reconciled");
+      toast("Marked reviewed — this does not change stock on either channel");
     }
     var p = a.server ? apiTry("POST", "/alerts/" + encodeURIComponent(id) + "/ack", {}) : Promise.resolve({ok: true});
     p.then(function(r){

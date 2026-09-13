@@ -1,4 +1,12 @@
 /* ============ QUICK VIEW ============ */
+.listing-check{margin:12px 0;padding:12px 14px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;background:var(--surface);color:var(--ink2)}
+.listing-check[hidden]{display:none}
+.listing-check p{margin:0 0 6px;font-size:.85rem;font-weight:600;line-height:1.5}
+.listing-check small{display:block;line-height:1.55;font-size:.75rem}
+.listing-check button{display:block;margin-top:8px;min-height:36px;color:var(--accent);text-align:left}
+.listing-check button[hidden]{display:none}
+.listing-check button:disabled{color:var(--ink2);cursor:wait}
+@media(pointer:coarse){.listing-check button{min-height:44px}}
 .qv{
   position:fixed; z-index:110; top:50%; left:50%; transform:translate(-50%,-50%);
   width:min(980px, calc(100vw - 32px)); max-height:calc(100vh - 32px); max-height:calc(100dvh - 32px);

@@ -83,7 +83,12 @@ export function register(r) {
     };
   });
 
-  r.post('/inventory/sync', requireRole('admin'), async ({ env }) => {
+  r.post('/inventory/sync', requireRole('admin'), async ({ env }) => dispatchInventory(env));
+}
+
+// Also used by the authenticated notification coordinator; never exposed as an
+// anonymous full-import trigger. Both paths share the existing dispatch cooldown.
+export async function dispatchInventory(env) {
     const repo = env.GITHUB_REPO || 'ArtofJammin/toploaded-demo';
     const workflow = env.GITHUB_WORKFLOW || 'inventory.yml';
     const runsUrl = `https://github.com/${repo}/actions/workflows/${workflow}`;
@@ -126,7 +131,6 @@ export function register(r) {
     if (ok) await env.KV.delete('inventory:status');
     if (!ok) throw new HttpError(502, message, { ok: false, dispatched: false, runsUrl });
     return { ok: true, dispatched: true, at, runsUrl };
-  });
 }
 
 // ---- daily housekeeping (index.js scheduled handler) ----

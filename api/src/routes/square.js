@@ -13,6 +13,7 @@ import { verifyWebhookSignature, retrieveOrder } from '../lib/square.js';
 import * as alertsModule from './alerts.js';
 import { scheduleSaleCheck } from '../lib/sale-checks.js';
 import {settleClaimPayment} from '../lib/claim-checkout.js';
+import {notifyInventoryStaff} from '../lib/inventory-check-client.js';
 
 const EVENT_TTL = 7 * 24 * 3600;
 const COALESCE_SEC = 3600;
@@ -110,7 +111,8 @@ async function onPaymentUpdated(env, event) {
         const record={...(ours||claimOrder),status:'paid',paymentId:p.id,paidAt:ours?.paidAt||new Date().toISOString(),total:Number(full.total_money.amount)/100};
         await putJSON(env.KV,'order:'+record.id,record,{expirationTtl:EVENT_TTL});
         await putJSON(env.KV,'order:sq:'+sqOrderId,{id:record.id},{expirationTtl:EVENT_TTL});
-        await appendAlert(env,{ch:'TCGplayer',source:'square:payment.updated',msg:'Paid stream claim: '+claimOrder.lines[0].name+' — Square tracks the catalog sale. Confirm the corresponding TCGplayer listing is adjusted.',orderId:claimOrder.id});
+        await appendAlert(env,{ch:'TCGplayer',source:'square:payment.updated',msg:'Paid stream claim: '+claimOrder.lines[0].name+' — Square tracks the catalog sale. Confirm the corresponding TCGplayer listing is adjusted.',orderId:claimOrder.id,sku:claimOrder.lines[0].id});
+        if(p.id)await notifyInventoryStaff(env,p.id);
         return 1;
       }
     }
@@ -125,10 +127,12 @@ async function onPaymentUpdated(env, event) {
         await appendAlert(env, { ch: 'TCGplayer', msg: `Paid online (${ours.id}): ${li.name}${li.qty > 1 ? ` x${li.qty}` : ''} — pull from the case and reduce the TCGplayer listing`,
           source: 'square:payment.updated', orderId: ours.id, sku: li.id && li.id.startsWith('tcg-') ? `tcg:${li.id.slice(4)}` : null });
       }
+      if(p.id)await notifyInventoryStaff(env,p.id);
       return (ours.lines || []).length;
     }
     await appendAlert(env, { ch: 'TCGplayer', msg: `Square payment ${money(p.amount_money)} completed${sqOrderId ? ` (order ${sqOrderId})` : ''} — update the TCGplayer listing if singles were sold`,
       source: 'square:payment.updated', squareOrderId: sqOrderId });
+    if(p.id)await notifyInventoryStaff(env,p.id);
     return 1;
   }
   if ((status === 'FAILED' || status === 'CANCELED') && ours && ours.status!=='paid' && !ours.claimId) {

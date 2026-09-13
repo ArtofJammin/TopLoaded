@@ -20,6 +20,7 @@ let worker = workerModule;
 import { MemoryKV } from '../api/src/lib/memory-kv.js';
 import { StreamClaims } from '../api/src/lib/stream-claims.js';
 import { memoryObject } from '../api/src/lib/memory-object.js';
+import { InventoryCoordinator } from '../api/src/lib/inventory-coordinator.js';
 
 const tools = dirname(fileURLToPath(import.meta.url));
 const repo = resolve(tools, '..');
@@ -63,6 +64,7 @@ if (!vars.ADMIN_PIN_HASH) env.ADMIN_PIN_HASH = sha(adminPin);
 let initial = {};
 if (!flag('--fresh') && existsSync(KV_FILE)) { try { initial = JSON.parse(readFileSync(KV_FILE, 'utf8')); } catch {} }
 env.KV = new MemoryKV(initial);
+env.INVENTORY_COORDINATOR = memoryObject(InventoryCoordinator,env,{alarms:true});
 let saveTimer = null;
 if(!flag('--ephemeral')) env.KV.onChange = () => { clearTimeout(saveTimer); saveTimer = setTimeout(() => writeFileSync(KV_FILE, JSON.stringify(env.KV.toJSON(), null, 1)), 150); };
 const exec = { waitUntil: (p) => Promise.resolve(p).catch(e => console.error('[waitUntil]', e)), passThroughOnException() {} };
