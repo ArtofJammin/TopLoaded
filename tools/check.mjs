@@ -71,11 +71,11 @@ if (!html.includes('id="view-home"') || !html.includes('id="main"')) fail('core 
 
 // 6. API tests
 if (!process.argv.includes('--no-tests')) {
-  const r = spawnSync(process.execPath, ['--test', 'api/test/*.test.mjs'], { cwd: repo, encoding: 'utf8' });
+  const r = spawnSync(process.execPath, ['--test', '--test-reporter=spec', 'api/test/*.test.mjs'], { cwd: repo, encoding: 'utf8' });
   const summary = (r.stdout.match(/ℹ (tests|pass|fail) \d+/g) || []).join('  ');
-  if (r.status !== 0) { fail('API tests failed  ' + summary); console.log(r.stdout.split('\n').filter(l => /✖|not ok|Error|error:/.test(l)).slice(0, 30).join('\n')); }
+  if (r.status !== 0) { fail('API tests failed  ' + summary); console.log(r.stdout); if(r.stderr) console.log(r.stderr); }
   else console.log('ok    API tests  ' + summary);
-  const ui = spawnSync(process.execPath, ['--test', 'tools/test/*.test.mjs'], { cwd: repo, encoding: 'utf8' });
+  const ui = spawnSync(process.execPath, ['--test', '--test-reporter=spec', 'tools/test/*.test.mjs'], { cwd: repo, encoding: 'utf8' });
   const uiSummary = (ui.stdout.match(/ℹ (tests|pass|fail) \d+/g) || []).join('  ');
   if (ui.status !== 0) { fail('Frontend regression tests failed  ' + uiSummary); console.log(ui.stdout); }
   else console.log('ok    Frontend regression tests  ' + uiSummary);

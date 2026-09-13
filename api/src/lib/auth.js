@@ -29,22 +29,25 @@ export async function signToken(env, { role, ttlSec = 12 * 3600 }) {
   const secret = env.TOKEN_SECRET;
   if (!secret) throw new HttpError(500, 'TOKEN_SECRET not configured');
   const now = Math.floor(Date.now() / 1000);
-  const payload = b64url(JSON.stringify({ role, iat: now, exp: now + ttlSec }));
+  const payload = b64url(JSON.stringify({ role, iat: now, exp: now + ttlSec, jti: crypto.randomUUID() }));
   const sig = await crypto.subtle.sign('HMAC', await hmacKey(secret), enc.encode(payload));
   return payload + '.' + b64url(new Uint8Array(sig));
 }
 
 export async function verifyToken(env, token) {
-  if (!token || !env.TOKEN_SECRET) return null;
+  if (typeof token !== 'string' || token.length > 2048 || !env.TOKEN_SECRET || !/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]{43}$/.test(token)) return null;
   const [payload, sig] = token.split('.');
   if (!payload || !sig) return null;
   try {
-    if (env.KV && await env.KV.get('revoked:' + sig)) return null;
     const sigBytes = Uint8Array.from(unb64url(sig), c => c.charCodeAt(0));
+    // Base64 decoders ignore unused padding bits. Without canonical encoding,
+    // alternate spellings of the same signature bypass a string-keyed revocation.
+    if (sigBytes.length !== 32 || b64url(sigBytes) !== sig || b64url(unb64url(payload)) !== payload) return null;
+    if (env.KV && await env.KV.get('revoked:' + sig)) return null;
     const ok = await crypto.subtle.verify('HMAC', await hmacKey(env.TOKEN_SECRET), sigBytes, enc.encode(payload));
     if (!ok) return null;
     const data = JSON.parse(unb64url(payload));
-    if (!data.exp || data.exp < Math.floor(Date.now() / 1000)) return null;
+    if (!Number.isInteger(data.exp) || data.exp <= Math.floor(Date.now() / 1000)) return null;
     if (data.role !== 'staff' && data.role !== 'admin') return null;
     return data;
   } catch { return null; }
@@ -53,10 +56,11 @@ export async function verifyToken(env, token) {
 // Logout: remember the token's signature until it would have expired anyway.
 export async function revokeToken(env, token) {
   if (!token || !env.KV) return false;
+  const verified = await verifyToken(env, token);
+  if (!verified) return false;
   const [payload, sig] = token.split('.');
   if (!payload || !sig) return false;
-  let exp = 0;
-  try { exp = Number(JSON.parse(unb64url(payload)).exp) || 0; } catch { return false; }
+  const exp = verified.exp;
   const ttl = Math.max(60, exp - Math.floor(Date.now() / 1000));
   await env.KV.put('revoked:' + sig, '1', { expirationTtl: ttl });
   return true;

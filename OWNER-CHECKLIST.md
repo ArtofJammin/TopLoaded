@@ -25,7 +25,7 @@ These statuses distinguish delivered page changes from services that still need 
 
 ## Verification
 
-- `node tools/check.mjs`: 96 API tests and 28 frontend regression tests pass (124 total), plus build, syntax and DOM-ID checks. One existing warning references removed optional ticker/featured IDs and dynamically generated game icons.
+- `node tools/check.mjs`: 97 API tests and 28 frontend regression tests pass (125 total), plus build, syntax and DOM-ID checks. One existing warning references removed optional ticker/featured IDs and dynamically generated game icons.
 - Browser: requested Home order, three changing game clocks, whole-set unstocked discovery, five genuine review cards, $30/$60/$90 pricing, top-of-show timer, staff posting and pre-activation payment gating.
 - Mobile: 390px viewport, no page overflow in the review section; both Google excerpts retain star and source attribution.
 - Payment tests use mocks only: access control, exact catalog linkage, tracked/in-stock validation, concurrent last-unit reservations, retry reuse, cancellation acknowledgement, signed full-payment checks, stale failure events and recovery when the checkout index is missing.

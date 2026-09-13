@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { makeEnv, client } from './helpers.mjs';
+import { signToken, verifyToken, revokeToken } from '../src/lib/auth.js';
 
 test('health reports integrations without leaking secrets', async () => {
   const c = client(makeEnv());
@@ -33,7 +34,8 @@ test('login issues role tokens and rejects wrong pins', async () => {
   assert.equal(bad.status, 401);
   const me = await c.get('/auth/me', { token: admin.data.token });
   assert.equal(me.data.role, 'admin');
-  const tampered = await c.get('/auth/me', { token: admin.data.token.slice(0, -2) + 'xx' });
+  const [payload,signature]=admin.data.token.split('.');
+  const tampered = await c.get('/auth/me', { token: payload+'.'+(signature[0]==='A'?'B':'A')+signature.slice(1) });
   assert.equal(tampered.status, 401);
 });
 
@@ -82,6 +84,22 @@ test('logout revokes the bearer token', async () => {
   const out = await c.post('/auth/logout', {}, { token: admin });
   assert.equal(out.data.revoked, true);
   assert.equal((await c.get('/auth/me', { token: admin })).status, 401);
+});
+
+test('signature aliases and trailing segments cannot bypass revocation; sessions are unique', async () => {
+  const env=makeEnv(), token=await signToken(env,{role:'admin'}), second=await signToken(env,{role:'admin'});
+  assert.notEqual(token,second,'two sessions must not share a revocation key');
+  const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+  const alias=token.slice(0,-1)+alphabet[alphabet.indexOf(token.at(-1))+1];
+  assert.deepEqual(Buffer.from(alias.split('.')[1],'base64url'),Buffer.from(token.split('.')[1],'base64url'),'alias has identical decoded HMAC bytes');
+  assert.equal(await verifyToken(env,alias),null);
+  assert.equal(await verifyToken(env,token+'.extra'),null);
+  assert.equal(await revokeToken(env,alias),false);
+  assert.equal(await revokeToken(env,token),true);
+  assert.equal(await verifyToken(env,token),null);
+  assert.equal(await verifyToken(env,alias),null);
+  assert.equal((await verifyToken(env,second)).role,'admin','logging out one session preserves the other');
+  assert.equal(await verifyToken(env,await signToken(env,{role:'admin',ttlSec:0})),null);
 });
 
 test('429 carries Retry-After and the login limit is 5', async () => {
