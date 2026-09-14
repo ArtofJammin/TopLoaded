@@ -1,5 +1,4 @@
 /* A compact, theme-aware floor guide and visual editor. */
-.show-wayfinding>p{max-width:78ch;color:var(--ink2);line-height:1.7}.show-wayfinding figure{margin:24px 0 0;max-width:1000px}.show-wayfinding img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:14px}.show-wayfinding figcaption{font-size:.8rem;color:var(--ink2);margin-top:12px}
 .floor-tools{display:flex;align-items:end;flex-wrap:wrap;gap:12px;margin:18px 0 12px}
 .floor-tools .field{flex:1 1 170px;min-width:0}.floor-tools input,.floor-tools select{width:100%;min-height:44px}
 .floor-zoom{display:flex;flex-shrink:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
@@ -8,7 +7,16 @@
 .floor-guide-body{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin:16px 0;align-items:start}
 .floor-guide-body .floor-scroll{margin:0;height:clamp(220px,40vw,530px);cursor:grab;overscroll-behavior-x:contain;position:relative;background:color-mix(in srgb,var(--surface) 90%,var(--accent) 10%)}
 .floor-scroll.is-panning{cursor:grabbing;user-select:none}
-.floor-map{--fp-gap:6px;min-width:0;gap:var(--fp-gap);background-size:calc(var(--fp-cell) + var(--fp-gap)) calc(var(--fp-row,var(--fp-cell)) + var(--fp-gap));border:2px solid var(--line);box-sizing:content-box;isolation:isolate}
+.floor-map{--fp-gap:6px;position:relative;min-width:0;gap:var(--fp-gap);background-size:calc(var(--fp-cell) + var(--fp-gap)) calc(var(--fp-row,var(--fp-cell)) + var(--fp-gap));border:2px solid var(--line);box-sizing:content-box;isolation:isolate}
+.floor-scroll:has(.is-show-venue){height:clamp(320px,70vw,850px)}
+.fp-venue{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;font-family:var(--body)}
+.fp-room{fill:var(--surface);stroke:var(--ink2);stroke-width:.5}.fp-room-prefunction,.fp-room-business{fill:color-mix(in srgb,var(--accent) 7%,var(--surface))}
+.fp-room-label{fill:var(--ink2);font-size:2.8px;font-weight:700;letter-spacing:.15px}.fp-map-title{fill:var(--ink);font-size:4.4px;font-weight:800}.fp-map-sub{fill:var(--ink2);font-size:2.6px}
+.fp-route{fill:none;stroke:var(--accent);stroke-width:1;stroke-dasharray:2 1}.fp-route-arrow{fill:none;stroke:var(--accent);stroke-width:1;stroke-linecap:round;stroke-linejoin:round}
+.fp-door{fill:var(--accent);stroke:var(--accent);stroke-width:.25}.fp-door-label{fill:var(--ink);font-size:2.4px;font-weight:700}
+.fp-entry-label{fill:var(--accent)}.fp-entry-text{fill:var(--accent-ink);font-size:2.65px;font-weight:800}
+.t-shop{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.is-show-venue .fp-cell{z-index:1}.is-show-venue .fp-cell[aria-pressed="true"]{z-index:2}
 .floor-map.is-hilton .fp-cell{margin:2px}
 .t-unassigned{background:var(--surface2);color:var(--ink2);border-color:var(--line)}
 #showFloorMap{background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:20px 20px}

@@ -1,0 +1,25 @@
+{
+  "rows": 168,
+  "cols": 224,
+  "ballroomOffset": {"r": 82, "c": 4},
+  "rooms": [
+    {"id":"ballroom","label":"TRIPLE CROWN BALLROOM","r":83,"c":5,"w":192,"h":82,"labelR":161,"labelC":70},
+    {"id":"prefunction","label":"PRE-FUNCTION · OUTER TABLES","r":39,"c":5,"w":192,"h":44,"labelR":44,"labelC":12},
+    {"id":"business","label":"BUSINESS CENTER · TOP LOADED","r":3,"c":121,"w":76,"h":36,"labelR":9,"labelC":124}
+  ],
+  "clearways": [
+    {"r":77,"c":6,"w":190,"h":6},
+    {"r":84,"c":6,"w":190,"h":4},
+    {"r":36,"c":173,"w":8,"h":41},
+    {"r":80,"c":12,"w":10,"h":8},
+    {"r":80,"c":97,"w":10,"h":8},
+    {"r":80,"c":183,"w":10,"h":8}
+  ],
+  "doors": [
+    {"id":"far","label":"Far door","r":82,"c":12,"w":10,"h":2},
+    {"id":"middle","label":"Middle door","r":82,"c":97,"w":10,"h":2},
+    {"id":"near","label":"Near door","r":82,"c":183,"w":10,"h":2}
+  ],
+  "outerRunColumns": [35,73,123,153],
+  "note":"Room outlines, outer table positions and walking routes are schematic, not surveyed or venue-approved clearance measurements."
+}

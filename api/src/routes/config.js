@@ -8,6 +8,7 @@ import { getJSON, putJSON } from '../lib/kv.js';
 import { HttpError, readJson } from '../lib/http.js';
 import { requireRole } from '../lib/auth.js';
 import { DEFAULT_CONFIG, deepMerge } from '../defaults.js';
+import showGrid from '../../../venue-plans/hilton-show-grid.json' with {type:'json'};
 
 const MAX_BYTES = 200 * 1024; // logo data-URLs are the only big thing
 
@@ -77,13 +78,19 @@ export function validateOwnerSettings(cfg) {
   const fail = m => { throw new HttpError(400, m); };
   const fp=cfg.show?.floorplan;
   if(fp !== undefined){
-    if(!fp || !Number.isInteger(fp.rows)||fp.rows<1||fp.rows>100||!Number.isInteger(fp.cols)||fp.cols<1||fp.cols>200||!Array.isArray(fp.booths)||fp.booths.length>100)fail('Floor plan needs a 1–100 by 1–200 grid and at most 100 booths');
-    if(fp.room!==undefined&&!['schematic','hilton-ballroom'].includes(fp.room))fail('Choose the Hilton ballroom or a schematic room');
+    if(!fp || !Number.isInteger(fp.rows)||fp.rows<1||fp.rows>200||!Number.isInteger(fp.cols)||fp.cols<1||fp.cols>240||!Array.isArray(fp.booths)||fp.booths.length>100)fail('Floor plan needs a 1–200 by 1–240 grid and at most 100 booths');
+    if(fp.room!==undefined&&!['schematic','hilton-ballroom','hilton-show'].includes(fp.room))fail('Choose a Hilton show, ballroom or schematic room');
+    if(fp.room==='hilton-show'&&(fp.rows!==showGrid.rows||fp.cols!==showGrid.cols))fail('The full Hilton show outline uses a fixed 168 by 224 grid');
     const occupied=new Set(),ids=new Set();
     for(const b of fp.booths){
-      if(!b || typeof b.id!=='string'||!b.id.trim()||ids.has(b.id)||typeof b.label!=='string'||!b.label.trim()||b.label.length>120||!['tcg','sports','mixed','unassigned','food','entry'].includes(b.type))fail('Each booth needs a unique ID, name and valid type');
+      if(!b || typeof b.id!=='string'||!b.id.trim()||ids.has(b.id)||typeof b.label!=='string'||!b.label.trim()||b.label.length>120||!['tcg','sports','mixed','unassigned','shop','food','entry'].includes(b.type))fail('Each booth needs a unique ID, name and valid type');
       ids.add(b.id);
       if(!['r','c','w','h'].every(k=>Number.isInteger(b[k])&&b[k]>=1)||b.r+b.h-1>fp.rows||b.c+b.w-1>fp.cols)fail('Booths must fit inside the floor plan');
+      if(fp.room==='hilton-show'){
+        const inside=showGrid.rooms.some(a=>b.r>=a.r&&b.c>=a.c&&b.r+b.h<=a.r+a.h&&b.c+b.w<=a.c+a.w);
+        const blocked=showGrid.clearways.some(a=>b.c<a.c+a.w&&a.c<b.c+b.w&&b.r<a.r+a.h&&a.r<b.r+b.h);
+        if(!inside||blocked)fail('Keep tables inside the show rooms and off marked entrance routes');
+      }
       for(let r=b.r;r<b.r+b.h;r++)for(let c=b.c;c<b.c+b.w;c++){const key=r+','+c;if(occupied.has(key))fail('Floor plan booths overlap');occupied.add(key);}
     }
   }

@@ -4,6 +4,20 @@ import {makeEnv,client} from './helpers.mjs';
 import {StreamClaims} from '../src/lib/stream-claims.js';
 import {memoryObject} from '../src/lib/memory-object.js';
 import {validateOwnerSettings} from '../src/routes/config.js';
+import {DEFAULT_CONFIG} from '../src/defaults.js';
+
+test('full show geometry saves all room tables but rejects blocked entrance routes and outside-room placement',async()=>{
+  const c=client(makeEnv()),token=await c.login('admin'),opts={token},floorplan=structuredClone(DEFAULT_CONFIG.show.floorplan);
+  assert.equal((await c.put('/config',{show:{floorplan}},opts)).status,200);
+  assert.equal((await c.get('/config')).data.show.floorplan.booths.filter(b=>b.type==='shop').length,5);
+  const booth={id:'outer-test',label:'Outer test',type:'unassigned',r:48,c:35,w:5,h:12};
+  assert.equal((await c.put('/config',{show:{floorplan:{...floorplan,booths:[...floorplan.booths,booth]}}},opts)).status,200);
+  for(const blocked of [{r:78,c:25,w:6,h:3},{r:5,c:5,w:6,h:3},{r:82,c:12,w:10,h:2}]){
+    assert.equal((await c.put('/config',{show:{floorplan:{...floorplan,booths:[...floorplan.booths,{...booth,...blocked}]}}},opts)).status,400);
+  }
+  assert.equal((await c.put('/config',{show:{floorplan:{...floorplan,rows:100}}},opts)).status,400);
+  assert.equal((await c.get('/config')).data.show.floorplan.booths.length,floorplan.booths.length+1);
+});
 
 test('null owner settings fail validation without a server crash',()=>{
   for(const cfg of [{show:{floorplan:null}},{reviews:null}]){
@@ -14,7 +28,7 @@ test('null owner settings fail validation without a server crash',()=>{
 test('floor plan persists and rejects overlap, invalid types and partial-grid shrink',async()=>{
   const c=client(makeEnv()),token=await c.login('admin'),opts={token};
   const booth={id:'a',label:'Vendor A',type:'tcg',r:2,c:2,w:1,h:1};
-  assert.equal((await c.put('/config',{show:{floorplan:{rows:3,cols:3,booths:[booth]}}},opts)).status,200);
+  assert.equal((await c.put('/config',{show:{floorplan:{room:'schematic',rows:3,cols:3,booths:[booth]}}},opts)).status,200);
   assert.equal((await c.get('/config')).data.show.floorplan.booths[0].label,'Vendor A');
   assert.equal((await c.put('/config',{show:{floorplan:{rows:1}}},opts)).status,400);
   assert.equal((await c.put('/config',{show:{floorplan:{booths:[booth,{...booth,id:'b'}]}}},opts)).status,400);

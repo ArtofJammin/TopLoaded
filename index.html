@@ -1525,7 +1525,6 @@ html.page-hidden .drawer .cart-empty::before{animation-play-state:paused}
   @media(max-width:600px){.floor-map{--fp-cell:56px;background-size:62px 62px}.show-clock{padding:16px}.rev-meta,.rev-meta-head{grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr)}}
 
 /* A compact, theme-aware floor guide and visual editor. */
-.show-wayfinding>p{max-width:78ch;color:var(--ink2);line-height:1.7}.show-wayfinding figure{margin:24px 0 0;max-width:1000px}.show-wayfinding img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:14px}.show-wayfinding figcaption{font-size:.8rem;color:var(--ink2);margin-top:12px}
 .floor-tools{display:flex;align-items:end;flex-wrap:wrap;gap:12px;margin:18px 0 12px}
 .floor-tools .field{flex:1 1 170px;min-width:0}.floor-tools input,.floor-tools select{width:100%;min-height:44px}
 .floor-zoom{display:flex;flex-shrink:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
@@ -1534,7 +1533,16 @@ html.page-hidden .drawer .cart-empty::before{animation-play-state:paused}
 .floor-guide-body{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin:16px 0;align-items:start}
 .floor-guide-body .floor-scroll{margin:0;height:clamp(220px,40vw,530px);cursor:grab;overscroll-behavior-x:contain;position:relative;background:color-mix(in srgb,var(--surface) 90%,var(--accent) 10%)}
 .floor-scroll.is-panning{cursor:grabbing;user-select:none}
-.floor-map{--fp-gap:6px;min-width:0;gap:var(--fp-gap);background-size:calc(var(--fp-cell) + var(--fp-gap)) calc(var(--fp-row,var(--fp-cell)) + var(--fp-gap));border:2px solid var(--line);box-sizing:content-box;isolation:isolate}
+.floor-map{--fp-gap:6px;position:relative;min-width:0;gap:var(--fp-gap);background-size:calc(var(--fp-cell) + var(--fp-gap)) calc(var(--fp-row,var(--fp-cell)) + var(--fp-gap));border:2px solid var(--line);box-sizing:content-box;isolation:isolate}
+.floor-scroll:has(.is-show-venue){height:clamp(320px,70vw,850px)}
+.fp-venue{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;font-family:var(--body)}
+.fp-room{fill:var(--surface);stroke:var(--ink2);stroke-width:.5}.fp-room-prefunction,.fp-room-business{fill:color-mix(in srgb,var(--accent) 7%,var(--surface))}
+.fp-room-label{fill:var(--ink2);font-size:2.8px;font-weight:700;letter-spacing:.15px}.fp-map-title{fill:var(--ink);font-size:4.4px;font-weight:800}.fp-map-sub{fill:var(--ink2);font-size:2.6px}
+.fp-route{fill:none;stroke:var(--accent);stroke-width:1;stroke-dasharray:2 1}.fp-route-arrow{fill:none;stroke:var(--accent);stroke-width:1;stroke-linecap:round;stroke-linejoin:round}
+.fp-door{fill:var(--accent);stroke:var(--accent);stroke-width:.25}.fp-door-label{fill:var(--ink);font-size:2.4px;font-weight:700}
+.fp-entry-label{fill:var(--accent)}.fp-entry-text{fill:var(--accent-ink);font-size:2.65px;font-weight:800}
+.t-shop{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.is-show-venue .fp-cell{z-index:1}.is-show-venue .fp-cell[aria-pressed="true"]{z-index:2}
 .floor-map.is-hilton .fp-cell{margin:2px}
 .t-unassigned{background:var(--surface2);color:var(--ink2);border-color:var(--line)}
 #showFloorMap{background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:20px 20px}
@@ -3500,32 +3508,20 @@ a:hover .round-arrow{transform:rotate(45deg)}
           </div>
         </form>
       </div>
-      <section class="section show-wayfinding" aria-labelledby="showArrivalTitle">
-        <div class="section-head"><h2 id="showArrivalTitle">Use the Convention Entrance</h2><span class="collector-note">Your way to the card show</span></div>
-        <p>Enter through the <b>Convention Entrance</b> and follow the pre-function area to the ballroom's three doors. Visit Top Loaded's booth in the business center. <b>The Turfway Room is not the card show.</b></p>
-        <figure><a href="venue-plans/hilton-show-guide.svg" target="_blank" rel="noopener noreferrer" aria-label="Open the card show entrance guide at full size"><img src="venue-plans/hilton-show-guide.svg" width="1000" height="720" loading="lazy" decoding="async" alt="Enter at the Convention Entrance. Follow the pre-function area to Top Loaded in the business center or through the near, middle and far doors into the Triple Crown Ballroom. Do not go to the Turfway Room."></a><figcaption>Tap the guide to open it full-size. Simplified wayfinding only&mdash;not to scale or a seating/safety plan.</figcaption></figure>
-      </section>
       <section class="section" aria-labelledby="floorTitle">
         <div class="section-head"><h2 id="floorTitle">Flat plan</h2><span class="collector-note">Explore the tables &middot; TCG &amp; Sports</span></div>
-        <p id="showFloorCoverage" class="card-note"><b>The show spans three spaces:</b> Triple Crown Ballroom, pre-function room, and business center. The current table plan covers the ballroom only; layouts for the other two spaces will be added when available.</p>
-        <p class="card-note"><b>Find Top Loaded in the business center:</b> four tables along the wall by the entrance door, plus a fifth table forming an L for trades. These are the shop's booth, not separate vendor openings.</p>
-        <p class="card-note"><b>Ballroom access:</b> three entrances on the pre-function side&mdash;near, middle, and far relative to the entrance. Keep all three access paths clear.</p>
-        <p class="card-note"><b>Pre-function tables:</b> the arrangement extends two tables out from the wall, with end tables as well. The detailed layout and table count are awaiting the organizer's diagram.</p>
+        <p class="card-note"><b>Enter through the Convention Entrance.</b> Follow the marked route through the pre-function area to any of the three ballroom doors, or visit Top Loaded in the business center. The Turfway Room is not the card show.</p>
         <p id="showFloorNote" class="card-note"></p>
         <div id="showFloorMix" class="floor-mix" aria-hidden="true"></div>
         <ul id="showFloorLegend" class="floor-legend"></ul>
         <div id="showFloorGuide" class="floor-guide" hidden>
-          <div class="floor-tools"><div class="field"><label for="floorSearch">Find a table or vendor</label><input id="floorSearch" type="search" placeholder="Table number or vendor name" maxlength="100"></div><div class="field"><label for="floorType">Show on map</label><select id="floorType"><option value="">All categories</option><option value="tcg">TCG</option><option value="sports">Sports</option><option value="mixed">Mixed</option><option value="unassigned">Vendor to be announced</option><option value="food">Food</option><option value="entry">Entry</option></select></div><div class="floor-zoom" aria-label="Map zoom"><button type="button" data-floor-zoom="out" aria-label="Zoom out">&minus;</button><button type="button" data-floor-zoom="fit">Fit floor</button><button type="button" data-floor-zoom="in" aria-label="Zoom in">+</button></div></div>
+          <div class="floor-tools"><div class="field"><label for="floorSearch">Find a table or vendor</label><input id="floorSearch" type="search" placeholder="Table number or vendor name" maxlength="100"></div><div class="field"><label for="floorType">Show on map</label><select id="floorType"><option value="">All categories</option><option value="tcg">TCG</option><option value="sports">Sports</option><option value="mixed">Mixed</option><option value="unassigned">Vendor to be announced</option><option value="shop">Top Loaded booth</option><option value="food">Food</option><option value="entry">Entry</option></select></div><div class="floor-zoom" aria-label="Map zoom"><button type="button" data-floor-zoom="out" aria-label="Zoom out">&minus;</button><button type="button" data-floor-zoom="fit">Fit floor</button><button type="button" data-floor-zoom="in" aria-label="Zoom in">+</button></div></div>
           <p class="card-note" id="floorScaleNote"></p>
           <p class="card-note">Select a table for details. Zoom for a closer look, drag empty floor to pan, or use the table directory below.</p>
           <div class="floor-guide-body"><div class="floor-scroll" id="showFloorScroll" tabindex="0" role="region" aria-label="Interactive vendor floor plan"><div class="floor-map" id="showFloorMap"></div></div><aside class="floor-detail" id="showFloorDetail" aria-live="polite"><h3>Explore the floor</h3><p>Choose a vendor on the map or in the directory.</p></aside></div>
           <p id="floorResults" role="status" class="card-note"></p>
           <details class="floor-directory"><summary>Table directory</summary><ul id="showFloorList" class="floor-vendors" aria-label="Vendor directory"></ul></details>
         </div>
-        <details class="venue-reference-details" id="showVenueReference"><summary>Hotel building reference &amp; directions</summary><section class="venue-reference" aria-labelledby="hiltonPlanTitle">
-          <div class="venue-reference-copy"><p class="eyebrow">Know the venue</p><h3 id="hiltonPlanTitle">Hilton Cincinnati Airport</h3><p>The show uses the Triple Crown Ballroom, pre-function room, and business center. The ballroom is highlighted on this hotel reference; its published dimensions are <b>96 &times; 41 ft</b>.</p><p class="card-note">The hotel diagram is a building reference, not the full show's table arrangement. Exact boundaries, entrances, exits and table positions for all three spaces must be confirmed with the organizer and venue.</p><a class="linklike" href="https://marketfloor.app/venues/8a57c194-916e-410c-a085-efbac3b39ad7/guide?locationId=8fdb51c9-6da6-4d06-bfaa-0e90b26b8fc4" target="_blank" rel="noopener noreferrer">Explore the Hilton in Marketfloor ↗</a></div>
-          <figure><div class="venue-plan-paper"><img src="venue-plans/hilton-first-floor.svg" alt="Hilton first-floor diagram: Triple Crown Ballroom beside the lobby and pre-function area" width="610" height="551" loading="lazy" decoding="async"><span class="venue-ballroom-outline" aria-hidden="true"></span></div><figcaption>Hotel-provided diagram, via the Marketfloor venue reference. <a href="https://custom.cvent.com/95cbca96509142b49afebbf7b0599659/files/rfp/85804e05e44a47d195543aedf6aaa8f0/646e697186df40a3b16f75ebac28a570.pdf" target="_blank" rel="noopener noreferrer">Source plan, page 2 ↗</a></figcaption></figure>
-        </section></details>
       </section>
     </div>
   </section>
@@ -4171,14 +4167,14 @@ a:hover .round-arrow{transform:rotate(45deg)}
       <div class="admin-card" id="cardFloorplan">
         <h3>Card show floor plan</h3>
         <p class="card-note">Build the actual show layout: select a booth to edit, drag it to move, or use its arrow keys. TCG, Sports and Mixed percentages count vendor booths, not floor area. Keep aisles, exits and other required clearances open; this editor does not certify a safe or venue-approved layout.</p>
-        <div class="field"><label for="setFpRoom">Room reference</label><select id="setFpRoom"><option value="hilton-ballroom">Hilton · ballroom only · 96 × 41 ft</option><option value="schematic">Custom schematic · no physical scale</option></select><p class="card-note" id="fpScaleNote"></p><p class="card-note">The Hilton show also uses the pre-function room and business center. This calibrated grid covers only the ballroom; do not place the additional rooms inside its boundaries. Their table layouts still need to be incorporated from the organizer's diagram.</p></div>
-        <div class="form-grid"><div class="field"><label for="setFpRows">Grid rows</label><input id="setFpRows" type="number" min="1" max="100" value="82"></div><div class="field"><label for="setFpCols">Grid columns</label><input id="setFpCols" type="number" min="1" max="200" value="192"></div></div>
+        <div class="field"><label for="setFpRoom">Room reference</label><select id="setFpRoom"><option value="hilton-show">Hilton · full show · all three rooms</option><option value="hilton-ballroom">Hilton · ballroom only · 96 × 41 ft</option><option value="schematic">Custom schematic · no physical scale</option></select><p class="card-note" id="fpScaleNote"></p><p class="card-note">The full show includes room outlines, three ballroom doors, the Convention Entrance and protected walking routes. TL1–TL4 and Trades form Top Loaded’s booth; use Add outer run for two tables out from the wall plus an end table. Save publishes only when the backend is connected.</p></div>
+        <div class="form-grid"><div class="field"><label for="setFpRows">Grid rows</label><input id="setFpRows" type="number" min="1" max="200" value="168"></div><div class="field"><label for="setFpCols">Grid columns</label><input id="setFpCols" type="number" min="1" max="240" value="224"></div></div>
         <div class="floor-tools"><div class="field"><label for="fpBrush">New booth category</label><select id="fpBrush"><option value="tcg">TCG</option><option value="sports">Sports</option><option value="mixed">Mixed</option><option value="food">Food</option><option value="entry">Entry</option></select></div><button class="btn btn-ghost" id="fpPlace" type="button" aria-pressed="false">Place on floor</button><button class="btn btn-ghost" id="fpRotate" type="button" disabled>Rotate selected</button><div class="floor-zoom" aria-label="Editor zoom"><button type="button" data-floor-zoom="out" aria-label="Zoom editor out">&minus;</button><button type="button" data-floor-zoom="fit">Fit floor</button><button type="button" data-floor-zoom="in" aria-label="Zoom editor in">+</button></div></div>
         <p id="fpSelection" class="card-note" role="status">Add a booth, or choose Place on floor and tap an empty square.</p>
         <div class="floor-guide-body"><div class="floor-scroll" id="fpScroll" tabindex="0" role="region" aria-label="Floor plan editor"><div class="floor-map" id="fpMap"></div></div><div id="fpEditor" class="floor-inspector"></div></div>
         <div class="floor-mix" id="fpMix" aria-hidden="true"></div><p id="fpMixText" class="card-note"></p><span id="fpRatio" class="save-state"></span>
         <p class="card-note" id="fpPublishNote" role="status"></p>
-        <div class="card-actions"><button class="btn" id="fpApply" type="button">Save floor plan</button><button class="btn btn-ghost" id="fpAdd" type="button">Add booth</button><button class="btn btn-ghost" id="fpExport" type="button">Download draft</button><span class="save-state" role="status" data-state-for="cardFloorplan"></span></div>
+        <div class="card-actions"><button class="btn" id="fpApply" type="button">Save floor plan</button><button class="btn btn-ghost" id="fpAdd" type="button">Add booth</button><button class="btn btn-ghost" id="fpAddOuterRun" type="button">Add outer run (2 + end)</button><button class="btn btn-ghost" id="fpExport" type="button">Download draft</button><span class="save-state" role="status" data-state-for="cardFloorplan"></span></div>
       </div>
 
       <div class="reset-row">
@@ -4516,7 +4512,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   </div>
 </div>
 
-<script id="siteConfig">window.TL_DEFAULT_CONFIG={"title":"Top Loaded","tagline":"Trading Cards · NKY","phone":"(513) 222-2573","phoneRaw":"+15132222573","email":"toploadedtcg@gmail.com","address":{"line1":"2514 Hazelwood Dr","city":"Crescent Springs","state":"KY","zip":"41017"},"timezone":"America/New_York","hours":{"mon":null,"tue":["11:00","18:00"],"wed":["11:00","18:00"],"thu":["11:00","18:00"],"fri":["11:00","18:00"],"sat":["10:00","16:00"],"sun":["10:00","16:00"]},"hoursText":{"wk":"Tue–Fri · 11 AM – 6 PM","we":"Sat–Sun · 10 AM – 4 PM"},"banner":{"on":false,"text":""},"logo":null,"show":{"date":"2026-10-03","start":"10:00","end":"16:00","setup":"08:00","hours":"10 AM – 4 PM","venue":"Hilton Cincinnati Airport","address":"7373 Turfway Rd, Florence, KY 41042","tables":24,"booked":null,"cadence":"First Saturday or Sunday of every month","tablePrices":[{"n":1,"price":30},{"n":2,"price":60},{"n":3,"price":90}],"floorplan":{"room":"hilton-ballroom","rows":82,"cols":192,"booths":[{"id":"t1","label":"T1","type":"unassigned","r":7,"c":17,"w":12,"h":5},{"id":"t2","label":"T2","type":"unassigned","r":7,"c":29,"w":12,"h":5},{"id":"t3","label":"T3","type":"unassigned","r":7,"c":41,"w":12,"h":5},{"id":"t4","label":"T4","type":"unassigned","r":7,"c":53,"w":12,"h":5},{"id":"t5","label":"T5","type":"unassigned","r":7,"c":65,"w":12,"h":5},{"id":"t6","label":"T6","type":"unassigned","r":7,"c":77,"w":12,"h":5},{"id":"t7","label":"T7","type":"unassigned","r":7,"c":89,"w":12,"h":5},{"id":"t8","label":"T8","type":"unassigned","r":7,"c":101,"w":12,"h":5},{"id":"t9","label":"T9","type":"unassigned","r":7,"c":113,"w":12,"h":5},{"id":"t10","label":"T10","type":"unassigned","r":7,"c":125,"w":12,"h":5},{"id":"t11","label":"T11","type":"unassigned","r":7,"c":137,"w":12,"h":5},{"id":"t12","label":"T12","type":"unassigned","r":7,"c":149,"w":12,"h":5},{"id":"t13","label":"T13","type":"unassigned","r":7,"c":161,"w":12,"h":5},{"id":"t14","label":"T14","type":"unassigned","r":17,"c":182,"w":5,"h":12},{"id":"t15","label":"T15","type":"unassigned","r":29,"c":182,"w":5,"h":12},{"id":"t16","label":"T16","type":"unassigned","r":41,"c":182,"w":5,"h":12},{"id":"t17","label":"T17","type":"unassigned","r":53,"c":182,"w":5,"h":12},{"id":"t18","label":"T18","type":"unassigned","r":72,"c":161,"w":12,"h":5},{"id":"t19","label":"T19","type":"unassigned","r":72,"c":149,"w":12,"h":5},{"id":"t20","label":"T20","type":"unassigned","r":72,"c":137,"w":12,"h":5},{"id":"t21","label":"T21","type":"unassigned","r":72,"c":125,"w":12,"h":5},{"id":"t22","label":"T22","type":"unassigned","r":72,"c":113,"w":12,"h":5},{"id":"t23","label":"T23","type":"unassigned","r":72,"c":101,"w":12,"h":5},{"id":"t24","label":"T24","type":"unassigned","r":72,"c":89,"w":12,"h":5},{"id":"t25","label":"T25","type":"unassigned","r":72,"c":77,"w":12,"h":5},{"id":"t26","label":"T26","type":"unassigned","r":72,"c":65,"w":12,"h":5},{"id":"t27","label":"T27","type":"unassigned","r":72,"c":53,"w":12,"h":5},{"id":"t28","label":"T28","type":"unassigned","r":72,"c":41,"w":12,"h":5},{"id":"t29","label":"T29","type":"unassigned","r":53,"c":7,"w":5,"h":12},{"id":"t30","label":"T30","type":"unassigned","r":41,"c":7,"w":5,"h":12},{"id":"t31","label":"T31","type":"unassigned","r":29,"c":7,"w":5,"h":12},{"id":"t32","label":"T32","type":"unassigned","r":17,"c":7,"w":5,"h":12},{"id":"t33","label":"T33","type":"unassigned","r":28,"c":28,"w":12,"h":5},{"id":"t34","label":"T34","type":"unassigned","r":28,"c":64,"w":12,"h":5},{"id":"t35","label":"T35","type":"unassigned","r":28,"c":76,"w":12,"h":5},{"id":"t36","label":"T36","type":"unassigned","r":28,"c":88,"w":12,"h":5},{"id":"t37","label":"T37","type":"unassigned","r":28,"c":100,"w":12,"h":5},{"id":"t38","label":"T38","type":"unassigned","r":28,"c":112,"w":12,"h":5},{"id":"t39","label":"T39","type":"unassigned","r":28,"c":136,"w":12,"h":5},{"id":"t40","label":"T40","type":"unassigned","r":28,"c":148,"w":12,"h":5},{"id":"t41","label":"T41","type":"unassigned","r":45,"c":40,"w":12,"h":5},{"id":"t42","label":"T42","type":"unassigned","r":45,"c":52,"w":12,"h":5},{"id":"t43","label":"T43","type":"unassigned","r":45,"c":64,"w":12,"h":5},{"id":"t44","label":"T44","type":"unassigned","r":45,"c":76,"w":12,"h":5},{"id":"t45","label":"T45","type":"unassigned","r":45,"c":88,"w":12,"h":5},{"id":"t46","label":"T46","type":"unassigned","r":45,"c":100,"w":12,"h":5},{"id":"t47","label":"T47","type":"unassigned","r":45,"c":112,"w":12,"h":5},{"id":"t48","label":"T48","type":"unassigned","r":45,"c":136,"w":12,"h":5},{"id":"t49","label":"T49","type":"unassigned","r":45,"c":148,"w":12,"h":5}]}},"events":[{"id":"op-wed","day":"Wed","dow":3,"name":"One Piece Locals","small":"Bandai official · winner & participation packs","time":"5:00 PM","start":"17:00","fee":"TBD","game":"op","signup":"tcgplus"},{"id":"op-sat","day":"Sat","dow":6,"name":"One Piece Locals","small":"Bandai official · winner & participation packs","time":"11:00 AM","start":"11:00","fee":"TBD","game":"op","signup":"tcgplus"},{"id":"gd-sat","day":"Sat","dow":6,"name":"Gundam Card Game","small":"Bandai official · winner & participation packs","time":"1:00 PM","start":"13:00","fee":"TBD","game":"gundam","signup":"tcgplus"},{"id":"pk-sun","day":"Sun","dow":0,"name":"Pokemon League","small":"All ages · league promo prizing","time":"11:00 AM","start":"11:00","fee":"TBD","game":"pk","signup":"form"}],"live":{"on":false,"title":"Streaming from the shop floor","platform":"facebook","embed":"","spotPrice":24.99,"spots":12,"packsPerSpot":3,"schedule":[]},"links":{"tcgplus":"https://www.bandai-tcg-plus.com/","facebook":"https://www.facebook.com/toploadedtradingcards","instagram":"https://www.instagram.com/toploadedtcg","tcgplayer":"https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf","whatnot":"","googleMaps":"https://www.google.com/maps/search/?api=1&query=Top+Loaded+Trading+Cards+2514+Hazelwood+Dr+Crescent+Springs+KY+41017","googleReviews":"https://share.google/ESpQQCzYsIL1Ffqo8","appleMaps":"https://maps.apple.com/place?place-id=I96E3F1088FE2244C"},"buy":{"rates":{"bulk":0.55,"standard":0.6,"hot":0.7,"graded":0.8},"creditBonus":0.1},"ticker":[["Charizard ex · 151","$85"],["Umbreon VMAX Alt","$450"],["Shanks OP-09 Leader","$42"],["The One Ring","$40"],["Prismatic ETBs","$70"],["Luffy OP-05 Alt","$88"],["Ragavan MH2","$41"],["Base Set holos","ask"],["Sealed booster boxes","top rates"]],"testimonials":[],"rip":{"prices":{"pk":4.49,"op":4.49,"mtg":5.49}},"reviews":{"tcgplayerAuto":true,"source":"google","googlePlaceId":"","minRating":5,"items":[]},"updatedAt":null};</script>
+<script id="siteConfig">window.TL_DEFAULT_CONFIG={"title":"Top Loaded","tagline":"Trading Cards · NKY","phone":"(513) 222-2573","phoneRaw":"+15132222573","email":"toploadedtcg@gmail.com","address":{"line1":"2514 Hazelwood Dr","city":"Crescent Springs","state":"KY","zip":"41017"},"timezone":"America/New_York","hours":{"mon":null,"tue":["11:00","18:00"],"wed":["11:00","18:00"],"thu":["11:00","18:00"],"fri":["11:00","18:00"],"sat":["10:00","16:00"],"sun":["10:00","16:00"]},"hoursText":{"wk":"Tue–Fri · 11 AM – 6 PM","we":"Sat–Sun · 10 AM – 4 PM"},"banner":{"on":false,"text":""},"logo":null,"show":{"date":"2026-10-03","start":"10:00","end":"16:00","setup":"08:00","hours":"10 AM – 4 PM","venue":"Hilton Cincinnati Airport","address":"7373 Turfway Rd, Florence, KY 41042","tables":24,"booked":null,"cadence":"First Saturday or Sunday of every month","tablePrices":[{"n":1,"price":30},{"n":2,"price":60},{"n":3,"price":90}],"floorplan":{"room":"hilton-show","rows":168,"cols":224,"booths":[{"id":"t1","label":"T1","type":"unassigned","r":89,"c":21,"w":12,"h":5},{"id":"t2","label":"T2","type":"unassigned","r":89,"c":33,"w":12,"h":5},{"id":"t3","label":"T3","type":"unassigned","r":89,"c":45,"w":12,"h":5},{"id":"t4","label":"T4","type":"unassigned","r":89,"c":57,"w":12,"h":5},{"id":"t5","label":"T5","type":"unassigned","r":89,"c":69,"w":12,"h":5},{"id":"t6","label":"T6","type":"unassigned","r":89,"c":81,"w":12,"h":5},{"id":"t7","label":"T7","type":"unassigned","r":89,"c":93,"w":12,"h":5},{"id":"t8","label":"T8","type":"unassigned","r":89,"c":105,"w":12,"h":5},{"id":"t9","label":"T9","type":"unassigned","r":89,"c":117,"w":12,"h":5},{"id":"t10","label":"T10","type":"unassigned","r":89,"c":129,"w":12,"h":5},{"id":"t11","label":"T11","type":"unassigned","r":89,"c":141,"w":12,"h":5},{"id":"t12","label":"T12","type":"unassigned","r":89,"c":153,"w":12,"h":5},{"id":"t13","label":"T13","type":"unassigned","r":89,"c":165,"w":12,"h":5},{"id":"t14","label":"T14","type":"unassigned","r":99,"c":186,"w":5,"h":12},{"id":"t15","label":"T15","type":"unassigned","r":111,"c":186,"w":5,"h":12},{"id":"t16","label":"T16","type":"unassigned","r":123,"c":186,"w":5,"h":12},{"id":"t17","label":"T17","type":"unassigned","r":135,"c":186,"w":5,"h":12},{"id":"t18","label":"T18","type":"unassigned","r":154,"c":165,"w":12,"h":5},{"id":"t19","label":"T19","type":"unassigned","r":154,"c":153,"w":12,"h":5},{"id":"t20","label":"T20","type":"unassigned","r":154,"c":141,"w":12,"h":5},{"id":"t21","label":"T21","type":"unassigned","r":154,"c":129,"w":12,"h":5},{"id":"t22","label":"T22","type":"unassigned","r":154,"c":117,"w":12,"h":5},{"id":"t23","label":"T23","type":"unassigned","r":154,"c":105,"w":12,"h":5},{"id":"t24","label":"T24","type":"unassigned","r":154,"c":93,"w":12,"h":5},{"id":"t25","label":"T25","type":"unassigned","r":154,"c":81,"w":12,"h":5},{"id":"t26","label":"T26","type":"unassigned","r":154,"c":69,"w":12,"h":5},{"id":"t27","label":"T27","type":"unassigned","r":154,"c":57,"w":12,"h":5},{"id":"t28","label":"T28","type":"unassigned","r":154,"c":45,"w":12,"h":5},{"id":"t29","label":"T29","type":"unassigned","r":135,"c":11,"w":5,"h":12},{"id":"t30","label":"T30","type":"unassigned","r":123,"c":11,"w":5,"h":12},{"id":"t31","label":"T31","type":"unassigned","r":111,"c":11,"w":5,"h":12},{"id":"t32","label":"T32","type":"unassigned","r":99,"c":11,"w":5,"h":12},{"id":"t33","label":"T33","type":"unassigned","r":110,"c":32,"w":12,"h":5},{"id":"t34","label":"T34","type":"unassigned","r":110,"c":68,"w":12,"h":5},{"id":"t35","label":"T35","type":"unassigned","r":110,"c":80,"w":12,"h":5},{"id":"t36","label":"T36","type":"unassigned","r":110,"c":92,"w":12,"h":5},{"id":"t37","label":"T37","type":"unassigned","r":110,"c":104,"w":12,"h":5},{"id":"t38","label":"T38","type":"unassigned","r":110,"c":116,"w":12,"h":5},{"id":"t39","label":"T39","type":"unassigned","r":110,"c":140,"w":12,"h":5},{"id":"t40","label":"T40","type":"unassigned","r":110,"c":152,"w":12,"h":5},{"id":"t41","label":"T41","type":"unassigned","r":127,"c":44,"w":12,"h":5},{"id":"t42","label":"T42","type":"unassigned","r":127,"c":56,"w":12,"h":5},{"id":"t43","label":"T43","type":"unassigned","r":127,"c":68,"w":12,"h":5},{"id":"t44","label":"T44","type":"unassigned","r":127,"c":80,"w":12,"h":5},{"id":"t45","label":"T45","type":"unassigned","r":127,"c":92,"w":12,"h":5},{"id":"t46","label":"T46","type":"unassigned","r":127,"c":104,"w":12,"h":5},{"id":"t47","label":"T47","type":"unassigned","r":127,"c":116,"w":12,"h":5},{"id":"t48","label":"T48","type":"unassigned","r":127,"c":140,"w":12,"h":5},{"id":"t49","label":"T49","type":"unassigned","r":127,"c":152,"w":12,"h":5},{"id":"tl-wall-1","label":"TL1","type":"shop","r":14,"c":128,"w":16,"h":5},{"id":"tl-wall-2","label":"TL2","type":"shop","r":14,"c":144,"w":16,"h":5},{"id":"tl-wall-3","label":"TL3","type":"shop","r":14,"c":160,"w":16,"h":5},{"id":"tl-wall-4","label":"TL4","type":"shop","r":14,"c":176,"w":16,"h":5},{"id":"tl-trades","label":"Trades","type":"shop","r":19,"c":187,"w":5,"h":16}]}},"events":[{"id":"op-wed","day":"Wed","dow":3,"name":"One Piece Locals","small":"Bandai official · winner & participation packs","time":"5:00 PM","start":"17:00","fee":"TBD","game":"op","signup":"tcgplus"},{"id":"op-sat","day":"Sat","dow":6,"name":"One Piece Locals","small":"Bandai official · winner & participation packs","time":"11:00 AM","start":"11:00","fee":"TBD","game":"op","signup":"tcgplus"},{"id":"gd-sat","day":"Sat","dow":6,"name":"Gundam Card Game","small":"Bandai official · winner & participation packs","time":"1:00 PM","start":"13:00","fee":"TBD","game":"gundam","signup":"tcgplus"},{"id":"pk-sun","day":"Sun","dow":0,"name":"Pokemon League","small":"All ages · league promo prizing","time":"11:00 AM","start":"11:00","fee":"TBD","game":"pk","signup":"form"}],"live":{"on":false,"title":"Streaming from the shop floor","platform":"facebook","embed":"","spotPrice":24.99,"spots":12,"packsPerSpot":3,"schedule":[]},"links":{"tcgplus":"https://www.bandai-tcg-plus.com/","facebook":"https://www.facebook.com/toploadedtradingcards","instagram":"https://www.instagram.com/toploadedtcg","tcgplayer":"https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf","whatnot":"","googleMaps":"https://www.google.com/maps/search/?api=1&query=Top+Loaded+Trading+Cards+2514+Hazelwood+Dr+Crescent+Springs+KY+41017","googleReviews":"https://share.google/ESpQQCzYsIL1Ffqo8","appleMaps":"https://maps.apple.com/place?place-id=I96E3F1088FE2244C"},"buy":{"rates":{"bulk":0.55,"standard":0.6,"hot":0.7,"graded":0.8},"creditBonus":0.1},"ticker":[["Charizard ex · 151","$85"],["Umbreon VMAX Alt","$450"],["Shanks OP-09 Leader","$42"],["The One Ring","$40"],["Prismatic ETBs","$70"],["Luffy OP-05 Alt","$88"],["Ragavan MH2","$41"],["Base Set holos","ask"],["Sealed booster boxes","top rates"]],"testimonials":[],"rip":{"prices":{"pk":4.49,"op":4.49,"mtg":5.49}},"reviews":{"tcgplayerAuto":true,"source":"google","googlePlaceId":"","minRating":5,"items":[]},"updatedAt":null};window.TL_FLOOR_VENUE={"rows":168,"cols":224,"ballroomOffset":{"r":82,"c":4},"rooms":[{"id":"ballroom","label":"TRIPLE CROWN BALLROOM","r":83,"c":5,"w":192,"h":82,"labelR":161,"labelC":70},{"id":"prefunction","label":"PRE-FUNCTION · OUTER TABLES","r":39,"c":5,"w":192,"h":44,"labelR":44,"labelC":12},{"id":"business","label":"BUSINESS CENTER · TOP LOADED","r":3,"c":121,"w":76,"h":36,"labelR":9,"labelC":124}],"clearways":[{"r":77,"c":6,"w":190,"h":6},{"r":84,"c":6,"w":190,"h":4},{"r":36,"c":173,"w":8,"h":41},{"r":80,"c":12,"w":10,"h":8},{"r":80,"c":97,"w":10,"h":8},{"r":80,"c":183,"w":10,"h":8}],"doors":[{"id":"far","label":"Far door","r":82,"c":12,"w":10,"h":2},{"id":"middle","label":"Middle door","r":82,"c":97,"w":10,"h":2},{"id":"near","label":"Near door","r":82,"c":183,"w":10,"h":2}],"outerRunColumns":[35,73,123,153],"note":"Room outlines, outer table positions and walking routes are schematic, not surveyed or venue-approved clearance measurements."};</script>
 <script id="cardArtData"></script>
 <script>
 (function(){
@@ -10131,7 +10127,22 @@ a:hover .round-arrow{transform:rotate(45deg)}
 
   /* Marketfloor-inspired local guide. No external event's bookings are copied. */
   TL.floorplan = (function(){
-    var labels = {tcg:"TCG",sports:"Sports",mixed:"Mixed",unassigned:"Vendor to be announced",food:"Food",entry:"Entry"};
+    var labels = {tcg:"TCG",sports:"Sports",mixed:"Mixed",unassigned:"Vendor to be announced",shop:"Top Loaded booth",food:"Food",entry:"Entry"};
+    function venue(room){return room==='hilton-show'?window.TL_FLOOR_VENUE:null;}
+    function inside(b,a){return b.r>=a.r&&b.c>=a.c&&b.r+b.h<=a.r+a.h&&b.c+b.w<=a.c+a.w;}
+    function accessible(b,size){var v=venue(size.room);return !v||(size.rows===v.rows&&size.cols===v.cols&&v.rooms.some(function(a){return inside(b,a);})&&!v.clearways.some(function(a){return overlaps(b,a);}));}
+    function area(b,room){var v=venue(room),a=v&&v.rooms.find(function(a){return inside(b,a);});return a?{ballroom:'Ballroom',prefunction:'Pre-function',business:'Business center'}[a.id]:'';}
+    function backdrop(room){
+      var v=venue(room);if(!v)return '';
+      var out='<svg class="fp-venue" viewBox="0 0 '+v.cols+' '+v.rows+'" preserveAspectRatio="none" role="img" aria-label="Convention Entrance leads through the pre-function area to three ballroom doors and Top Loaded in the business center. Turfway Room is not part of the show.">';
+      v.rooms.forEach(function(a){out+='<rect class="fp-room fp-room-'+a.id+'" x="'+(a.c-1)+'" y="'+(a.r-1)+'" width="'+a.w+'" height="'+a.h+'"/><text class="fp-room-label" x="'+a.labelC+'" y="'+a.labelR+'">'+esc(a.label)+'</text>';});
+      out+='<text class="fp-map-title" x="7" y="10">TOP LOADED CARD SHOW</text><text class="fp-map-sub" x="7" y="17">Ballroom · Pre-function · Business center</text>';
+      out+='<path class="fp-route" d="M216 62V79H17 M177 79V36 M17 79V86 M102 79V86 M188 79V86"/>';
+      out+='<path class="fp-route-arrow" d="m174 40 3-4 3 4 M14 83l3 3 3-3 M99 83l3 3 3-3 M185 83l3 3 3-3 M212 75l4 4 4-4"/>';
+      v.doors.forEach(function(d){out+='<rect class="fp-door" x="'+(d.c-1)+'" y="'+(d.r-1)+'" width="'+d.w+'" height="'+d.h+'"/><text class="fp-door-label" x="'+(d.c+d.w/2-1)+'" y="76" text-anchor="middle">'+esc(d.label)+'</text>';});
+      out+='<rect class="fp-entry-label" x="199" y="43" width="24" height="19" rx="1"/><text class="fp-entry-text" x="211" y="48" text-anchor="middle">ENTER HERE</text><text class="fp-entry-text" x="211" y="54" text-anchor="middle">Convention</text><text class="fp-entry-text" x="211" y="59" text-anchor="middle">Entrance</text>';
+      return out+'</svg>';
+    }
     function stats(booths){
       var counts = {tcg:0,sports:0,mixed:0};
       (booths || []).forEach(function(b){ if(b && Object.prototype.hasOwnProperty.call(counts,b.type)) counts[b.type]++; });
@@ -10142,17 +10153,25 @@ a:hover .round-arrow{transform:rotate(45deg)}
     }
     function fits(b,size){return b.r>=1 && b.c>=1 && b.w>=1 && b.h>=1 && b.r+b.h-1<=size.rows && b.c+b.w-1<=size.cols;}
     function overlaps(a,b){return a.c<b.c+b.w && b.c<a.c+a.w && a.r<b.r+b.h && b.r<a.r+a.h;}
-    function canPlace(booths,b,size,skip){return fits(b,size) && !booths.some(function(other,i){return i!==skip && overlaps(b,other);});}
+    function canPlace(booths,b,size,skip){return fits(b,size) && accessible(b,size) && !booths.some(function(other,i){return i!==skip && overlaps(b,other);});}
+    function outerRun(booths,room){
+      var v=venue(room),added=[];if(!v||booths.length+3>100)return added;
+      v.outerRunColumns.some(function(c){
+        var run=[{r:48,c:c,w:5,h:12},{r:60,c:c,w:5,h:12},{r:72,c:c-4,w:13,h:5}];
+        if(run.every(function(b){return canPlace(booths,b,{rows:v.rows,cols:v.cols,room:room},-1);})){added=run;return true;}return false;
+      });return added;
+    }
     function roomMetrics(room,rows,cols){
-      var hilton=room==='hilton-ballroom';
-      return {hilton:hilton,row:hilton?64*cols/rows*41/96:64,gap:hilton?0:6,widthFt:hilton?96:null,heightFt:hilton?41:null};
+      var hilton=room==='hilton-ballroom',show=room==='hilton-show';
+      return {hilton:hilton||show,row:hilton?64*cols/rows*41/96:64,gap:hilton||show?0:6,widthFt:hilton?96:null,heightFt:hilton?41:null};
     }
     function layout(map,room,size){
       var m=roomMetrics(room,size.rows,size.cols);
       map.dataset.rows=size.rows;map.dataset.cols=size.cols;map.dataset.rowBase=m.row;map.dataset.baseGap=m.gap;
       map.classList.toggle('is-hilton',m.hilton);
+      map.classList.toggle('is-show-venue',room==='hilton-show');
       map.style.gridTemplateColumns='repeat('+size.cols+', var(--fp-cell))';map.style.gridTemplateRows='repeat('+size.rows+', var(--fp-row, var(--fp-cell)))';
-      return m.hilton?'Triple Crown Ballroom · 96 × 41 ft. Each grid allocation is '+(96/size.cols).toFixed(1)+' × '+(41/size.rows).toFixed(1)+' ft. Booth placements are organizer-entered, not surveyed.':'Custom schematic · grid positions have no physical scale.';
+      return room==='hilton-show'?'Full show plan · Ballroom, pre-function and Top Loaded booth. Outlines and outer-room placements are schematic; marked walking routes stay clear.':m.hilton?'Triple Crown Ballroom · 96 × 41 ft. Each grid allocation is '+(96/size.cols).toFixed(1)+' × '+(41/size.rows).toFixed(1)+' ft. Booth placements are organizer-entered, not surveyed.':'Custom schematic · grid positions have no physical scale.';
     }
     function viewport(root,map,scroll){
       var zoom=1,drag=null,fitMode=true;
@@ -10195,15 +10214,18 @@ a:hover .round-arrow{transform:rotate(45deg)}
       scroll.addEventListener('pointermove',function(e){if(!drag||e.pointerId!==drag.id)return;scroll.scrollLeft=drag.left+drag.x-e.clientX;scroll.scrollTop=drag.top+drag.y-e.clientY;});
       function stop(){drag=null;scroll.classList.remove('is-panning');}
       scroll.addEventListener('pointerup',stop);scroll.addEventListener('pointercancel',stop);scroll.addEventListener('lostpointercapture',stop);
-      map.addEventListener('focusin',function(e){var b=e.target.closest('.fp-cell');if(b)focus(b);});
+      // Pointer focus happens before click: zooming here moves a small table out
+      // from under the pointer and cancels that click. Keyboard focus can zoom;
+      // pointer selection zooms only in the click handler after selection.
+      map.addEventListener('focusin',function(e){var b=e.target.closest('.fp-cell');if(b&&b.matches(':focus-visible'))focus(b);});
       if(typeof ResizeObserver!=='undefined')new ResizeObserver(function(){if(fitMode)fit();}).observe(scroll);
       return {fit:fit,focus:focus,refresh:function(){if(fitMode)fit();else setZoom(zoom);}};
     }
     var publicBooths=[],selected=-1,publicView=null;
-    function match(b){var q=($('#floorSearch').value||'').trim().toLowerCase(),type=$('#floorType').value;return (!type||b.type===type)&&(!q||(b.label+' '+b.id+' '+labels[b.type]).toLowerCase().includes(q));}
+    function match(b){var q=($('#floorSearch').value||'').trim().toLowerCase(),type=$('#floorType').value;return (!type||b.type===type)&&(!q||(b.label+' '+b.id+' '+labels[b.type]+' '+area(b,((TL.config.show||{}).floorplan||{}).room)).toLowerCase().includes(q));}
     function details(i){
       var b=publicBooths[i];selected=b?i:-1;
-      $('#showFloorDetail').innerHTML=b?'<p class="eyebrow">'+esc(labels[b.type])+'</p><h3>'+esc(b.label)+'</h3><p>'+(b.type==='unassigned'?'The vendor for this position has not been announced for this show. This is not a table availability or reservation offer.':'Find this location in the highlighted area of the map.')+'</p>':'<h3>Explore the floor</h3><p>Choose a table on the map or in the directory.</p>';
+      $('#showFloorDetail').innerHTML=b?'<p class="eyebrow">'+esc(area(b,((TL.config.show||{}).floorplan||{}).room)+' · '+labels[b.type])+'</p><h3>'+esc(b.label)+'</h3><p>'+(b.type==='shop'?'Top Loaded’s own booth in the business center: four wall tables plus an L-shaped trade table. Not a separate vendor opening.':b.type==='unassigned'?'The vendor for this position has not been announced for this show. This is not a table availability or reservation offer.':'Find this location in the highlighted area of the map.')+'</p>':'<h3>Explore the floor</h3><p>Choose a table on the map or in the directory. Enter at the Convention Entrance—not the Turfway Room.</p>';
       $$('#showFloorGuide [data-floor-booth]').forEach(function(el){el.setAttribute('aria-pressed',String(Number(el.dataset.floorBooth)===selected));});
     }
     function filter(){
@@ -10220,8 +10242,6 @@ a:hover .round-arrow{transform:rotate(45deg)}
       var booths = (Array.isArray(f.booths) ? f.booths : []).filter(function(b){return b && labels[b.type] && b.r>=1 && b.c>=1 && b.w>=1 && b.h>=1 && b.r+b.h-1<=rows && b.c+b.w-1<=cols;});
       var map=$("#showFloorMap"), note=$("#showFloorNote"), mix=$("#showFloorMix"), legend=$("#showFloorLegend"), list=$("#showFloorList"), scroll=$("#showFloorScroll");
       if(!map) return;
-      $('#showVenueReference').hidden=!/hilton/i.test(String((TL.config.show||{}).venue));
-      $('#showFloorCoverage').hidden=f.room!=='hilton-ballroom'||$('#showVenueReference').hidden;
       var guide=$('#showFloorGuide');guide.hidden=!booths.length;
       scroll.hidden = !booths.length; mix.hidden = !booths.length;
       if(!booths.length){ note.textContent="The vendor layout is not published yet. Check back for the confirmed TCG and Sports booth locations and percentages."; map.innerHTML=legend.innerHTML=list.innerHTML=mix.innerHTML="";publicBooths=[];selected=-1;return; }
@@ -10230,8 +10250,8 @@ a:hover .round-arrow{transform:rotate(45deg)}
       note.textContent=s.total?s.total+" assigned vendor booths on this plan · TCG/Sports percentages cover these assigned booths only, not the full show or floor area. Mixed vendors are separate."+(pending?' '+pending+' assignments to follow.':''):"Marketfloor table layout · vendor assignments for this show are to be announced. TCG/Sports percentages for this plan will appear as vendors are assigned. Positions are subject to organizer confirmation.";
       mix.hidden=!s.total;
       layout(map,f.room,{rows:rows,cols:cols});
-      $('#floorScaleNote').textContent=f.room==='hilton-ballroom'?'Ballroom-only table plan · Triple Crown Ballroom · 96 × 41 ft':'Organizer’s table-layout guide';
-      map.innerHTML=booths.map(function(b,i){return '<button type="button" class="fp-cell t-'+b.type+'" data-floor-booth="'+i+'" aria-pressed="false" aria-label="'+esc(b.label+' · '+labels[b.type]+', row '+b.r+', column '+b.c)+'" title="'+esc(b.label+' · '+labels[b.type])+'" style="grid-row:'+b.r+' / span '+b.h+';grid-column:'+b.c+' / span '+b.w+'"><b>'+esc(b.label)+'</b><i>'+labels[b.type]+'</i></button>';}).join("");
+      $('#floorScaleNote').textContent=f.room==='hilton-show'?'One map · all three show spaces. Table positions and walking routes are schematic and subject to organizer confirmation.':f.room==='hilton-ballroom'?'Ballroom-only table plan · Triple Crown Ballroom · 96 × 41 ft':'Organizer’s table-layout guide';
+      map.innerHTML=backdrop(f.room)+booths.map(function(b,i){return '<button type="button" class="fp-cell t-'+b.type+'" data-floor-booth="'+i+'" aria-pressed="false" aria-label="'+esc(b.label+' · '+labels[b.type]+', row '+b.r+', column '+b.c)+'" title="'+esc(b.label+' · '+labels[b.type])+'" style="grid-row:'+b.r+' / span '+b.h+';grid-column:'+b.c+' / span '+b.w+'"><b>'+esc(b.label)+'</b><i>'+labels[b.type]+'</i></button>';}).join("");
       mix.innerHTML=Object.keys(s.pct).map(function(k){return '<span class="t-'+k+'" style="width:'+s.pct[k]+'%"></span>';}).join("");
       legend.innerHTML=Object.keys(labels).filter(function(k){return booths.some(function(b){return b.type===k;});}).map(function(k){return '<li><i class="t-'+k+'" aria-hidden="true"></i>'+labels[k]+(s.pct[k]!==undefined?' '+s.pct[k]+'% ('+s.counts[k]+')':'')+'</li>';}).join("");
       publicBooths=booths;details(booths.findIndex(function(b){return b.id===selectedId;}));filter();
@@ -10245,7 +10265,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     }
     TL.on("init",render); TL.on("config:change",render);
     TL.on('view:change',function(d){if(d.name==='show'&&publicView)requestAnimationFrame(function(){publicView.refresh();});});
-    return {stats:stats,render:render,viewport:viewport,fits:fits,overlaps:overlaps,canPlace:canPlace,layout:layout,roomMetrics:roomMetrics};
+    return {stats:stats,render:render,viewport:viewport,fits:fits,overlaps:overlaps,canPlace:canPlace,layout:layout,roomMetrics:roomMetrics,backdrop:backdrop,area:area,venue:venue,outerRun:outerRun};
   })();
 
   /* ---------- pack rip: virtual booster mini-game ----------
@@ -11632,12 +11652,12 @@ a:hover .round-arrow{transform:rotate(45deg)}
   /* ---- card show floor plan ----
      config.show.floorplan = {rows, cols, booths:[{id, r, c, w, h, type, label}]}.
      Grid is 1-indexed. Visual edits use the same geometry checks as numeric edits. */
-  var BOOTH_OPTS = [["unassigned", "Vendor to be announced"], ["tcg", "TCG"], ["sports", "Sports"], ["mixed", "Mixed"], ["food", "Food"], ["entry", "Entry"]];
-  var BOOTH_LAB = {unassigned:"Vendor to be announced",tcg: "TCG", sports: "Sports", mixed: "Mixed", food: "Food", entry: "Entry"};
-  var FP_MAX_ROWS = 100, FP_MAX_COLS = 200;
+  var BOOTH_OPTS = [["unassigned", "Vendor to be announced"], ["tcg", "TCG"], ["sports", "Sports"], ["mixed", "Mixed"], ["shop", "Top Loaded booth"], ["food", "Food"], ["entry", "Entry"]];
+  var BOOTH_LAB = {unassigned:"Vendor to be announced",tcg: "TCG", sports: "Sports", mixed: "Mixed", shop:"Top Loaded booth",food: "Food", entry: "Entry"};
+  var FP_MAX_ROWS = 200, FP_MAX_COLS = 240;
   var fpWork = [], fpReady = false, fpUid = 0, fpSelected = -1, fpPlacing = false, fpViewport = null, fpDrag = null, fpSuppressClick = false;
   function fpSize(){
-    return {rows: TL.clamp(Math.round(num(val("setFpRows"), 6)), 1, FP_MAX_ROWS), cols: TL.clamp(Math.round(num(val("setFpCols"), 10)), 1, FP_MAX_COLS)};
+    return {rows: TL.clamp(Math.round(num(val("setFpRows"), 6)), 1, FP_MAX_ROWS), cols: TL.clamp(Math.round(num(val("setFpCols"), 10)), 1, FP_MAX_COLS),room:val('setFpRoom')};
   }
   function fpFromConfig(){
     var f = (TL.config.show || {}).floorplan || {};
@@ -11678,7 +11698,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     if(map){
       map.classList.toggle('is-placing',fpPlacing);
       $('#fpScaleNote').textContent=TL.floorplan.layout(map,val('setFpRoom'),size);
-      map.innerHTML = fpWork.map(function(b, i){
+      map.innerHTML = TL.floorplan.backdrop(val('setFpRoom'))+fpWork.map(function(b, i){
         var fits = TL.floorplan.canPlace(fpWork,b,size,i);
         var r = TL.clamp(b.r, 1, size.rows), c = TL.clamp(b.c, 1, size.cols);
         var h = TL.clamp(b.h, 1, size.rows - r + 1), w = TL.clamp(b.w, 1, size.cols - c + 1);
@@ -11689,6 +11709,8 @@ a:hover .round-arrow{transform:rotate(45deg)}
       fpViewport.refresh();
     }
     $('#fpRotate').disabled=!fpWork[fpSelected];$('#fpPlace').setAttribute('aria-pressed',String(fpPlacing));
+    $('#fpAddOuterRun').disabled=val('setFpRoom')!=='hilton-show';
+    $('#setFpRows').disabled=$('#setFpCols').disabled=val('setFpRoom')==='hilton-show';
     $('#fpPublishNote').textContent=TL.api.online&&TL.api.role==='admin'?'Connected: Save floor plan publishes this layout to the shared site configuration.':'Not connected to a shared backend: Save keeps this layout on this device only. Download a draft to preserve your work; public visitors will not see these changes yet.';
     $('#fpSelection').textContent=fpPlacing?'Tap an empty square to place a new '+BOOTH_LAB[val('fpBrush')]+' booth.':fpWork[fpSelected]?'Selected: '+(fpWork[fpSelected].label||'Unnamed booth')+' — drag to move, use arrow keys, or edit the details. Changes are not published until saved.':'Add a booth, or choose Place on floor and tap an empty square.';
     renderFpMix(size);
@@ -11728,7 +11750,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   }
   function renderFloorplanCard(){
     var f = (TL.config.show || {}).floorplan || {};
-    setVal('setFpRoom',f.room==='hilton-ballroom'?'hilton-ballroom':'schematic');
+    setVal('setFpRoom',['hilton-ballroom','hilton-show'].includes(f.room)?f.room:'schematic');
     setVal("setFpRows", TL.clamp(Math.round(num(f.rows, 6)), 1, FP_MAX_ROWS));
     setVal("setFpCols", TL.clamp(Math.round(num(f.cols, 10)), 1, FP_MAX_COLS));
     fpWork = fpFromConfig(); fpReady = true;fpSelected=fpWork.length?0:-1;fpPlacing=false;
@@ -11751,8 +11773,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     for(var r = 1; r <= size.rows && !spot; r++){
       for(var c = 1; c <= size.cols && !spot; c++){
         var probe = {r: r, c: c, w: 1, h: 1};
-        var clash = fpWork.some(function(b){ return fpOverlap(probe, b); });
-        if(!clash) spot = probe;
+        if(TL.floorplan.canPlace(fpWork,probe,size,-1)) spot = probe;
       }
     }
     if(!spot){toast("Grid is full — make it bigger or move a booth");return;}
@@ -11765,6 +11786,12 @@ a:hover .round-arrow{transform:rotate(45deg)}
     var inp=$('#fpEditor .fp-label');if(inp)inp.focus();
     fpViewport.focus($('#fpMap [data-fpselect="'+fpSelected+'"]'));
   }
+  $('#fpAddOuterRun').addEventListener('click',function(){
+    var added=TL.floorplan.outerRun(fpWork,val('setFpRoom'));
+    if(!added.length){toast('No complete outer run fits in the remaining space. Move tables or edit the layout first.');return;}
+    added.forEach(function(b){var n=1;while(fpWork.some(function(a){return a.label==='PF'+n;}))n++;fpWork.push(Object.assign({uid:'bnew'+(++fpUid),id:'',label:'PF'+n,type:'unassigned'},b));});
+    fpSelected=fpWork.length-3;renderFpEditor();fpFocus();toast('Two-table run plus end table added — save to publish');
+  });
   function fpPoint(e){
     var map=$('#fpMap'),rect=map.getBoundingClientRect(),css=getComputedStyle(map);
     var stepX=parseFloat(css.getPropertyValue('--fp-cell'))+parseFloat(css.columnGap),stepY=parseFloat(css.getPropertyValue('--fp-row'))+parseFloat(css.rowGap);
@@ -11813,7 +11840,14 @@ a:hover .round-arrow{transform:rotate(45deg)}
   $('#fpMap').addEventListener('pointercancel',function(){fpDrag=null;fpSuppressClick=false;renderFpMap();});
   $("#setFpRows").addEventListener("input", renderFpMap);
   $("#setFpCols").addEventListener("input", renderFpMap);
-  $('#setFpRoom').addEventListener('change',renderFpMap);
+  $('#setFpRoom').addEventListener('change',function(){
+    var v=TL.floorplan.venue(val('setFpRoom'));
+    if(v){
+      if(Number(val('setFpRows'))===82&&Number(val('setFpCols'))===192)fpWork.forEach(function(b){b.r+=v.ballroomOffset.r;b.c+=v.ballroomOffset.c;});
+      setVal('setFpRows',v.rows);setVal('setFpCols',v.cols);
+    }
+    renderFpEditor();
+  });
   $('#fpExport').addEventListener('click',function(){
     if(!fpReady){toast('Wait for the floor editor to load');return;}
     var size=fpSize(),draft={kind:'top-loaded-floorplan-draft',exported:new Date().toISOString(),venue:(TL.config.show||{}).venue,showDate:(TL.config.show||{}).date,confirmed:false,floorplan:{room:val('setFpRoom'),rows:size.rows,cols:size.cols,booths:fpWork.map(function(b,i){return {id:b.id||'draft-'+(i+1),label:b.label,type:b.type,r:b.r,c:b.c,w:b.w,h:b.h};})}};
@@ -11833,6 +11867,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       var b = fpWork[i];
       if(!String(b.label || "").trim()){ flag(i, ".fp-label", "Booth " + (i + 1) + " needs a name before you save"); return; }
       if(!fpFits(b, size)){ flag(i, '[data-f="r"]', esc(b.label) + " sits outside the " + size.rows + "×" + size.cols + " grid"); return; }
+      if(!TL.floorplan.canPlace([],b,size,-1)){flag(i,'[data-f="r"]',b.label+' is outside a show room or blocks a marked entrance route');return;}
       for(var j = 0; j < i; j++){
         if(fpOverlap(b, fpWork[j])){ flag(i, '[data-f="r"]', b.label + " sits on top of " + (fpWork[j].label || "booth " + (j + 1))); return; }
       }

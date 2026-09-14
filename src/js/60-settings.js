@@ -556,12 +556,12 @@
   /* ---- card show floor plan ----
      config.show.floorplan = {rows, cols, booths:[{id, r, c, w, h, type, label}]}.
      Grid is 1-indexed. Visual edits use the same geometry checks as numeric edits. */
-  var BOOTH_OPTS = [["unassigned", "Vendor to be announced"], ["tcg", "TCG"], ["sports", "Sports"], ["mixed", "Mixed"], ["food", "Food"], ["entry", "Entry"]];
-  var BOOTH_LAB = {unassigned:"Vendor to be announced",tcg: "TCG", sports: "Sports", mixed: "Mixed", food: "Food", entry: "Entry"};
-  var FP_MAX_ROWS = 100, FP_MAX_COLS = 200;
+  var BOOTH_OPTS = [["unassigned", "Vendor to be announced"], ["tcg", "TCG"], ["sports", "Sports"], ["mixed", "Mixed"], ["shop", "Top Loaded booth"], ["food", "Food"], ["entry", "Entry"]];
+  var BOOTH_LAB = {unassigned:"Vendor to be announced",tcg: "TCG", sports: "Sports", mixed: "Mixed", shop:"Top Loaded booth",food: "Food", entry: "Entry"};
+  var FP_MAX_ROWS = 200, FP_MAX_COLS = 240;
   var fpWork = [], fpReady = false, fpUid = 0, fpSelected = -1, fpPlacing = false, fpViewport = null, fpDrag = null, fpSuppressClick = false;
   function fpSize(){
-    return {rows: TL.clamp(Math.round(num(val("setFpRows"), 6)), 1, FP_MAX_ROWS), cols: TL.clamp(Math.round(num(val("setFpCols"), 10)), 1, FP_MAX_COLS)};
+    return {rows: TL.clamp(Math.round(num(val("setFpRows"), 6)), 1, FP_MAX_ROWS), cols: TL.clamp(Math.round(num(val("setFpCols"), 10)), 1, FP_MAX_COLS),room:val('setFpRoom')};
   }
   function fpFromConfig(){
     var f = (TL.config.show || {}).floorplan || {};
@@ -602,7 +602,7 @@
     if(map){
       map.classList.toggle('is-placing',fpPlacing);
       $('#fpScaleNote').textContent=TL.floorplan.layout(map,val('setFpRoom'),size);
-      map.innerHTML = fpWork.map(function(b, i){
+      map.innerHTML = TL.floorplan.backdrop(val('setFpRoom'))+fpWork.map(function(b, i){
         var fits = TL.floorplan.canPlace(fpWork,b,size,i);
         var r = TL.clamp(b.r, 1, size.rows), c = TL.clamp(b.c, 1, size.cols);
         var h = TL.clamp(b.h, 1, size.rows - r + 1), w = TL.clamp(b.w, 1, size.cols - c + 1);
@@ -613,6 +613,8 @@
       fpViewport.refresh();
     }
     $('#fpRotate').disabled=!fpWork[fpSelected];$('#fpPlace').setAttribute('aria-pressed',String(fpPlacing));
+    $('#fpAddOuterRun').disabled=val('setFpRoom')!=='hilton-show';
+    $('#setFpRows').disabled=$('#setFpCols').disabled=val('setFpRoom')==='hilton-show';
     $('#fpPublishNote').textContent=TL.api.online&&TL.api.role==='admin'?'Connected: Save floor plan publishes this layout to the shared site configuration.':'Not connected to a shared backend: Save keeps this layout on this device only. Download a draft to preserve your work; public visitors will not see these changes yet.';
     $('#fpSelection').textContent=fpPlacing?'Tap an empty square to place a new '+BOOTH_LAB[val('fpBrush')]+' booth.':fpWork[fpSelected]?'Selected: '+(fpWork[fpSelected].label||'Unnamed booth')+' — drag to move, use arrow keys, or edit the details. Changes are not published until saved.':'Add a booth, or choose Place on floor and tap an empty square.';
     renderFpMix(size);
@@ -652,7 +654,7 @@
   }
   function renderFloorplanCard(){
     var f = (TL.config.show || {}).floorplan || {};
-    setVal('setFpRoom',f.room==='hilton-ballroom'?'hilton-ballroom':'schematic');
+    setVal('setFpRoom',['hilton-ballroom','hilton-show'].includes(f.room)?f.room:'schematic');
     setVal("setFpRows", TL.clamp(Math.round(num(f.rows, 6)), 1, FP_MAX_ROWS));
     setVal("setFpCols", TL.clamp(Math.round(num(f.cols, 10)), 1, FP_MAX_COLS));
     fpWork = fpFromConfig(); fpReady = true;fpSelected=fpWork.length?0:-1;fpPlacing=false;
@@ -675,8 +677,7 @@
     for(var r = 1; r <= size.rows && !spot; r++){
       for(var c = 1; c <= size.cols && !spot; c++){
         var probe = {r: r, c: c, w: 1, h: 1};
-        var clash = fpWork.some(function(b){ return fpOverlap(probe, b); });
-        if(!clash) spot = probe;
+        if(TL.floorplan.canPlace(fpWork,probe,size,-1)) spot = probe;
       }
     }
     if(!spot){toast("Grid is full — make it bigger or move a booth");return;}
@@ -689,6 +690,12 @@
     var inp=$('#fpEditor .fp-label');if(inp)inp.focus();
     fpViewport.focus($('#fpMap [data-fpselect="'+fpSelected+'"]'));
   }
+  $('#fpAddOuterRun').addEventListener('click',function(){
+    var added=TL.floorplan.outerRun(fpWork,val('setFpRoom'));
+    if(!added.length){toast('No complete outer run fits in the remaining space. Move tables or edit the layout first.');return;}
+    added.forEach(function(b){var n=1;while(fpWork.some(function(a){return a.label==='PF'+n;}))n++;fpWork.push(Object.assign({uid:'bnew'+(++fpUid),id:'',label:'PF'+n,type:'unassigned'},b));});
+    fpSelected=fpWork.length-3;renderFpEditor();fpFocus();toast('Two-table run plus end table added — save to publish');
+  });
   function fpPoint(e){
     var map=$('#fpMap'),rect=map.getBoundingClientRect(),css=getComputedStyle(map);
     var stepX=parseFloat(css.getPropertyValue('--fp-cell'))+parseFloat(css.columnGap),stepY=parseFloat(css.getPropertyValue('--fp-row'))+parseFloat(css.rowGap);
@@ -737,7 +744,14 @@
   $('#fpMap').addEventListener('pointercancel',function(){fpDrag=null;fpSuppressClick=false;renderFpMap();});
   $("#setFpRows").addEventListener("input", renderFpMap);
   $("#setFpCols").addEventListener("input", renderFpMap);
-  $('#setFpRoom').addEventListener('change',renderFpMap);
+  $('#setFpRoom').addEventListener('change',function(){
+    var v=TL.floorplan.venue(val('setFpRoom'));
+    if(v){
+      if(Number(val('setFpRows'))===82&&Number(val('setFpCols'))===192)fpWork.forEach(function(b){b.r+=v.ballroomOffset.r;b.c+=v.ballroomOffset.c;});
+      setVal('setFpRows',v.rows);setVal('setFpCols',v.cols);
+    }
+    renderFpEditor();
+  });
   $('#fpExport').addEventListener('click',function(){
     if(!fpReady){toast('Wait for the floor editor to load');return;}
     var size=fpSize(),draft={kind:'top-loaded-floorplan-draft',exported:new Date().toISOString(),venue:(TL.config.show||{}).venue,showDate:(TL.config.show||{}).date,confirmed:false,floorplan:{room:val('setFpRoom'),rows:size.rows,cols:size.cols,booths:fpWork.map(function(b,i){return {id:b.id||'draft-'+(i+1),label:b.label,type:b.type,r:b.r,c:b.c,w:b.w,h:b.h};})}};
@@ -757,6 +771,7 @@
       var b = fpWork[i];
       if(!String(b.label || "").trim()){ flag(i, ".fp-label", "Booth " + (i + 1) + " needs a name before you save"); return; }
       if(!fpFits(b, size)){ flag(i, '[data-f="r"]', esc(b.label) + " sits outside the " + size.rows + "×" + size.cols + " grid"); return; }
+      if(!TL.floorplan.canPlace([],b,size,-1)){flag(i,'[data-f="r"]',b.label+' is outside a show room or blocks a marked entrance route');return;}
       for(var j = 0; j < i; j++){
         if(fpOverlap(b, fpWork[j])){ flag(i, '[data-f="r"]', b.label + " sits on top of " + (fpWork[j].label || "booth " + (j + 1))); return; }
       }

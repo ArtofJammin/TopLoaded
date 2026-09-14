@@ -56,36 +56,50 @@ test('only the trade-in section number is removed and Get a Quote is visible wit
   assert.match(buy,/Final pricing and offers are confirmed in store/);
 });
 
-test('flat plan is primary and the hotel reference stays secondary; table directory remains available',()=>{
+test('one interactive table map replaces the separate wayfinding and hotel flyer panels',()=>{
   const html=read('src/html/12-show.html');
   assert.match(html,/id="floorTitle">Flat plan/);
-  assert.ok(html.indexOf('id="showFloorGuide"')<html.indexOf('id="showVenueReference"'));
   assert.match(html,/<details class="floor-directory"><summary>Table directory/);
-  assert.match(read('src/css/47-floor-guide.css'),/\.floor-guide-body\{[^}]*grid-template-columns:minmax\(0,1fr\)/);
+  assert.doesNotMatch(html,/showVenueReference|show-wayfinding|hilton-first-floor.svg|hilton-show-guide.svg|Source plan, page/);
+  assert.match(html,/Enter through the Convention Entrance/);
+  assert.doesNotMatch(read('.github/workflows/pages.yml'),/cp venue-plans/);
 });
 
-test('show spans three rooms without presenting the ballroom map as a complete show layout',()=>{
-  const show=read('src/html/12-show.html'),script=read('src/js/56-floorplan.js');
-  assert.match(show,/Triple Crown Ballroom, pre-function room, and business center/);
-  assert.match(show,/id="showFloorCoverage"/);
-  assert.match(show,/current table plan covers the ballroom only/);
-  assert.match(script,/Ballroom-only table plan/);
-  assert.match(script,/assigned booths only, not the full show/);
-  assert.match(read('src/html/18-admin.html'),/do not place the additional rooms inside its boundaries/);
-  const reference=JSON.parse(read('venue-plans/hilton-first-floor.json'));
-  assert.deepEqual(reference.showSpaces,['Triple Crown Ballroom','Pre-function room','Business center']);
-  assert.equal(reference.currentTablePlanCoverage,'Triple Crown Ballroom only');
-  assert.equal(reference.ballroomAccess.doorCount,3);
-  assert.equal(reference.businessCenterBooth.wallTables+reference.businessCenterBooth.tradeTables,5);
-  assert.equal(reference.businessCenterBooth.advertisedVendorOpenings,0);
-  assert.equal(reference.preFunctionTables.tableCount,null);
-  assert.doesNotMatch(reference.notes.join(' '),/Only the ballroom is definite/);
-  assert.equal(JSON.parse(read('config.default.json')).show.floorplan.booths.length,49);
+function floorContext(){
+  const grid=JSON.parse(read('venue-plans/hilton-show-grid.json'));
+  const c={TL:{on(){}},window:{TL_FLOOR_VENUE:grid},esc:s=>String(s)};
+  vm.runInNewContext(read('src/js/56-floorplan.js'),c);
+  return {f:c.TL.floorplan,grid,config:JSON.parse(read('config.default.json')).show.floorplan};
+}
+test('full show map keeps the original 49 tables and adds the confirmed 4+1 Top Loaded booth',()=>{
+  const {f,grid,config}=floorContext(),ballroom=config.booths.filter(b=>/^t\d+$/.test(b.id)),shop=config.booths.filter(b=>b.type==='shop');
+  assert.equal(config.room,'hilton-show');assert.equal(config.rows,grid.rows);assert.equal(config.cols,grid.cols);
+  assert.equal(ballroom.length,49);assert.equal(ballroom[0].r,89);assert.equal(ballroom[0].c,21);
+  assert.equal(shop.length,5);assert.equal(shop.filter(b=>b.w>b.h).length,4);assert.equal(shop.filter(b=>b.h>b.w).length,1);
+  assert.ok(shop.every(b=>f.area(b,config.room)==='Business center'));
+  assert.ok(config.booths.every((b,i)=>f.canPlace(config.booths,b,config,i)));
+  assert.equal(f.stats(shop).total,0,'five physical shop tables must not become five vendor assignments');
+});
+test('room outlines and all entrances are in the same zoomable map coordinate system',()=>{
+  const {f,grid,config}=floorContext(),svg=f.backdrop(config.room);
+  assert.equal(grid.rooms.length,3);assert.equal(grid.doors.length,3);
+  for(const label of ['Convention','Entrance','Far door','Middle door','Near door','BUSINESS CENTER','PRE-FUNCTION','TRIPLE CROWN'])assert.ok(svg.includes(label));
+  assert.ok(svg.includes('viewBox="0 0 224 168"'));
+  assert.match(read('src/js/60-settings.js'),/TL.floorplan.backdrop/);
+});
+test('outer runs contain two tables plus one end table and never obstruct the entrance routes',()=>{
+  const {f,config}=floorContext(),booths=config.booths.slice();
+  const initial=booths.length;
+  for(let i=0;i<4;i++){const run=f.outerRun(booths,config.room);assert.equal(run.length,3);assert.ok(run[0].h>run[0].w);assert.equal(run[1].r,run[0].r+run[0].h);assert.equal(run[2].r,run[1].r+run[1].h);booths.push(...run);}
+  assert.equal(booths.length,initial+12);assert.equal(f.outerRun(booths,config.room).length,0);
+  assert.ok(booths.every((b,i)=>f.canPlace(booths,b,config,i)));
+  assert.equal(f.canPlace([],{r:78,c:25,w:6,h:3},config,-1),false);
+  assert.equal(f.canPlace([],{r:5,c:5,w:6,h:3},config,-1),false,'outside room outline');
+  assert.match(read('src/html/18-admin.html'),/id="fpAddOuterRun"/);
 });
 
-test('wayfinding points to the Convention Entrance, all three ballroom doors and Top Loaded, not the Turfway Room',()=>{
-  const svg=read('venue-plans/hilton-show-guide.svg');
-  for(const text of ['CONVENTION','ENTRANCE','TOP LOADED BOOTH','PRE-FUNCTION AREA','NEAR DOOR','MIDDLE DOOR','FAR DOOR','Not the card show','NOT TO SCALE'])assert.ok(svg.includes(text));
-  assert.ok(read('.github/workflows/pages.yml').includes('venue-plans/hilton-show-guide.svg'));
-  assert.ok(read('src/html/12-show.html').includes('src="venue-plans/hilton-show-guide.svg"'));
+test('pointer focus does not move a table before its selection click can complete',()=>{
+  const script=read('src/js/56-floorplan.js');
+  assert.match(script,/map.addEventListener\('focusin',[^\n]*matches\(':focus-visible'\)/);
+  assert.match(script,/details\(i\);publicView.focus/);
 });

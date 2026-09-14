@@ -55,7 +55,7 @@ export function buildHtml() {
   const cfg = JSON.stringify(cfgObj);
   const ld = '<script type="application/ld+json">' + JSON.stringify(jsonLd(cfgObj)).replace(/</g, '\\u003c') + '</script>\n';
   const body = html + '\n' +
-    '<script id="siteConfig">window.TL_DEFAULT_CONFIG=' + cfg.replace(/</g, '\\u003c') + ';</script>\n' +
+    '<script id="siteConfig">window.TL_DEFAULT_CONFIG=' + cfg.replace(/</g, '\\u003c') + ';window.TL_FLOOR_VENUE=' + JSON.stringify(JSON.parse(read(join(repo,'venue-plans/hilton-show-grid.json')))).replace(/</g,'\\u003c') + ';</script>\n' +
     '<script id="cardArtData"></script>\n' +
     '<script>\n(function(){\n  "use strict";\n\n' + js + '})();\n</script>\n';
   return {
