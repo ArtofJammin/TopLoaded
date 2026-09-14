@@ -145,7 +145,7 @@
 
   /* ---------- shop state ---------- */
   var SHOP_PAGE = 24, AUTO_PAGES = 8;
-  var F_DEFAULT = {game:"all", type:"all", set:"", rarity:"", cond:"", all:"", min:"", max:"", sort:"feat", q:"", wish:""};
+  var F_DEFAULT = {game:"all", type:"all", set:"", all:"", sort:"feat", q:"", wish:""};
   var F = Object.assign ? Object.assign({}, F_DEFAULT) : JSON.parse(JSON.stringify(F_DEFAULT));
   var curList = [], shownCount = 0, autoLoads = 0, featSource = null;
   var shopGrid = $("#shopGrid"), shopMore = $("#shopMore"), loadMoreBtn = $("#loadMore"), shopStatus = $("#shopStatus");
@@ -172,8 +172,7 @@
   function computeList(){
     var INV = TL.inventory, src = INV ? INV.catalog() : ITEMS.filter(function(it){ return !it.live; });
     ensureFeatRank(INV && INV.loaded ? INV.items : ITEMS);
-    var terms = searchTerms(), rar = F.rarity ? F.rarity.split(",") : null;
-    var min = F.min !== "" ? parseFloat(F.min) : null, max = F.max !== "" ? parseFloat(F.max) : null;
+    var terms = searchTerms();
     var wishSet = null;
     if(F.wish === "1" && TL.wishlist){ wishSet = {}; TL.wishlist.ids().forEach(function(id){ wishSet[id] = true; }); }
     var out = [];
@@ -184,11 +183,7 @@
       if(F.game !== "all" && it.game !== F.game) continue;
       if(F.type !== "all" && it.type !== F.type) continue;
       if(F.set && it.set !== F.set) continue;
-      if(rar && rar.indexOf(it.rarity || "") === -1) continue;
-      if(F.cond && !(it.cond && String(it.cond).indexOf(F.cond) === 0)) continue;
       if(F.all !== "1" && !(Number(it.stock) > 0)) continue;
-      if(min !== null && !isNaN(min) && it.price < min) continue;
-      if(max !== null && !isNaN(max) && it.price > max) continue;
       if(terms.length){
         var hay = itemHay(it), ok = true;
         for(var t = 0; t < terms.length; t++){ if(hay.indexOf(terms[t]) === -1){ ok = false; break; } }
@@ -235,23 +230,15 @@
   function applyFilterUI(){
     pressChips("#gameChips", "game", F.game);
     pressChips("#typeChips", "type", F.type);
-    pressChips("#condChips", "cond", F.cond);
-    $$("#priceChips .chip").forEach(function(c){ c.setAttribute("aria-pressed", String(c.dataset.min === F.min && c.dataset.max === F.max)); });
-    var rar = F.rarity ? F.rarity.split(",") : [];
-    $$("#rarityChips .chip").forEach(function(c){ c.setAttribute("aria-pressed", String(rar.indexOf(c.dataset.rarity) > -1)); });
     var si = $("#shopSearch"); if(si && si.value !== F.q) si.value = F.q;
     var sc = $("#shopSearchClear"); if(sc) sc.hidden = !F.q;
     var so = $("#sortSel"); if(so) so.value = F.sort;
-    var mn = $("#priceMin"), mx = $("#priceMax");
-    if(mn && document.activeElement !== mn) mn.value = F.min;
-    if(mx && document.activeElement !== mx) mx.value = F.max;
     var st = $("#stockOnly"); if(st) st.checked = F.all !== "1";
     var wc = $("#wishChip"); if(wc) wc.setAttribute("aria-pressed", String(F.wish === "1"));
     var rs = $("#resetFilters"); if(rs) rs.hidden = !filtersActive();
     var mc = $("#moreFiltersCount");
-    if(mc){ var n = ["set","rarity","cond","all","min","max"].filter(function(k){ return F[k] !== F_DEFAULT[k]; }).length + (F.type !== "all" ? 1 : 0); mc.textContent = n ? String(n) : ""; }
+    if(mc){ var n = ["set","all"].filter(function(k){ return F[k] !== F_DEFAULT[k]; }).length + (F.type !== "all" ? 1 : 0); mc.textContent = n ? String(n) : ""; }
     buildSetSelect();
-    buildRarityChips();
   }
   function buildGameChips(){
     var INV = TL.inventory, counts = INV ? INV.gameCounts() : {}, wrap = $("#gameChips");
@@ -314,25 +301,6 @@
     sel.innerHTML = html;
     sel.value = F.set;
     var wrap = sel.closest(".set-wrap"); if(wrap) wrap.hidden = !order.length;
-  }
-  function buildRarityChips(){
-    var row = $("#rarityRow"), wrap = $("#rarityChips"); if(!row || !wrap) return;
-    var INV = TL.inventory, list = INV ? INV.catalog() : [], cnt = {}, any = false;
-    for(var i = 0; i < list.length; i++){
-      var it = list[i];
-      if(!it.rarity) continue;
-      if(F.game !== "all" && it.game !== F.game) continue;
-      if(F.set && it.set !== F.set) continue;
-      cnt[it.rarity] = (cnt[it.rarity] || 0) + 1; any = true;
-    }
-    if(!any){ row.hidden = true; wrap.innerHTML = ""; return; }
-    var sel = F.rarity ? F.rarity.split(",") : [];
-    var keys = Object.keys(cnt).sort(function(a, b){ return cnt[b] - cnt[a] || a.localeCompare(b); }).slice(0, 14);
-    sel.forEach(function(r){ if(r && keys.indexOf(r) === -1) keys.push(r); });
-    wrap.innerHTML = '<span class="chip-label">Rarity</span>' + keys.map(function(r){
-      return '<button class="chip" type="button" data-rarity="' + esc(r) + '" aria-pressed="' + (sel.indexOf(r) > -1) + '">' + esc(r) + (cnt[r] ? ' <b>' + fmtInt(cnt[r]) + '</b>' : '') + '</button>';
-    }).join("");
-    row.hidden = false;
   }
   /* ---- rendering ---- */
   function shopBusy(on){ if(shopGrid) shopGrid.setAttribute("aria-busy", on ? "true" : "false"); }
@@ -574,21 +542,11 @@
     if(t.closest("#resetFilters")){ readParams({}); applyFilterUI(); writeParams(); renderShop(); toast("Filters cleared"); return; }
     if(t.closest("#shopSearchClear")){ F.q = ""; applyFilterUI(); writeParams(); renderShop(); var si = $("#shopSearch"); if(si) si.focus(); return; }
     if(t.closest("#invRetry")){ if(TL.inventory){ TL.inventory.failed = false; TL.inventory.load(); renderShop(); } return; }
-    var chip = t.closest("#gameChips .chip, #typeChips .chip, #condChips .chip, #priceChips .chip, #rarityChips .chip, #wishChip");
+    var chip = t.closest("#gameChips .chip, #typeChips .chip, #wishChip");
     if(chip){
       if(chip.id === "wishChip") F.wish = F.wish === "1" ? "" : "1";
-      else if(chip.dataset.game !== undefined){ if(F.game !== chip.dataset.game){ F.game = chip.dataset.game; F.set = ""; F.rarity = ""; } }
+      else if(chip.dataset.game !== undefined){ if(F.game !== chip.dataset.game){ F.game = chip.dataset.game; F.set = ""; } }
       else if(chip.dataset.type !== undefined) F.type = chip.dataset.type;
-      else if(chip.dataset.cond !== undefined) F.cond = chip.dataset.cond;
-      else if(chip.dataset.rarity !== undefined){
-        var rs = F.rarity ? F.rarity.split(",") : [], ix = rs.indexOf(chip.dataset.rarity);
-        if(ix > -1) rs.splice(ix, 1); else rs.push(chip.dataset.rarity);
-        F.rarity = rs.join(",");
-      }
-      else if(chip.dataset.min !== undefined){
-        var same = F.min === chip.dataset.min && F.max === chip.dataset.max;
-        F.min = same ? "" : chip.dataset.min; F.max = same ? "" : chip.dataset.max;
-      }
       applyFilterUI(); writeParams(); renderShop();
       if(TL.inventory && !TL.inventory.loaded) TL.inventory.load();
     }
@@ -624,15 +582,8 @@
       si.addEventListener("keydown", function(e){ if(e.key === "Escape" && si.value){ si.value = ""; run(); } });
     }
     var so = $("#sortSel"); if(so) so.addEventListener("change", function(){ F.sort = so.value; writeParams(); renderShop(); });
-    var ss = $("#setSel"); if(ss) ss.addEventListener("change", function(){ F.set = ss.value; F.rarity = ""; applyFilterUI(); writeParams(); renderShop(); });
+    var ss = $("#setSel"); if(ss) ss.addEventListener("change", function(){ F.set = ss.value; applyFilterUI(); writeParams(); renderShop(); });
     var st = $("#stockOnly"); if(st) st.addEventListener("change", function(){ F.all = st.checked ? "" : "1"; applyFilterUI(); writeParams(); renderShop(); });
-    var priceRun = TL.debounce(function(){
-      var mn = $("#priceMin"), mx = $("#priceMax");
-      F.min = mn && mn.value !== "" ? String(Math.max(0, parseFloat(mn.value) || 0)) : "";
-      F.max = mx && mx.value !== "" ? String(Math.max(0, parseFloat(mx.value) || 0)) : "";
-      applyFilterUI(); writeParams(); renderShop();
-    }, 220);
-    ["#priceMin", "#priceMax"].forEach(function(s){ var el = $(s); if(el) el.addEventListener("input", priceRun); });
     bindTilt(shopGrid); bindTilt($("#featuredGrid")); bindTilt($("#recentStrip"));
   })();
   if(fineMQ.addEventListener) fineMQ.addEventListener("change", function(){ if(tiltCard){ clearTilt(tiltCard); tiltCard = null; } });
@@ -647,6 +598,8 @@
   };
   function enterShop(params){
     readParams(params);
+    // Retired filters must not silently narrow bookmarks after their controls go away.
+    if(params && ['cond','rarity','min','max'].some(function(k){return params[k]!==undefined;}))writeParams();
     buildGameChips(); applyFilterUI();
     var INV = TL.inventory;
     if(INV && !INV.loaded && !INV.failed) INV.load();

@@ -153,7 +153,7 @@ export function emailFor(kind, f, extra = {}) {
       lines.push(`Name: ${f.name}`, `Email: ${f.email}`, f.phone && `Phone: ${f.phone}`, `Tables: ${f.tables}`, `Game: ${f.game}`, f.message && `\n${f.message}`);
       break;
     case 'buylist':
-      subject = `[Top Loaded] Collection buyout inquiry from ${f.name}`;
+      subject = `[Top Loaded] Collection quote request from ${f.name}`;
       lines.push(`Name: ${f.name}`, `Contact: ${f.contact}`, `Games: ${f.games}`, `\n${f.desc}`, ...(f.photoLinks || []).map(url => `Photo link (customer supplied): ${url}`));
       break;
     case 'signup':

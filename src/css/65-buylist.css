@@ -18,7 +18,7 @@
 .buy-steps b{display:block;color:var(--ink);margin-bottom:4px}
 .buy-location{padding-top:20px;border-top:1px solid var(--line)}
 .buy-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
-.buy-inquiry summary{cursor:pointer;font-weight:700;line-height:1.5;min-height:44px}.buy-inquiry summary span{display:block;color:var(--accent);font-size:.9rem;margin-top:5px}.buy-inquiry>p{color:var(--ink2);margin:18px 0}.buy-inquiry input,.buy-inquiry textarea{width:100%;min-width:0}.buy-inquiry textarea{resize:vertical}.buy-result{margin-top:20px;padding-top:20px;border-top:1px solid var(--line);overflow-wrap:anywhere}.buy-result textarea{margin-top:14px}.buy-result[hidden],.buy-result [hidden]{display:none!important}
+.buy-inquiry{scroll-margin-top:100px;border-top:4px solid var(--accent)}.buy-inquiry h2{font-size:clamp(1.65rem,3vw,2.4rem);margin:10px 0 18px}.buy-inquiry>p{color:var(--ink2);margin:18px 0}.buy-inquiry input,.buy-inquiry textarea{width:100%;min-width:0}.buy-inquiry textarea{resize:vertical}.buy-result{margin-top:20px;padding-top:20px;border-top:1px solid var(--line);overflow-wrap:anywhere}.buy-result textarea{margin-top:14px}.buy-result[hidden],.buy-result [hidden]{display:none!important}
 @media (max-width:640px){
   .form-card{padding:22px 18px}
 }

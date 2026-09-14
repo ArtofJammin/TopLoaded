@@ -812,10 +812,6 @@ select,input,textarea{
 }
 select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
 label{font-family:var(--mono); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink3)}
-.price-range{display:flex; align-items:center; gap:6px; color:var(--ink3)}
-.price-range input{width:84px; padding:7px 10px; font-family:var(--mono); font-size:.85rem}
-.price-range input::-webkit-outer-spin-button,.price-range input::-webkit-inner-spin-button{-webkit-appearance:none; margin:0}
-.price-range input[type=number]{-moz-appearance:textfield; appearance:textfield}
 .stock-toggle{display:inline-flex; align-items:center; gap:8px; cursor:pointer; color:var(--ink2); text-transform:none; letter-spacing:.04em; font-size:.75rem; user-select:none}
 .stock-toggle input{width:16px; height:16px; margin:0; accent-color:var(--accent); padding:0}
 .reset-filters{margin-left:auto}
@@ -1038,7 +1034,6 @@ html.qv-open,html.qv-open body{overflow:hidden}
   .set-wrap{flex:1 1 100%}
   .set-wrap select{max-width:100%}
   .reset-filters{margin-left:0}
-  .price-range input{width:72px}
   .rv-tile{max-width:180px}
 }
 @media (pointer:coarse){
@@ -1529,14 +1524,16 @@ html.page-hidden .drawer .cart-empty::before{animation-play-state:paused}
 .floor-zoom{display:flex;flex-shrink:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
 .floor-zoom button{border:0;border-right:1px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 13px;min-width:44px;min-height:44px;font:600 .85rem var(--body)}
 .floor-zoom button:last-child{border-right:0}.floor-zoom button:hover{background:var(--surface2)}
-.floor-guide-body{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:18px;margin:16px 0;align-items:start}
-.floor-guide-body .floor-scroll{margin:0;height:410px;cursor:grab;overscroll-behavior-x:contain;position:relative}
+.floor-guide-body{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin:16px 0;align-items:start}
+.floor-guide-body .floor-scroll{margin:0;height:clamp(220px,40vw,530px);cursor:grab;overscroll-behavior-x:contain;position:relative;background:color-mix(in srgb,var(--surface) 90%,var(--accent) 10%)}
 .floor-scroll.is-panning{cursor:grabbing;user-select:none}
 .floor-map{--fp-gap:6px;min-width:0;gap:var(--fp-gap);background-size:calc(var(--fp-cell) + var(--fp-gap)) calc(var(--fp-row,var(--fp-cell)) + var(--fp-gap));border:2px solid var(--line);box-sizing:content-box;isolation:isolate}
 .floor-map.is-hilton .fp-cell{margin:2px}
 .t-unassigned{background:var(--surface2);color:var(--ink2);border-color:var(--line)}
 #showFloorMap{background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:20px 20px}
-#showFloorMap .fp-cell.t-unassigned{border-color:color-mix(in srgb,var(--accent) 35%,var(--line));background:var(--surface2)}
+#showFloorMap .fp-cell.t-unassigned{border-color:color-mix(in srgb,var(--accent) 65%,var(--line));background:var(--surface2);color:var(--ink)}
+#showFloorMap .fp-cell b{font-size:clamp(4px,calc(var(--fp-cell)*2.5),16px)}
+#showFloorMap.is-hilton .fp-cell{margin:clamp(0px,calc(var(--fp-cell)*.15),2px)}
 #showFloorMap .fp-cell.is-vertical b{writing-mode:vertical-rl;overflow:visible}
 #showFloorMap .fp-cell.is-vertical i{display:none}
 .venue-reference-details{margin:12px 0 20px}.venue-reference-details>summary{cursor:pointer;color:var(--ink2);padding:12px 0;min-height:44px}
@@ -1553,6 +1550,7 @@ html.page-hidden .drawer .cart-empty::before{animation-play-state:paused}
 .floor-map.is-dense .fp-cell b{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .floor-detail,.floor-inspector{padding:20px;border:1px solid var(--line);border-radius:12px;background:var(--surface);min-width:0}
 .floor-detail h3{font-size:1.6rem;overflow-wrap:anywhere;margin:10px 0}.floor-detail dl{margin:20px 0;display:grid;gap:5px}.floor-detail dt{font-size:.75rem;color:var(--ink2);text-transform:uppercase}.floor-detail dd{margin:0 0 10px;overflow-wrap:anywhere}
+.floor-directory{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:16px 0}.floor-directory>summary{cursor:pointer;min-height:48px;padding:14px 0;color:var(--ink);font-weight:700}
 .floor-vendors{list-style:none;padding:0;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
 .floor-vendors button{display:flex;align-items:center;gap:12px;text-align:left;padding:16px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:100%;height:100%;font:inherit}
 .floor-vendors button[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 3px 0 var(--accent)}
@@ -1561,7 +1559,7 @@ html.page-hidden .drawer .cart-empty::before{animation-play-state:paused}
 #fpEditor{margin-top:0;display:block}#fpEditor .fp-row{padding:0 28px 0 0;border:0;background:none;gap:12px}#fpEditor .row-del{right:-18px;top:-14px}
 #fpMap .fp-cell{touch-action:none;user-select:none}#fpMap.is-placing{cursor:crosshair}#fpMap.is-placing .fp-cell{cursor:not-allowed}
 #fpPlace[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
-@media(max-width:760px){.floor-guide-body,.venue-reference{grid-template-columns:1fr}.venue-reference{padding:18px;gap:12px}.floor-guide-body .floor-scroll{height:340px}.floor-detail{padding:16px}.floor-tools>.btn{flex:1 1 auto}}
+@media(max-width:760px){.floor-guide-body,.venue-reference{grid-template-columns:1fr}.venue-reference{padding:18px;gap:12px}.floor-detail{padding:16px}.floor-tools>.btn{flex:1 1 auto}}
 @media(prefers-reduced-motion:reduce){.fp-cell{transition:none}}
 
 /* ============ EVENTS ============ */
@@ -1818,7 +1816,7 @@ form.is-done > :not(.form-done){display:none !important}
 .buy-steps b{display:block;color:var(--ink);margin-bottom:4px}
 .buy-location{padding-top:20px;border-top:1px solid var(--line)}
 .buy-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
-.buy-inquiry summary{cursor:pointer;font-weight:700;line-height:1.5;min-height:44px}.buy-inquiry summary span{display:block;color:var(--accent);font-size:.9rem;margin-top:5px}.buy-inquiry>p{color:var(--ink2);margin:18px 0}.buy-inquiry input,.buy-inquiry textarea{width:100%;min-width:0}.buy-inquiry textarea{resize:vertical}.buy-result{margin-top:20px;padding-top:20px;border-top:1px solid var(--line);overflow-wrap:anywhere}.buy-result textarea{margin-top:14px}.buy-result[hidden],.buy-result [hidden]{display:none!important}
+.buy-inquiry{scroll-margin-top:100px;border-top:4px solid var(--accent)}.buy-inquiry h2{font-size:clamp(1.65rem,3vw,2.4rem);margin:10px 0 18px}.buy-inquiry>p{color:var(--ink2);margin:18px 0}.buy-inquiry input,.buy-inquiry textarea{width:100%;min-width:0}.buy-inquiry textarea{resize:vertical}.buy-result{margin-top:20px;padding-top:20px;border-top:1px solid var(--line);overflow-wrap:anywhere}.buy-result textarea{margin-top:14px}.buy-result[hidden],.buy-result [hidden]{display:none!important}
 @media (max-width:640px){
   .form-card{padding:22px 18px}
 }
@@ -3216,7 +3214,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     <!-- Moved above the play nights at the owner's request. -->
     <div class="section trade-band">
       <div class="wrap">
-        <a class="trade-tile" href="#/buylist" data-go="buylist"><span class="tile-number">03 / MAKE ROOM FOR WHAT’S NEXT</span><div><h3>Old binder.<br>New possibilities.</h3><span class="trade-stamp" aria-hidden="true">BUY<br>SELL<br>TRADE</span></div><p>Turn your collection into cash or store credit.<span class="round-arrow" aria-hidden="true">↗</span></p></a>
+        <a class="trade-tile" href="#/buylist" data-go="buylist"><span class="tile-number">MAKE ROOM FOR WHAT’S NEXT</span><div><h3>Old binder.<br>New possibilities.</h3><span class="trade-stamp" aria-hidden="true">BUY<br>SELL<br>TRADE</span></div><p>Turn your collection into cash or store credit.<span class="round-arrow" aria-hidden="true">↗</span></p></a>
       </div>
     </div>
 
@@ -3353,7 +3351,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
           </details>
           <details class="panel">
             <summary>How does selling a collection work?</summary>
-            <p>Bring your cards to the shop during opening hours. We look them over, price against current market, and make an in-store offer with zero obligation. For a large collection, call ahead so we can plan enough time. We don't provide online estimates or quotes.</p>
+            <p>Bring your cards to the shop during opening hours for an in-person offer, or use <a href="#/buylist?quote=1">Get a Quote</a> to send collection details and photo links ahead of your visit. The shop reviews requests personally; there is no automatic price estimator. Final offers depend on seeing the cards and their condition.</p>
           </details>
           <details class="panel">
             <summary>What's the store credit bonus?</summary>
@@ -3382,7 +3380,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
           <div class="field shop-search">
             <label for="shopSearch">Search the case</label>
             <div class="search-wrap">
-              <input id="shopSearch" type="search" placeholder="Card name, set, rarity&hellip;" autocomplete="off" spellcheck="false" enterkeyhint="search">
+              <input id="shopSearch" type="search" placeholder="Card name or set&hellip;" autocomplete="off" spellcheck="false" enterkeyhint="search">
               <button class="search-clear" id="shopSearchClear" type="button" aria-label="Clear search" hidden>&times;</button>
             </div>
           </div>
@@ -3421,36 +3419,13 @@ a:hover .round-arrow{transform:rotate(45deg)}
             <label for="setSel">Set</label>
             <select id="setSel"><option value="">All sets</option></select>
           </div>
-          <div class="chip-row" id="condChips" role="group" aria-label="Filter by condition">
-            <button class="chip" data-cond="" aria-pressed="true">Any condition</button>
-            <button class="chip" data-cond="NM" aria-pressed="false" title="Near Mint">NM</button>
-            <button class="chip" data-cond="LP" aria-pressed="false" title="Lightly Played">LP</button>
-            <button class="chip" data-cond="MP" aria-pressed="false" title="Moderately Played">MP</button>
-            <button class="chip" data-cond="HP" aria-pressed="false" title="Heavily Played">HP</button>
-            <button class="chip" data-cond="DMG" aria-pressed="false" title="Damaged">DMG</button>
-          </div>
         </div>
 
-        <div class="shop-row shop-row-price">
-          <div class="chip-row" id="priceChips" role="group" aria-label="Quick price range">
-            <button class="chip" data-min="" data-max="5" aria-pressed="false">Under $5</button>
-            <button class="chip" data-min="5" data-max="25" aria-pressed="false">$5&ndash;25</button>
-            <button class="chip" data-min="25" data-max="100" aria-pressed="false">$25&ndash;100</button>
-            <button class="chip" data-min="100" data-max="" aria-pressed="false">$100+</button>
-          </div>
-          <div class="price-range">
-            <label for="priceMin">Price</label>
-            <input id="priceMin" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Min" aria-label="Minimum price">
-            <span aria-hidden="true">&ndash;</span>
-            <input id="priceMax" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Max" aria-label="Maximum price">
-          </div>
+        <div class="shop-row shop-row-availability">
           <label class="stock-toggle"><input type="checkbox" id="stockOnly" checked> In stock only</label>
           <button class="linklike reset-filters" id="resetFilters" type="button" hidden>Reset filters</button>
         </div>
 
-        <div class="shop-row" id="rarityRow" hidden>
-          <div class="chip-row" id="rarityChips" role="group" aria-label="Filter by rarity"></div>
-        </div>
         </div>
       </div>
 
@@ -3519,22 +3494,22 @@ a:hover .round-arrow{transform:rotate(45deg)}
         </form>
       </div>
       <section class="section" aria-labelledby="floorTitle">
-        <div class="section-head"><h2 id="floorTitle">Floor plan</h2><span class="collector-note">TCG &amp; Sports vendor map</span></div>
-        <details class="venue-reference-details" id="showVenueReference"><summary>Hotel building reference &amp; directions</summary><section class="venue-reference" aria-labelledby="hiltonPlanTitle">
-          <div class="venue-reference-copy"><p class="eyebrow">Know the venue</p><h3 id="hiltonPlanTitle">Hilton Cincinnati Airport</h3><p>The Triple Crown Ballroom is highlighted on the hotel's first-floor reference plan. Published ballroom dimensions: <b>96 &times; 41 ft</b>.</p><p class="card-note">The hotel diagram is a reference, not a confirmed vendor arrangement. Lobby use, doors, exits and table positions must be confirmed with the organizer and venue.</p><a class="linklike" href="https://marketfloor.app/venues/8a57c194-916e-410c-a085-efbac3b39ad7/guide?locationId=8fdb51c9-6da6-4d06-bfaa-0e90b26b8fc4" target="_blank" rel="noopener noreferrer">Explore the Hilton in Marketfloor ↗</a></div>
-          <figure><div class="venue-plan-paper"><img src="venue-plans/hilton-first-floor.svg" alt="Hilton first-floor diagram: Triple Crown Ballroom beside the lobby and pre-function area" width="610" height="551" loading="lazy" decoding="async"><span class="venue-ballroom-outline" aria-hidden="true"></span></div><figcaption>Hotel-provided diagram, via the Marketfloor venue reference. <a href="https://custom.cvent.com/95cbca96509142b49afebbf7b0599659/files/rfp/85804e05e44a47d195543aedf6aaa8f0/646e697186df40a3b16f75ebac28a570.pdf" target="_blank" rel="noopener noreferrer">Source plan, page 2 ↗</a></figcaption></figure>
-        </section></details>
+        <div class="section-head"><h2 id="floorTitle">Flat plan</h2><span class="collector-note">Explore the tables &middot; TCG &amp; Sports</span></div>
         <p id="showFloorNote" class="card-note"></p>
         <div id="showFloorMix" class="floor-mix" aria-hidden="true"></div>
         <ul id="showFloorLegend" class="floor-legend"></ul>
         <div id="showFloorGuide" class="floor-guide" hidden>
           <div class="floor-tools"><div class="field"><label for="floorSearch">Find a table or vendor</label><input id="floorSearch" type="search" placeholder="Table number or vendor name" maxlength="100"></div><div class="field"><label for="floorType">Show on map</label><select id="floorType"><option value="">All categories</option><option value="tcg">TCG</option><option value="sports">Sports</option><option value="mixed">Mixed</option><option value="unassigned">Vendor to be announced</option><option value="food">Food</option><option value="entry">Entry</option></select></div><div class="floor-zoom" aria-label="Map zoom"><button type="button" data-floor-zoom="out" aria-label="Zoom out">&minus;</button><button type="button" data-floor-zoom="fit">Fit floor</button><button type="button" data-floor-zoom="in" aria-label="Zoom in">+</button></div></div>
           <p class="card-note" id="floorScaleNote"></p>
-          <p class="card-note">Select a booth for details. Drag empty floor to pan, use Ctrl + wheel to zoom, or scroll the map on touch.</p>
+          <p class="card-note">Select a table for details. Zoom for a closer look, drag empty floor to pan, or use the table directory below.</p>
           <div class="floor-guide-body"><div class="floor-scroll" id="showFloorScroll" tabindex="0" role="region" aria-label="Interactive vendor floor plan"><div class="floor-map" id="showFloorMap"></div></div><aside class="floor-detail" id="showFloorDetail" aria-live="polite"><h3>Explore the floor</h3><p>Choose a vendor on the map or in the directory.</p></aside></div>
           <p id="floorResults" role="status" class="card-note"></p>
-          <ul id="showFloorList" class="floor-vendors" aria-label="Vendor directory"></ul>
+          <details class="floor-directory"><summary>Table directory</summary><ul id="showFloorList" class="floor-vendors" aria-label="Vendor directory"></ul></details>
         </div>
+        <details class="venue-reference-details" id="showVenueReference"><summary>Hotel building reference &amp; directions</summary><section class="venue-reference" aria-labelledby="hiltonPlanTitle">
+          <div class="venue-reference-copy"><p class="eyebrow">Know the venue</p><h3 id="hiltonPlanTitle">Hilton Cincinnati Airport</h3><p>The Triple Crown Ballroom is highlighted on the hotel's first-floor reference plan. Published ballroom dimensions: <b>96 &times; 41 ft</b>.</p><p class="card-note">The hotel diagram is a reference, not a confirmed vendor arrangement. Lobby use, doors, exits and table positions must be confirmed with the organizer and venue.</p><a class="linklike" href="https://marketfloor.app/venues/8a57c194-916e-410c-a085-efbac3b39ad7/guide?locationId=8fdb51c9-6da6-4d06-bfaa-0e90b26b8fc4" target="_blank" rel="noopener noreferrer">Explore the Hilton in Marketfloor ↗</a></div>
+          <figure><div class="venue-plan-paper"><img src="venue-plans/hilton-first-floor.svg" alt="Hilton first-floor diagram: Triple Crown Ballroom beside the lobby and pre-function area" width="610" height="551" loading="lazy" decoding="async"><span class="venue-ballroom-outline" aria-hidden="true"></span></div><figcaption>Hotel-provided diagram, via the Marketfloor venue reference. <a href="https://custom.cvent.com/95cbca96509142b49afebbf7b0599659/files/rfp/85804e05e44a47d195543aedf6aaa8f0/646e697186df40a3b16f75ebac28a570.pdf" target="_blank" rel="noopener noreferrer">Source plan, page 2 ↗</a></figcaption></figure>
+        </section></details>
       </section>
     </div>
   </section>
@@ -3595,6 +3570,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
         <p class="eyebrow">Bring it in &middot; Cash or credit</p>
         <h1>We buy collections</h1>
         <p class="lede">From a few favorite cards to a whole collection, bring what you've got to the shop. We look it over together and make an in-store offer based on condition and current market.</p>
+        <div class="buy-actions"><a class="btn" href="#/buylist?quote=1" data-quote-link>Get a Quote &rarr;</a><a class="linklike" href="#/visit" data-go="visit">Prefer to come in? Hours &amp; directions &rarr;</a></div>
       </div>
       <div class="buy-grid">
         <div class="buy-points">
@@ -3619,7 +3595,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
           <section class="form-card buy-visit" aria-labelledby="buyVisitTitle">
             <p class="eyebrow">Let's see it in person</p>
             <h2 id="buyVisitTitle">Bring your collection<br>to the shop.</h2>
-            <p>Coming in is the best way to get an offer. All pricing and offers happen in store, after we've seen the cards. Planning a large buyout? You can send the details below first.</p>
+            <p>Coming in is the best way to get an offer. Final pricing and offers are confirmed in store, after we've seen the cards. Planning a large buyout? Send a quote request below so we can review what you have ahead of your visit.</p>
             <ol class="buy-steps">
               <li><b>Pack it up.</b> Keep cards protected; sorting by game helps us look through them.</li>
               <li><b>Stop in during shop hours.</b> For a large collection, call ahead so we can plan enough time.</li>
@@ -3628,9 +3604,10 @@ a:hover .round-arrow{transform:rotate(45deg)}
             <p class="buy-location" id="buyAddress">2514 Hazelwood Dr &middot; Crescent Springs, KY 41017</p>
             <div class="buy-actions"><a class="btn" href="#/visit" data-go="visit">Hours &amp; directions &rarr;</a><a class="btn btn-ghost" id="buyCall" href="tel:+15132222573">Call the shop</a></div>
           </section>
-          <details class="form-card buy-inquiry">
-            <summary>Planning a collection buyout? <span>Send us the details first &rarr;</span></summary>
-            <p>Tell us what you have so we can plan your visit. This is an inquiry, not an estimate or a guaranteed offer.</p>
+          <section class="form-card buy-inquiry" id="buyQuote" aria-labelledby="buyQuoteTitle">
+            <p class="eyebrow">A real person, not a calculator</p>
+            <h2 id="buyQuoteTitle" tabindex="-1">Get a Quote</h2>
+            <p>Send the shop a little about your cards, quantities and condition, with photo links if you have them. This helps us prepare and reduce processing time when you come in. The shop reviews each request personally; there is no automated estimator. Any preliminary quote is subject to seeing the cards in person.</p>
             <form id="buyForm" novalidate>
               <div class="form-grid">
                 <div class="field"><label for="buyName">Name</label><input id="buyName" name="name" required minlength="2" maxlength="80" autocomplete="name"></div>
@@ -3639,11 +3616,11 @@ a:hover .round-arrow{transform:rotate(45deg)}
                 <div class="field full"><label for="buyDesc">What would you like to sell?</label><textarea id="buyDesc" name="desc" rows="4" required minlength="3" maxlength="2000" placeholder="Approximate quantity, condition, and when you'd like to come in"></textarea></div>
                 <div class="field full"><label for="buyPhotos">Photo or album links <small>(optional)</small></label><textarea id="buyPhotos" name="photosUrl" rows="3" maxlength="2504" placeholder="https://photos.app.goo.gl/…" aria-describedby="buyPhotoHelp"></textarea><p class="card-note" id="buyPhotoHelp">Up to five HTTPS links, one per line. Share only your card photos, not IDs or payment details. Give the shop permission to view your album. Links are not loaded or previewed here.</p></div>
                 <div class="hp" aria-hidden="true"><label for="buyWebsite">Website</label><input id="buyWebsite" name="website" tabindex="-1" autocomplete="off"></div>
-                <div class="field full"><p id="buyDeliveryNote" class="card-note">Prepare an email to the shop. You can attach JPG, PNG or WebP photos in your email app before sending.</p><button type="submit" class="btn" id="buySubmit">Prepare email inquiry &rarr;</button></div>
+                <div class="field full"><p id="buyDeliveryNote" class="card-note">Prepare your quote request to email the shop. You can attach JPG, PNG or WebP photos in your email app before sending.</p><button type="submit" class="btn" id="buySubmit">Prepare quote request &rarr;</button></div>
               </div>
-              <div id="buyResult" class="buy-result" hidden tabindex="-1"><p id="buyResultStatus" role="status"></p><div class="buy-actions"><a class="btn" id="buyEmailDraft" hidden>Open email draft &rarr;</a><button class="btn btn-ghost" id="buyCopy" type="button" hidden>Copy inquiry</button></div><textarea id="buyDraftText" readonly rows="6" hidden aria-label="Inquiry text to copy"></textarea></div>
+              <div id="buyResult" class="buy-result" hidden tabindex="-1"><p id="buyResultStatus" role="status"></p><div class="buy-actions"><a class="btn" id="buyEmailDraft" hidden>Open email draft &rarr;</a><button class="btn btn-ghost" id="buyCopy" type="button" hidden>Copy request</button></div><textarea id="buyDraftText" readonly rows="6" hidden aria-label="Quote request text to copy"></textarea></div>
             </form>
-          </details>
+          </section>
         </div>
       </div>
     </div>
@@ -5832,7 +5809,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
 
   /* ---------- shop state ---------- */
   var SHOP_PAGE = 24, AUTO_PAGES = 8;
-  var F_DEFAULT = {game:"all", type:"all", set:"", rarity:"", cond:"", all:"", min:"", max:"", sort:"feat", q:"", wish:""};
+  var F_DEFAULT = {game:"all", type:"all", set:"", all:"", sort:"feat", q:"", wish:""};
   var F = Object.assign ? Object.assign({}, F_DEFAULT) : JSON.parse(JSON.stringify(F_DEFAULT));
   var curList = [], shownCount = 0, autoLoads = 0, featSource = null;
   var shopGrid = $("#shopGrid"), shopMore = $("#shopMore"), loadMoreBtn = $("#loadMore"), shopStatus = $("#shopStatus");
@@ -5859,8 +5836,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   function computeList(){
     var INV = TL.inventory, src = INV ? INV.catalog() : ITEMS.filter(function(it){ return !it.live; });
     ensureFeatRank(INV && INV.loaded ? INV.items : ITEMS);
-    var terms = searchTerms(), rar = F.rarity ? F.rarity.split(",") : null;
-    var min = F.min !== "" ? parseFloat(F.min) : null, max = F.max !== "" ? parseFloat(F.max) : null;
+    var terms = searchTerms();
     var wishSet = null;
     if(F.wish === "1" && TL.wishlist){ wishSet = {}; TL.wishlist.ids().forEach(function(id){ wishSet[id] = true; }); }
     var out = [];
@@ -5871,11 +5847,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       if(F.game !== "all" && it.game !== F.game) continue;
       if(F.type !== "all" && it.type !== F.type) continue;
       if(F.set && it.set !== F.set) continue;
-      if(rar && rar.indexOf(it.rarity || "") === -1) continue;
-      if(F.cond && !(it.cond && String(it.cond).indexOf(F.cond) === 0)) continue;
       if(F.all !== "1" && !(Number(it.stock) > 0)) continue;
-      if(min !== null && !isNaN(min) && it.price < min) continue;
-      if(max !== null && !isNaN(max) && it.price > max) continue;
       if(terms.length){
         var hay = itemHay(it), ok = true;
         for(var t = 0; t < terms.length; t++){ if(hay.indexOf(terms[t]) === -1){ ok = false; break; } }
@@ -5922,23 +5894,15 @@ a:hover .round-arrow{transform:rotate(45deg)}
   function applyFilterUI(){
     pressChips("#gameChips", "game", F.game);
     pressChips("#typeChips", "type", F.type);
-    pressChips("#condChips", "cond", F.cond);
-    $$("#priceChips .chip").forEach(function(c){ c.setAttribute("aria-pressed", String(c.dataset.min === F.min && c.dataset.max === F.max)); });
-    var rar = F.rarity ? F.rarity.split(",") : [];
-    $$("#rarityChips .chip").forEach(function(c){ c.setAttribute("aria-pressed", String(rar.indexOf(c.dataset.rarity) > -1)); });
     var si = $("#shopSearch"); if(si && si.value !== F.q) si.value = F.q;
     var sc = $("#shopSearchClear"); if(sc) sc.hidden = !F.q;
     var so = $("#sortSel"); if(so) so.value = F.sort;
-    var mn = $("#priceMin"), mx = $("#priceMax");
-    if(mn && document.activeElement !== mn) mn.value = F.min;
-    if(mx && document.activeElement !== mx) mx.value = F.max;
     var st = $("#stockOnly"); if(st) st.checked = F.all !== "1";
     var wc = $("#wishChip"); if(wc) wc.setAttribute("aria-pressed", String(F.wish === "1"));
     var rs = $("#resetFilters"); if(rs) rs.hidden = !filtersActive();
     var mc = $("#moreFiltersCount");
-    if(mc){ var n = ["set","rarity","cond","all","min","max"].filter(function(k){ return F[k] !== F_DEFAULT[k]; }).length + (F.type !== "all" ? 1 : 0); mc.textContent = n ? String(n) : ""; }
+    if(mc){ var n = ["set","all"].filter(function(k){ return F[k] !== F_DEFAULT[k]; }).length + (F.type !== "all" ? 1 : 0); mc.textContent = n ? String(n) : ""; }
     buildSetSelect();
-    buildRarityChips();
   }
   function buildGameChips(){
     var INV = TL.inventory, counts = INV ? INV.gameCounts() : {}, wrap = $("#gameChips");
@@ -6001,25 +5965,6 @@ a:hover .round-arrow{transform:rotate(45deg)}
     sel.innerHTML = html;
     sel.value = F.set;
     var wrap = sel.closest(".set-wrap"); if(wrap) wrap.hidden = !order.length;
-  }
-  function buildRarityChips(){
-    var row = $("#rarityRow"), wrap = $("#rarityChips"); if(!row || !wrap) return;
-    var INV = TL.inventory, list = INV ? INV.catalog() : [], cnt = {}, any = false;
-    for(var i = 0; i < list.length; i++){
-      var it = list[i];
-      if(!it.rarity) continue;
-      if(F.game !== "all" && it.game !== F.game) continue;
-      if(F.set && it.set !== F.set) continue;
-      cnt[it.rarity] = (cnt[it.rarity] || 0) + 1; any = true;
-    }
-    if(!any){ row.hidden = true; wrap.innerHTML = ""; return; }
-    var sel = F.rarity ? F.rarity.split(",") : [];
-    var keys = Object.keys(cnt).sort(function(a, b){ return cnt[b] - cnt[a] || a.localeCompare(b); }).slice(0, 14);
-    sel.forEach(function(r){ if(r && keys.indexOf(r) === -1) keys.push(r); });
-    wrap.innerHTML = '<span class="chip-label">Rarity</span>' + keys.map(function(r){
-      return '<button class="chip" type="button" data-rarity="' + esc(r) + '" aria-pressed="' + (sel.indexOf(r) > -1) + '">' + esc(r) + (cnt[r] ? ' <b>' + fmtInt(cnt[r]) + '</b>' : '') + '</button>';
-    }).join("");
-    row.hidden = false;
   }
   /* ---- rendering ---- */
   function shopBusy(on){ if(shopGrid) shopGrid.setAttribute("aria-busy", on ? "true" : "false"); }
@@ -6261,21 +6206,11 @@ a:hover .round-arrow{transform:rotate(45deg)}
     if(t.closest("#resetFilters")){ readParams({}); applyFilterUI(); writeParams(); renderShop(); toast("Filters cleared"); return; }
     if(t.closest("#shopSearchClear")){ F.q = ""; applyFilterUI(); writeParams(); renderShop(); var si = $("#shopSearch"); if(si) si.focus(); return; }
     if(t.closest("#invRetry")){ if(TL.inventory){ TL.inventory.failed = false; TL.inventory.load(); renderShop(); } return; }
-    var chip = t.closest("#gameChips .chip, #typeChips .chip, #condChips .chip, #priceChips .chip, #rarityChips .chip, #wishChip");
+    var chip = t.closest("#gameChips .chip, #typeChips .chip, #wishChip");
     if(chip){
       if(chip.id === "wishChip") F.wish = F.wish === "1" ? "" : "1";
-      else if(chip.dataset.game !== undefined){ if(F.game !== chip.dataset.game){ F.game = chip.dataset.game; F.set = ""; F.rarity = ""; } }
+      else if(chip.dataset.game !== undefined){ if(F.game !== chip.dataset.game){ F.game = chip.dataset.game; F.set = ""; } }
       else if(chip.dataset.type !== undefined) F.type = chip.dataset.type;
-      else if(chip.dataset.cond !== undefined) F.cond = chip.dataset.cond;
-      else if(chip.dataset.rarity !== undefined){
-        var rs = F.rarity ? F.rarity.split(",") : [], ix = rs.indexOf(chip.dataset.rarity);
-        if(ix > -1) rs.splice(ix, 1); else rs.push(chip.dataset.rarity);
-        F.rarity = rs.join(",");
-      }
-      else if(chip.dataset.min !== undefined){
-        var same = F.min === chip.dataset.min && F.max === chip.dataset.max;
-        F.min = same ? "" : chip.dataset.min; F.max = same ? "" : chip.dataset.max;
-      }
       applyFilterUI(); writeParams(); renderShop();
       if(TL.inventory && !TL.inventory.loaded) TL.inventory.load();
     }
@@ -6311,15 +6246,8 @@ a:hover .round-arrow{transform:rotate(45deg)}
       si.addEventListener("keydown", function(e){ if(e.key === "Escape" && si.value){ si.value = ""; run(); } });
     }
     var so = $("#sortSel"); if(so) so.addEventListener("change", function(){ F.sort = so.value; writeParams(); renderShop(); });
-    var ss = $("#setSel"); if(ss) ss.addEventListener("change", function(){ F.set = ss.value; F.rarity = ""; applyFilterUI(); writeParams(); renderShop(); });
+    var ss = $("#setSel"); if(ss) ss.addEventListener("change", function(){ F.set = ss.value; applyFilterUI(); writeParams(); renderShop(); });
     var st = $("#stockOnly"); if(st) st.addEventListener("change", function(){ F.all = st.checked ? "" : "1"; applyFilterUI(); writeParams(); renderShop(); });
-    var priceRun = TL.debounce(function(){
-      var mn = $("#priceMin"), mx = $("#priceMax");
-      F.min = mn && mn.value !== "" ? String(Math.max(0, parseFloat(mn.value) || 0)) : "";
-      F.max = mx && mx.value !== "" ? String(Math.max(0, parseFloat(mx.value) || 0)) : "";
-      applyFilterUI(); writeParams(); renderShop();
-    }, 220);
-    ["#priceMin", "#priceMax"].forEach(function(s){ var el = $(s); if(el) el.addEventListener("input", priceRun); });
     bindTilt(shopGrid); bindTilt($("#featuredGrid")); bindTilt($("#recentStrip"));
   })();
   if(fineMQ.addEventListener) fineMQ.addEventListener("change", function(){ if(tiltCard){ clearTilt(tiltCard); tiltCard = null; } });
@@ -6334,6 +6262,8 @@ a:hover .round-arrow{transform:rotate(45deg)}
   };
   function enterShop(params){
     readParams(params);
+    // Retired filters must not silently narrow bookmarks after their controls go away.
+    if(params && ['cond','rarity','min','max'].some(function(k){return params[k]!==undefined;}))writeParams();
     buildGameChips(); applyFilterUI();
     var INV = TL.inventory;
     if(INV && !INV.loaded && !INV.failed) INV.load();
@@ -8074,17 +8004,17 @@ a:hover .round-arrow{transform:rotate(45deg)}
     var result=$('#buyResult'),status=$('#buyResultStatus'),send=$('#buySubmit'),draft=$('#buyDraftText'),version=0,sentVersion=-1;
     function connection(){
       if(form.getAttribute('aria-busy')==='true')return;
-      if(sentVersion===version){send.disabled=true;send.textContent='Inquiry sent';return;}
+      if(sentVersion===version){send.disabled=true;send.textContent='Quote request sent';return;}
       send.disabled=false;
-      send.textContent=TL.api.online?'Send buyout inquiry →':'Prepare email inquiry →';
-      $('#buyDeliveryNote').textContent=TL.api.online?'Send details and photo links privately to the shop. For photo attachments, use the email draft option below. No files are uploaded here.':'Prepare an email to the shop. Attach JPG, PNG or WebP photos in your email app before sending. Nothing is sent by this page.';
+      send.textContent=TL.api.online?'Send quote request →':'Prepare quote request →';
+      $('#buyDeliveryNote').textContent=TL.api.online?'Send your quote request and photo links privately to the shop. For photo attachments, use the email draft option below. No files are uploaded here.':'Prepare your quote request to email the shop. Attach JPG, PNG or WebP photos in your email app before sending. Nothing is sent by this page.';
     }
     function showDraft(fields,links,message){
-      var lines=['Collection buyout inquiry','Name: '+fields.name,'Contact: '+fields.contact,'Games / types: '+fields.games,'',fields.desc,'',links.length?'Photo links:\n'+links.join('\n'):'I can attach photos to this email.'];
+      var lines=['Collection quote request','Name: '+fields.name,'Contact: '+fields.contact,'Games / types: '+fields.games,'',fields.desc,'',links.length?'Photo links:\n'+links.join('\n'):'I can attach photos to this email.'];
       draft.value=lines.join('\n');
-      $('#buyEmailDraft').href=TL.forms.mailto('Collection buyout inquiry',lines);
+      $('#buyEmailDraft').href=TL.forms.mailto('Collection quote request',lines);
       $('#buyEmailDraft').hidden=false;$('#buyCopy').hidden=false;
-      status.textContent=message+' Open the email draft, attach photos if you like, then send it from your email app. If your email app leaves anything out, use Copy inquiry.';
+      status.textContent=message+' Open the email draft, attach photos if you like, then send it from your email app. If your email app leaves anything out, use Copy request.';
       result.hidden=false;result.focus({preventScroll:true});
     }
     form.addEventListener('input',function(e){
@@ -8103,24 +8033,34 @@ a:hover .round-arrow{transform:rotate(45deg)}
       try{links=photoLinks(fields.photosUrl);}catch(err){if(!bad)bad={ctrl:$('#buyPhotos'),msg:err.message};}
       if(bad){TL.forms.setFieldError(bad.ctrl,bad.msg);bad.ctrl.focus();return;}
       fields.photosUrl=links.join('\n');
-      showDraft(fields,links,'Your inquiry is ready, but has not been sent.');
+      showDraft(fields,links,'Your quote request is ready, but has not been sent.');
       if(!TL.api.online)return;
       var attempt=version;formsSetBusy(form,true);
       try{
         var response=await TL.forms.submit('buylist',fields);
         if(attempt!==version)return;
         sentVersion=attempt;
-        status.textContent='Your inquiry is in the shop’s inbox. We’ll use the contact details you provided to follow up. No offer is guaranteed until an in-store review. To send additional photo attachments, open the email draft and mention inquiry '+response.id+'.';
-        $('#buyEmailDraft').href=TL.forms.mailto('Photos for buyout inquiry '+response.id,[draft.value]);
+        status.textContent='Your quote request is in the shop’s inbox. We’ll use the contact details you provided to follow up. No offer is guaranteed until an in-store review. To send additional photo attachments, open the email draft and mention request '+response.id+'.';
+        $('#buyEmailDraft').href=TL.forms.mailto('Photos for collection quote request '+response.id,[draft.value]);
       }catch(err){
-        if(attempt===version)status.textContent='Your inquiry could not be confirmed. Your answers are still here. You can retry or open the email draft and send it yourself.';
+        if(attempt===version)status.textContent='Your quote request could not be confirmed. Your answers are still here. You can retry or open the email draft and send it yourself.';
       }finally{formsSetBusy(form,false);delete send.dataset.label;connection();}
     });
     $('#buyCopy').addEventListener('click',async function(){
-      try{await navigator.clipboard.writeText(draft.value);toast('Inquiry copied — paste it into your email.');}
+      try{await navigator.clipboard.writeText(draft.value);toast('Quote request copied — paste it into your email.');}
       catch(e){draft.hidden=false;draft.focus();draft.select();status.textContent='Copy the text below into an email to the shop. Nothing has been sent.';}
     });
     TL.api.ready.then(connection);TL.on('api:ready',connection);
+    function focusQuote(){
+      var heading=$('#buyQuoteTitle');
+      heading.focus({preventScroll:true});$('#buyQuote').scrollIntoView({block:'start',behavior:'auto'});
+    }
+    TL.on('view:change',function(d){if(d.name==='buylist'&&d.params&&d.params.quote==='1')requestAnimationFrame(focusQuote);});
+    document.addEventListener('click',function(e){
+      if(e.target.closest('[data-quote-link]')&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey&&!e.altKey&&e.button===0&&TL.current==='buylist'){
+        e.preventDefault();TL.setParams({quote:'1'},{replace:true});focusQuote();
+      }
+    });
     return {photoLinks:photoLinks};
   })();
 
@@ -10106,6 +10046,12 @@ a:hover .round-arrow{transform:rotate(45deg)}
       }
       function focus(el){
         if(!el) return;
+        // A phone-sized overview is useful for orientation; selecting a table
+        // brings its label into readable scale before centering it.
+        var rect=el.getBoundingClientRect();
+        if(rect.width>0 && rect.height>0 && (rect.width<32 || rect.height<24)){
+          fitMode=false;setZoom(zoom*Math.max(32/rect.width,24/rect.height));
+        }
         /* Center within this map, without scrolling the entire page. */
         var a=el.getBoundingClientRect(),b=scroll.getBoundingClientRect();
         scroll.scrollLeft+=a.left-b.left-(scroll.clientWidth-a.width)/2;
@@ -10139,6 +10085,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       publicBooths.forEach(function(b,i){var yes=match(b);if(yes)count++;var cell=$('#showFloorMap [data-floor-booth="'+i+'"]');cell.classList.toggle('is-muted',!yes);cell.disabled=!yes;cell.setAttribute('aria-hidden',String(!yes));});
       $('#showFloorList').innerHTML=publicBooths.map(function(b,i){return match(b)?'<li><button type="button" data-floor-booth="'+i+'" aria-pressed="'+(i===selected)+'"><span class="floor-swatch t-'+b.type+'" aria-hidden="true"></span><span><b>'+esc(b.label)+'</b><small>'+labels[b.type]+' · Row '+b.r+', column '+b.c+'</small></span><span aria-hidden="true">↗</span></button></li>':'';}).join('');
       $('#floorResults').textContent=count+' of '+publicBooths.length+' locations shown'+(!count?' — try another name or category.':'.');
+      if($('#floorSearch').value.trim() || $('#floorType').value){var directory=$('#showFloorList').closest('details');if(directory)directory.open=true;}
       if(selected>=0&&!match(publicBooths[selected]))details(-1);
     }
     function render(){

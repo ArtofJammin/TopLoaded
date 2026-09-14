@@ -5,6 +5,7 @@
         <p class="eyebrow">Bring it in &middot; Cash or credit</p>
         <h1>We buy collections</h1>
         <p class="lede">From a few favorite cards to a whole collection, bring what you've got to the shop. We look it over together and make an in-store offer based on condition and current market.</p>
+        <div class="buy-actions"><a class="btn" href="#/buylist?quote=1" data-quote-link>Get a Quote &rarr;</a><a class="linklike" href="#/visit" data-go="visit">Prefer to come in? Hours &amp; directions &rarr;</a></div>
       </div>
       <div class="buy-grid">
         <div class="buy-points">
@@ -29,7 +30,7 @@
           <section class="form-card buy-visit" aria-labelledby="buyVisitTitle">
             <p class="eyebrow">Let's see it in person</p>
             <h2 id="buyVisitTitle">Bring your collection<br>to the shop.</h2>
-            <p>Coming in is the best way to get an offer. All pricing and offers happen in store, after we've seen the cards. Planning a large buyout? You can send the details below first.</p>
+            <p>Coming in is the best way to get an offer. Final pricing and offers are confirmed in store, after we've seen the cards. Planning a large buyout? Send a quote request below so we can review what you have ahead of your visit.</p>
             <ol class="buy-steps">
               <li><b>Pack it up.</b> Keep cards protected; sorting by game helps us look through them.</li>
               <li><b>Stop in during shop hours.</b> For a large collection, call ahead so we can plan enough time.</li>
@@ -38,9 +39,10 @@
             <p class="buy-location" id="buyAddress">2514 Hazelwood Dr &middot; Crescent Springs, KY 41017</p>
             <div class="buy-actions"><a class="btn" href="#/visit" data-go="visit">Hours &amp; directions &rarr;</a><a class="btn btn-ghost" id="buyCall" href="tel:+15132222573">Call the shop</a></div>
           </section>
-          <details class="form-card buy-inquiry">
-            <summary>Planning a collection buyout? <span>Send us the details first &rarr;</span></summary>
-            <p>Tell us what you have so we can plan your visit. This is an inquiry, not an estimate or a guaranteed offer.</p>
+          <section class="form-card buy-inquiry" id="buyQuote" aria-labelledby="buyQuoteTitle">
+            <p class="eyebrow">A real person, not a calculator</p>
+            <h2 id="buyQuoteTitle" tabindex="-1">Get a Quote</h2>
+            <p>Send the shop a little about your cards, quantities and condition, with photo links if you have them. This helps us prepare and reduce processing time when you come in. The shop reviews each request personally; there is no automated estimator. Any preliminary quote is subject to seeing the cards in person.</p>
             <form id="buyForm" novalidate>
               <div class="form-grid">
                 <div class="field"><label for="buyName">Name</label><input id="buyName" name="name" required minlength="2" maxlength="80" autocomplete="name"></div>
@@ -49,11 +51,11 @@
                 <div class="field full"><label for="buyDesc">What would you like to sell?</label><textarea id="buyDesc" name="desc" rows="4" required minlength="3" maxlength="2000" placeholder="Approximate quantity, condition, and when you'd like to come in"></textarea></div>
                 <div class="field full"><label for="buyPhotos">Photo or album links <small>(optional)</small></label><textarea id="buyPhotos" name="photosUrl" rows="3" maxlength="2504" placeholder="https://photos.app.goo.gl/…" aria-describedby="buyPhotoHelp"></textarea><p class="card-note" id="buyPhotoHelp">Up to five HTTPS links, one per line. Share only your card photos, not IDs or payment details. Give the shop permission to view your album. Links are not loaded or previewed here.</p></div>
                 <div class="hp" aria-hidden="true"><label for="buyWebsite">Website</label><input id="buyWebsite" name="website" tabindex="-1" autocomplete="off"></div>
-                <div class="field full"><p id="buyDeliveryNote" class="card-note">Prepare an email to the shop. You can attach JPG, PNG or WebP photos in your email app before sending.</p><button type="submit" class="btn" id="buySubmit">Prepare email inquiry &rarr;</button></div>
+                <div class="field full"><p id="buyDeliveryNote" class="card-note">Prepare your quote request to email the shop. You can attach JPG, PNG or WebP photos in your email app before sending.</p><button type="submit" class="btn" id="buySubmit">Prepare quote request &rarr;</button></div>
               </div>
-              <div id="buyResult" class="buy-result" hidden tabindex="-1"><p id="buyResultStatus" role="status"></p><div class="buy-actions"><a class="btn" id="buyEmailDraft" hidden>Open email draft &rarr;</a><button class="btn btn-ghost" id="buyCopy" type="button" hidden>Copy inquiry</button></div><textarea id="buyDraftText" readonly rows="6" hidden aria-label="Inquiry text to copy"></textarea></div>
+              <div id="buyResult" class="buy-result" hidden tabindex="-1"><p id="buyResultStatus" role="status"></p><div class="buy-actions"><a class="btn" id="buyEmailDraft" hidden>Open email draft &rarr;</a><button class="btn btn-ghost" id="buyCopy" type="button" hidden>Copy request</button></div><textarea id="buyDraftText" readonly rows="6" hidden aria-label="Quote request text to copy"></textarea></div>
             </form>
-          </details>
+          </section>
         </div>
       </div>
     </div>

@@ -18,17 +18,17 @@
     var result=$('#buyResult'),status=$('#buyResultStatus'),send=$('#buySubmit'),draft=$('#buyDraftText'),version=0,sentVersion=-1;
     function connection(){
       if(form.getAttribute('aria-busy')==='true')return;
-      if(sentVersion===version){send.disabled=true;send.textContent='Inquiry sent';return;}
+      if(sentVersion===version){send.disabled=true;send.textContent='Quote request sent';return;}
       send.disabled=false;
-      send.textContent=TL.api.online?'Send buyout inquiry →':'Prepare email inquiry →';
-      $('#buyDeliveryNote').textContent=TL.api.online?'Send details and photo links privately to the shop. For photo attachments, use the email draft option below. No files are uploaded here.':'Prepare an email to the shop. Attach JPG, PNG or WebP photos in your email app before sending. Nothing is sent by this page.';
+      send.textContent=TL.api.online?'Send quote request →':'Prepare quote request →';
+      $('#buyDeliveryNote').textContent=TL.api.online?'Send your quote request and photo links privately to the shop. For photo attachments, use the email draft option below. No files are uploaded here.':'Prepare your quote request to email the shop. Attach JPG, PNG or WebP photos in your email app before sending. Nothing is sent by this page.';
     }
     function showDraft(fields,links,message){
-      var lines=['Collection buyout inquiry','Name: '+fields.name,'Contact: '+fields.contact,'Games / types: '+fields.games,'',fields.desc,'',links.length?'Photo links:\n'+links.join('\n'):'I can attach photos to this email.'];
+      var lines=['Collection quote request','Name: '+fields.name,'Contact: '+fields.contact,'Games / types: '+fields.games,'',fields.desc,'',links.length?'Photo links:\n'+links.join('\n'):'I can attach photos to this email.'];
       draft.value=lines.join('\n');
-      $('#buyEmailDraft').href=TL.forms.mailto('Collection buyout inquiry',lines);
+      $('#buyEmailDraft').href=TL.forms.mailto('Collection quote request',lines);
       $('#buyEmailDraft').hidden=false;$('#buyCopy').hidden=false;
-      status.textContent=message+' Open the email draft, attach photos if you like, then send it from your email app. If your email app leaves anything out, use Copy inquiry.';
+      status.textContent=message+' Open the email draft, attach photos if you like, then send it from your email app. If your email app leaves anything out, use Copy request.';
       result.hidden=false;result.focus({preventScroll:true});
     }
     form.addEventListener('input',function(e){
@@ -47,23 +47,33 @@
       try{links=photoLinks(fields.photosUrl);}catch(err){if(!bad)bad={ctrl:$('#buyPhotos'),msg:err.message};}
       if(bad){TL.forms.setFieldError(bad.ctrl,bad.msg);bad.ctrl.focus();return;}
       fields.photosUrl=links.join('\n');
-      showDraft(fields,links,'Your inquiry is ready, but has not been sent.');
+      showDraft(fields,links,'Your quote request is ready, but has not been sent.');
       if(!TL.api.online)return;
       var attempt=version;formsSetBusy(form,true);
       try{
         var response=await TL.forms.submit('buylist',fields);
         if(attempt!==version)return;
         sentVersion=attempt;
-        status.textContent='Your inquiry is in the shop’s inbox. We’ll use the contact details you provided to follow up. No offer is guaranteed until an in-store review. To send additional photo attachments, open the email draft and mention inquiry '+response.id+'.';
-        $('#buyEmailDraft').href=TL.forms.mailto('Photos for buyout inquiry '+response.id,[draft.value]);
+        status.textContent='Your quote request is in the shop’s inbox. We’ll use the contact details you provided to follow up. No offer is guaranteed until an in-store review. To send additional photo attachments, open the email draft and mention request '+response.id+'.';
+        $('#buyEmailDraft').href=TL.forms.mailto('Photos for collection quote request '+response.id,[draft.value]);
       }catch(err){
-        if(attempt===version)status.textContent='Your inquiry could not be confirmed. Your answers are still here. You can retry or open the email draft and send it yourself.';
+        if(attempt===version)status.textContent='Your quote request could not be confirmed. Your answers are still here. You can retry or open the email draft and send it yourself.';
       }finally{formsSetBusy(form,false);delete send.dataset.label;connection();}
     });
     $('#buyCopy').addEventListener('click',async function(){
-      try{await navigator.clipboard.writeText(draft.value);toast('Inquiry copied — paste it into your email.');}
+      try{await navigator.clipboard.writeText(draft.value);toast('Quote request copied — paste it into your email.');}
       catch(e){draft.hidden=false;draft.focus();draft.select();status.textContent='Copy the text below into an email to the shop. Nothing has been sent.';}
     });
     TL.api.ready.then(connection);TL.on('api:ready',connection);
+    function focusQuote(){
+      var heading=$('#buyQuoteTitle');
+      heading.focus({preventScroll:true});$('#buyQuote').scrollIntoView({block:'start',behavior:'auto'});
+    }
+    TL.on('view:change',function(d){if(d.name==='buylist'&&d.params&&d.params.quote==='1')requestAnimationFrame(focusQuote);});
+    document.addEventListener('click',function(e){
+      if(e.target.closest('[data-quote-link]')&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey&&!e.altKey&&e.button===0&&TL.current==='buylist'){
+        e.preventDefault();TL.setParams({quote:'1'},{replace:true});focusQuote();
+      }
+    });
     return {photoLinks:photoLinks};
   })();

@@ -21,7 +21,7 @@ test('photo links use identical client/server allowlists and reject scripts, loc
 test('buyout emails preserve photo links, collection details, and verified-format reply address',()=>{
   const f={name:'QA',contact:'qa@example.com',email:'qa@example.com',games:'Pokemon',desc:'Two binders',photoLinks:['https://imgur.com/a/cards']};
   const mail=emailFor('buylist',f);
-  assert.equal(mail.replyTo,f.email);assert.match(mail.subject,/buyout inquiry/);assert.ok(mail.text.includes(f.photoLinks[0]));assert.ok(mail.text.includes(f.desc));
+  assert.equal(mail.replyTo,f.email);assert.match(mail.subject,/quote request/);assert.ok(mail.text.includes(f.photoLinks[0]));assert.ok(mail.text.includes(f.desc));
   assert.doesNotMatch(read('src/js/41-buyout.js'),/localStorage|\.store\.(set|get)|new Image|fetch\(/);
   assert.match(read('src/js/41-buyout.js'),/if\(!TL.api.online\)return/);
   assert.match(read('src/html/14-buylist.html'),/attach JPG, PNG or WebP photos in your email app/);

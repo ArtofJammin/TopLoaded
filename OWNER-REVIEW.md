@@ -1,16 +1,22 @@
 # Top Loaded — owner review
 
-September 13, 2026 · [Open the updated site](https://artofjammin.github.io/TopLoaded/)
+September 14, 2026 · [Open the updated site](https://artofjammin.github.io/TopLoaded/)
 
 ## Changes ready to review
 
 - **Home:** Buy Desk and the duplicate stock section removed. Collection trade-in sits above the expanded Play Nights area, followed by Find Your Universe. Each scheduled game has a countdown. The moving card wall stays.
 - **Card discovery:** random cards come from complete set catalogs, not just shop stock. Available cards receive an in-stock badge.
+- **Latest Home/Shop refinements:** removed “03 /” from Make Room for What's Next. Removed Condition, Price Categories (including min/max), and Rarity filters. Search, game/set/type, wishlist, stock toggle and price sorting remain. Retired URL filters are discarded without losing search or a quick-view link; product condition, rarity and prices remain visible.
 - **Reviews:** genuine five-star TCGplayer highlights refresh every morning. Two five-star Google excerpts verified on the supplied business listing are included with author/source links and a verification date. They are explicitly saved highlights, not a live Google feed; the automatic Google provider still needs activation.
 - **Live:** updated to “Live Stream” and the requested card-show-style description. The claims board, Square catalog search, private payment links and signed-payment confirmation are built and tested. Payment-linked Square inventory is supported; production operation still needs the sales connection/acceptance steps.
 - **Card Show:** October 3, 2026 is confirmed; countdown is at the top. The actual Marketfloor 49-table arrangement is adapted into the interactive guide, with October vendor assignments pending (no old event bookings copied). The hotel reference is collapsed. Search, booth details, zoom, category colors, and assignment-based TCG/Sports percentages are supported. Admin can position, resize, rotate, assign and download the layout.
 - **Rip a Pack:** clearly a free digital simulator. No real pack, purchase, prize or ownership of the displayed cards.
-- **We Buy Collections:** recommends an in-store visit and keeps the estimator removed. An optional buyout inquiry accepts contact details and up to five validated HTTPS photo links. Without the API it prepares an email draft; customers attach photos and send in their email app. With the API it submits to the staff inbox. No website file upload, remote image preview, or browser storage of inquiry details.
+- **We Buy Collections:** recommends an in-store visit and keeps the estimator removed. **Get a Quote** is a visible, human-reviewed collection intake form with a prominent link and direct route `#/buylist?quote=1`. It accepts contact details and up to five validated HTTPS photo links. Without the API it prepares an explicitly unsent email draft; customers attach photos and send in their email app. With the API it submits to the staff inbox. No website file upload, remote image preview, or browser storage of inquiry details. The Home FAQ now points to this form; final offers remain subject to an in-store review.
+- **Flat-plan presentation:** the actual table arrangement is full-width, with the hotel building reference below it in a collapsed panel. Table search opens the directory, and selecting a tiny table on mobile zooms to readable scale. The owner can provide an updated diagram; existing geometry is retained until then.
+
+## TCGplayer checkout decision
+
+Keep the independent site and existing Top Loaded seller/listing links. Do not migrate checkout to a Pro website or enable a fee-bearing integration without approval. A corrected public Mass Entry URL prefills card text, but the tested page still describes marketplace-wide selection and exposes no Top Loaded-only restriction. The supplied `seller=` parameter is not verified as a seller lock. No bulk cart transfer was shipped, and no items were added to a TCGplayer cart during verification. The existing seller storefront is supported; seller-locked mass import needs confirmation from TCGplayer.
 
 ## Needed before operational sign-off
 

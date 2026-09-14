@@ -41,6 +41,12 @@
       }
       function focus(el){
         if(!el) return;
+        // A phone-sized overview is useful for orientation; selecting a table
+        // brings its label into readable scale before centering it.
+        var rect=el.getBoundingClientRect();
+        if(rect.width>0 && rect.height>0 && (rect.width<32 || rect.height<24)){
+          fitMode=false;setZoom(zoom*Math.max(32/rect.width,24/rect.height));
+        }
         /* Center within this map, without scrolling the entire page. */
         var a=el.getBoundingClientRect(),b=scroll.getBoundingClientRect();
         scroll.scrollLeft+=a.left-b.left-(scroll.clientWidth-a.width)/2;
@@ -74,6 +80,7 @@
       publicBooths.forEach(function(b,i){var yes=match(b);if(yes)count++;var cell=$('#showFloorMap [data-floor-booth="'+i+'"]');cell.classList.toggle('is-muted',!yes);cell.disabled=!yes;cell.setAttribute('aria-hidden',String(!yes));});
       $('#showFloorList').innerHTML=publicBooths.map(function(b,i){return match(b)?'<li><button type="button" data-floor-booth="'+i+'" aria-pressed="'+(i===selected)+'"><span class="floor-swatch t-'+b.type+'" aria-hidden="true"></span><span><b>'+esc(b.label)+'</b><small>'+labels[b.type]+' · Row '+b.r+', column '+b.c+'</small></span><span aria-hidden="true">↗</span></button></li>':'';}).join('');
       $('#floorResults').textContent=count+' of '+publicBooths.length+' locations shown'+(!count?' — try another name or category.':'.');
+      if($('#floorSearch').value.trim() || $('#floorType').value){var directory=$('#showFloorList').closest('details');if(directory)directory.open=true;}
       if(selected>=0&&!match(publicBooths[selected]))details(-1);
     }
     function render(){

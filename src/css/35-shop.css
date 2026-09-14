@@ -39,10 +39,6 @@ select,input,textarea{
 }
 select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
 label{font-family:var(--mono); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink3)}
-.price-range{display:flex; align-items:center; gap:6px; color:var(--ink3)}
-.price-range input{width:84px; padding:7px 10px; font-family:var(--mono); font-size:.85rem}
-.price-range input::-webkit-outer-spin-button,.price-range input::-webkit-inner-spin-button{-webkit-appearance:none; margin:0}
-.price-range input[type=number]{-moz-appearance:textfield; appearance:textfield}
 .stock-toggle{display:inline-flex; align-items:center; gap:8px; cursor:pointer; color:var(--ink2); text-transform:none; letter-spacing:.04em; font-size:.75rem; user-select:none}
 .stock-toggle input{width:16px; height:16px; margin:0; accent-color:var(--accent); padding:0}
 .reset-filters{margin-left:auto}
@@ -265,7 +261,6 @@ html.qv-open,html.qv-open body{overflow:hidden}
   .set-wrap{flex:1 1 100%}
   .set-wrap select{max-width:100%}
   .reset-filters{margin-left:0}
-  .price-range input{width:72px}
   .rv-tile{max-width:180px}
 }
 @media (pointer:coarse){

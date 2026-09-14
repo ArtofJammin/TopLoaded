@@ -49,7 +49,7 @@ test('requested removals, section ordering and public catalog are packaged',()=>
   assert.doesNotMatch(home,/id="ticker"|id="featuredGrid"|id="nextUp"/);
   assert.doesNotMatch(read('src/html/14-buylist.html'),/worthEstimator|worthForm|Get my offer|Start a quote/);
   assert.match(read('src/html/14-buylist.html'),/id="buyForm"/);
-  assert.match(read('src/html/14-buylist.html'),/All pricing and offers happen in store/);
+  assert.match(read('src/html/14-buylist.html'),/Final pricing and offers are confirmed in store/);
   assert.match(read('src/html/14-buylist.html'),/What to bring/);
   assert.doesNotMatch(home,/start a quote/i);
   assert.doesNotMatch(read('src/html/12-show.html'),/Past shows/);

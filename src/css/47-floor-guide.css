@@ -4,14 +4,16 @@
 .floor-zoom{display:flex;flex-shrink:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
 .floor-zoom button{border:0;border-right:1px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 13px;min-width:44px;min-height:44px;font:600 .85rem var(--body)}
 .floor-zoom button:last-child{border-right:0}.floor-zoom button:hover{background:var(--surface2)}
-.floor-guide-body{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:18px;margin:16px 0;align-items:start}
-.floor-guide-body .floor-scroll{margin:0;height:410px;cursor:grab;overscroll-behavior-x:contain;position:relative}
+.floor-guide-body{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin:16px 0;align-items:start}
+.floor-guide-body .floor-scroll{margin:0;height:clamp(220px,40vw,530px);cursor:grab;overscroll-behavior-x:contain;position:relative;background:color-mix(in srgb,var(--surface) 90%,var(--accent) 10%)}
 .floor-scroll.is-panning{cursor:grabbing;user-select:none}
 .floor-map{--fp-gap:6px;min-width:0;gap:var(--fp-gap);background-size:calc(var(--fp-cell) + var(--fp-gap)) calc(var(--fp-row,var(--fp-cell)) + var(--fp-gap));border:2px solid var(--line);box-sizing:content-box;isolation:isolate}
 .floor-map.is-hilton .fp-cell{margin:2px}
 .t-unassigned{background:var(--surface2);color:var(--ink2);border-color:var(--line)}
 #showFloorMap{background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:20px 20px}
-#showFloorMap .fp-cell.t-unassigned{border-color:color-mix(in srgb,var(--accent) 35%,var(--line));background:var(--surface2)}
+#showFloorMap .fp-cell.t-unassigned{border-color:color-mix(in srgb,var(--accent) 65%,var(--line));background:var(--surface2);color:var(--ink)}
+#showFloorMap .fp-cell b{font-size:clamp(4px,calc(var(--fp-cell)*2.5),16px)}
+#showFloorMap.is-hilton .fp-cell{margin:clamp(0px,calc(var(--fp-cell)*.15),2px)}
 #showFloorMap .fp-cell.is-vertical b{writing-mode:vertical-rl;overflow:visible}
 #showFloorMap .fp-cell.is-vertical i{display:none}
 .venue-reference-details{margin:12px 0 20px}.venue-reference-details>summary{cursor:pointer;color:var(--ink2);padding:12px 0;min-height:44px}
@@ -28,6 +30,7 @@
 .floor-map.is-dense .fp-cell b{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .floor-detail,.floor-inspector{padding:20px;border:1px solid var(--line);border-radius:12px;background:var(--surface);min-width:0}
 .floor-detail h3{font-size:1.6rem;overflow-wrap:anywhere;margin:10px 0}.floor-detail dl{margin:20px 0;display:grid;gap:5px}.floor-detail dt{font-size:.75rem;color:var(--ink2);text-transform:uppercase}.floor-detail dd{margin:0 0 10px;overflow-wrap:anywhere}
+.floor-directory{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:16px 0}.floor-directory>summary{cursor:pointer;min-height:48px;padding:14px 0;color:var(--ink);font-weight:700}
 .floor-vendors{list-style:none;padding:0;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
 .floor-vendors button{display:flex;align-items:center;gap:12px;text-align:left;padding:16px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:100%;height:100%;font:inherit}
 .floor-vendors button[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 3px 0 var(--accent)}
@@ -36,5 +39,5 @@
 #fpEditor{margin-top:0;display:block}#fpEditor .fp-row{padding:0 28px 0 0;border:0;background:none;gap:12px}#fpEditor .row-del{right:-18px;top:-14px}
 #fpMap .fp-cell{touch-action:none;user-select:none}#fpMap.is-placing{cursor:crosshair}#fpMap.is-placing .fp-cell{cursor:not-allowed}
 #fpPlace[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
-@media(max-width:760px){.floor-guide-body,.venue-reference{grid-template-columns:1fr}.venue-reference{padding:18px;gap:12px}.floor-guide-body .floor-scroll{height:340px}.floor-detail{padding:16px}.floor-tools>.btn{flex:1 1 auto}}
+@media(max-width:760px){.floor-guide-body,.venue-reference{grid-template-columns:1fr}.venue-reference{padding:18px;gap:12px}.floor-detail{padding:16px}.floor-tools>.btn{flex:1 1 auto}}
 @media(prefers-reduced-motion:reduce){.fp-cell{transition:none}}
