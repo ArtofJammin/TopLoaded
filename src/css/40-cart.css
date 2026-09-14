@@ -26,6 +26,12 @@ html.cart-open, html.cart-open body{overflow:hidden}
 /* ---- body ---- */
 .drawer-body{flex:1; overflow-y:auto; overflow-x:hidden; padding:4px 22px 20px; overscroll-behavior:contain}
 .cart-lines{list-style:none; margin:0; padding:0}
+.cart-group{margin:14px 0 24px;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.cart-group-stream{border-top:3px solid var(--accent)}.cart-group-tcg{border-top:3px solid var(--ink2)}
+.cart-group h3{font:700 1.35rem var(--disp);margin:0 0 8px}.cart-group-note,.cart-group-total,.ct-payment-note{font-size:.76rem;line-height:1.5;color:var(--ink2)}
+.cart-group-total{margin:12px 0 0;font-weight:600}.cart-group[hidden],.qty[hidden],#cartLegacySums[hidden]{display:none!important}
+.ct-payment{margin-top:8px}.ct-payment:empty{display:none}.ct-payment .btn{font-size:.72rem;white-space:normal;min-height:44px;padding:10px;max-width:100%}.ct-payment-note{display:block;margin:5px 0}
+#cartStreamLink{margin-bottom:10px}.drawer-foot .btn[hidden]{display:none!important}
 .cart-line{
   display:grid; grid-template-columns:52px minmax(0,1fr) auto; grid-template-areas:"art text price" "art ctrl ctrl";
   column-gap:12px; row-gap:8px; padding:14px 0; border-bottom:1px solid var(--line); align-items:start;

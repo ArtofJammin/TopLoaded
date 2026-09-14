@@ -63,3 +63,29 @@ test('flat plan is primary and the hotel reference stays secondary; table direct
   assert.match(html,/<details class="floor-directory"><summary>Table directory/);
   assert.match(read('src/css/47-floor-guide.css'),/\.floor-guide-body\{[^}]*grid-template-columns:minmax\(0,1fr\)/);
 });
+
+test('show spans three rooms without presenting the ballroom map as a complete show layout',()=>{
+  const show=read('src/html/12-show.html'),script=read('src/js/56-floorplan.js');
+  assert.match(show,/Triple Crown Ballroom, pre-function room, and business center/);
+  assert.match(show,/id="showFloorCoverage"/);
+  assert.match(show,/current table plan covers the ballroom only/);
+  assert.match(script,/Ballroom-only table plan/);
+  assert.match(script,/assigned booths only, not the full show/);
+  assert.match(read('src/html/18-admin.html'),/do not place the additional rooms inside its boundaries/);
+  const reference=JSON.parse(read('venue-plans/hilton-first-floor.json'));
+  assert.deepEqual(reference.showSpaces,['Triple Crown Ballroom','Pre-function room','Business center']);
+  assert.equal(reference.currentTablePlanCoverage,'Triple Crown Ballroom only');
+  assert.equal(reference.ballroomAccess.doorCount,3);
+  assert.equal(reference.businessCenterBooth.wallTables+reference.businessCenterBooth.tradeTables,5);
+  assert.equal(reference.businessCenterBooth.advertisedVendorOpenings,0);
+  assert.equal(reference.preFunctionTables.tableCount,null);
+  assert.doesNotMatch(reference.notes.join(' '),/Only the ballroom is definite/);
+  assert.equal(JSON.parse(read('config.default.json')).show.floorplan.booths.length,49);
+});
+
+test('wayfinding points to the Convention Entrance, all three ballroom doors and Top Loaded, not the Turfway Room',()=>{
+  const svg=read('venue-plans/hilton-show-guide.svg');
+  for(const text of ['CONVENTION','ENTRANCE','TOP LOADED BOOTH','PRE-FUNCTION AREA','NEAR DOOR','MIDDLE DOOR','FAR DOOR','Not the card show','NOT TO SCALE'])assert.ok(svg.includes(text));
+  assert.ok(read('.github/workflows/pages.yml').includes('venue-plans/hilton-show-guide.svg'));
+  assert.ok(read('src/html/12-show.html').includes('src="venue-plans/hilton-show-guide.svg"'));
+});

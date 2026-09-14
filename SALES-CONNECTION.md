@@ -6,7 +6,7 @@ The static GitHub site cannot itself receive private payment webhooks or change 
 
 1. Search the connected Square catalog on Live → Staff claim desk. Select the exact condition/printing; each claim is one unit. Review the agreed price and shipping/pickup choice.
 2. Set aside the physical card and confirm the claimant's public stream handle. Post the claim, then choose **Get payment link**.
-3. Send the link privately to that buyer. Payment details and the checkout URL never appear on the public claims board. Square collects payment and shipping information.
+3. Send the private buyer link to that buyer. It opens the site's **Stream purchases** cart section, separate from their **TCGplayer shopping list**. The site checks the claim's server-side price/status before offering payment and checks again when the buyer chooses Pay. Square collects payment and shipping information. Each claim pays separately; shipping is not combined across claims. Opening checkout does not mark anything paid or clear either cart section.
 4. A signed `payment.updated` webhook verifies the Square order, location, amount due, variation, quantity and price before marking the claim paid. The board updates within five seconds while open.
 5. The order references the actual Square catalog variation, with inventory tracking enabled. Square owns the stock deduction; the webhook does **not** subtract again. Staff mark paid claims shipped after fulfillment.
 

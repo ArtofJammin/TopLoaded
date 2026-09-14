@@ -46,14 +46,15 @@
     <div class="cart-done" id="cartDone" hidden></div>
   </div>
   <div class="drawer-foot" id="drawerFoot">
-    <div class="cart-sums">
+    <div class="cart-sums" id="cartLegacySums">
       <div class="sum"><span>Subtotal</span><b id="cartSubtotal">$0.00</b></div>
       <div class="sum" id="cartShipRow"><span id="cartShipLbl">Pickup</span><b id="cartShip">Free</b></div>
       <div class="sum total"><span>Estimated total</span><b id="cartTotal">$0.00</b></div>
     </div>
     <div class="cart-err" id="cartErr" role="alert" hidden></div>
     <button class="btn" id="checkoutBtn" type="button" hidden>Checkout</button>
-    <a class="btn" id="cartTcgLink" href="https://www.tcgplayer.com/search/all/product?seller=5c356cdf&amp;view=grid" target="_blank" rel="noopener">Visit our TCGplayer store &#8599;</a>
+    <a class="btn btn-ghost" id="cartStreamLink" href="#/live" data-cart-live hidden>Return to the live stream &rarr;</a>
+    <a class="btn" id="cartTcgLink" href="https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf" target="_blank" rel="noopener noreferrer">Visit our TCGplayer store &#8599;</a>
     <p class="drawer-note" id="cartNoteLine">Purchase on TCGplayer or visit the shop. Saved items are not reserved.</p>
   </div>
 </aside>

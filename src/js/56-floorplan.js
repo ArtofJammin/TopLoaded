@@ -90,15 +90,16 @@
       var map=$("#showFloorMap"), note=$("#showFloorNote"), mix=$("#showFloorMix"), legend=$("#showFloorLegend"), list=$("#showFloorList"), scroll=$("#showFloorScroll");
       if(!map) return;
       $('#showVenueReference').hidden=!/hilton/i.test(String((TL.config.show||{}).venue));
+      $('#showFloorCoverage').hidden=f.room!=='hilton-ballroom'||$('#showVenueReference').hidden;
       var guide=$('#showFloorGuide');guide.hidden=!booths.length;
       scroll.hidden = !booths.length; mix.hidden = !booths.length;
       if(!booths.length){ note.textContent="The vendor layout is not published yet. Check back for the confirmed TCG and Sports booth locations and percentages."; map.innerHTML=legend.innerHTML=list.innerHTML=mix.innerHTML="";publicBooths=[];selected=-1;return; }
       var s=stats(booths);
       var pending=booths.filter(function(b){return b.type==='unassigned';}).length;
-      note.textContent=s.total?s.total+" assigned vendor booths · TCG/Sports percentages are by assigned booth, not floor area. Mixed vendors are separate."+(pending?' '+pending+' assignments to follow.':''):"Marketfloor table layout · vendor assignments for this show are to be announced. TCG/Sports percentages will appear as vendors are assigned. Positions are subject to organizer confirmation.";
+      note.textContent=s.total?s.total+" assigned vendor booths on this plan · TCG/Sports percentages cover these assigned booths only, not the full show or floor area. Mixed vendors are separate."+(pending?' '+pending+' assignments to follow.':''):"Marketfloor table layout · vendor assignments for this show are to be announced. TCG/Sports percentages for this plan will appear as vendors are assigned. Positions are subject to organizer confirmation.";
       mix.hidden=!s.total;
       layout(map,f.room,{rows:rows,cols:cols});
-      $('#floorScaleNote').textContent=f.room==='hilton-ballroom'?'Triple Crown Ballroom · 96 × 41 ft · table-layout guide':'Organizer’s table-layout guide';
+      $('#floorScaleNote').textContent=f.room==='hilton-ballroom'?'Ballroom-only table plan · Triple Crown Ballroom · 96 × 41 ft':'Organizer’s table-layout guide';
       map.innerHTML=booths.map(function(b,i){return '<button type="button" class="fp-cell t-'+b.type+'" data-floor-booth="'+i+'" aria-pressed="false" aria-label="'+esc(b.label+' · '+labels[b.type]+', row '+b.r+', column '+b.c)+'" title="'+esc(b.label+' · '+labels[b.type])+'" style="grid-row:'+b.r+' / span '+b.h+';grid-column:'+b.c+' / span '+b.w+'"><b>'+esc(b.label)+'</b><i>'+labels[b.type]+'</i></button>';}).join("");
       mix.innerHTML=Object.keys(s.pct).map(function(k){return '<span class="t-'+k+'" style="width:'+s.pct[k]+'%"></span>';}).join("");
       legend.innerHTML=Object.keys(labels).filter(function(k){return booths.some(function(b){return b.type===k;});}).map(function(k){return '<li><i class="t-'+k+'" aria-hidden="true"></i>'+labels[k]+(s.pct[k]!==undefined?' '+s.pct[k]+'% ('+s.counts[k]+')':'')+'</li>';}).join("");

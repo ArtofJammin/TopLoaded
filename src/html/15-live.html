@@ -6,6 +6,7 @@
         <h1>Live stream</h1>
         <p class="lede">Card show style; you like the card, you claim it &mdash; sleeved, top loaded, and tracked. Shipped within two business days. <span class="demo-tag" id="liveDemoTag" hidden>simulated stream</span></p>
       </div>
+      <p id="streamCartNotice" class="card-note" role="status" hidden></p>
       <div class="live-grid">
         <div class="player">
           <div class="screen off" id="liveScreen">
@@ -115,7 +116,7 @@
           <div class="field"><label for="claimFulfillment">Delivery</label><select id="claimFulfillment"><option value="ship">Ship</option><option value="pickup">Shop pickup</option></select></div>
           <div class="field"><button class="btn" type="submit">Post confirmed claim</button></div>
         </div><p id="claimDeskStatus" role="status"></p></form>
-        <div id="claimPaymentResult" class="panel" hidden><p>Send this link privately to the confirmed buyer. It is not shown on the public board.</p><a id="claimPaymentLink" target="_blank" rel="noopener noreferrer">Open Square checkout ↗</a><input id="claimPaymentUrl" readonly aria-label="Payment link to copy"><button type="button" class="btn btn-ghost" id="claimPaymentCopy">Copy payment link</button></div>
+        <div id="claimPaymentResult" class="panel" hidden><p>Send this private link only to the confirmed buyer. It opens their stream purchase in the cart; anyone with this link can access that claim's checkout. Links expire after seven days and are never shown on the public board.</p><a id="claimPaymentLink" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Open buyer's cart ↗</a><input id="claimPaymentUrl" readonly aria-label="Private buyer link to copy"><button type="button" class="btn btn-ghost" id="claimPaymentCopy">Copy private buyer link</button></div>
       </section>
       <div class="section" style="padding-bottom:0">
         <div class="section-head"><h2>Stream schedule</h2><span class="demo-tag" id="schedTag">Eastern time</span></div>

@@ -1227,6 +1227,12 @@ html.cart-open, html.cart-open body{overflow:hidden}
 /* ---- body ---- */
 .drawer-body{flex:1; overflow-y:auto; overflow-x:hidden; padding:4px 22px 20px; overscroll-behavior:contain}
 .cart-lines{list-style:none; margin:0; padding:0}
+.cart-group{margin:14px 0 24px;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.cart-group-stream{border-top:3px solid var(--accent)}.cart-group-tcg{border-top:3px solid var(--ink2)}
+.cart-group h3{font:700 1.35rem var(--disp);margin:0 0 8px}.cart-group-note,.cart-group-total,.ct-payment-note{font-size:.76rem;line-height:1.5;color:var(--ink2)}
+.cart-group-total{margin:12px 0 0;font-weight:600}.cart-group[hidden],.qty[hidden],#cartLegacySums[hidden]{display:none!important}
+.ct-payment{margin-top:8px}.ct-payment:empty{display:none}.ct-payment .btn{font-size:.72rem;white-space:normal;min-height:44px;padding:10px;max-width:100%}.ct-payment-note{display:block;margin:5px 0}
+#cartStreamLink{margin-bottom:10px}.drawer-foot .btn[hidden]{display:none!important}
 .cart-line{
   display:grid; grid-template-columns:52px minmax(0,1fr) auto; grid-template-areas:"art text price" "art ctrl ctrl";
   column-gap:12px; row-gap:8px; padding:14px 0; border-bottom:1px solid var(--line); align-items:start;
@@ -1519,6 +1525,7 @@ html.page-hidden .drawer .cart-empty::before{animation-play-state:paused}
   @media(max-width:600px){.floor-map{--fp-cell:56px;background-size:62px 62px}.show-clock{padding:16px}.rev-meta,.rev-meta-head{grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr)}}
 
 /* A compact, theme-aware floor guide and visual editor. */
+.show-wayfinding>p{max-width:78ch;color:var(--ink2);line-height:1.7}.show-wayfinding figure{margin:24px 0 0;max-width:1000px}.show-wayfinding img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:14px}.show-wayfinding figcaption{font-size:.8rem;color:var(--ink2);margin-top:12px}
 .floor-tools{display:flex;align-items:end;flex-wrap:wrap;gap:12px;margin:18px 0 12px}
 .floor-tools .field{flex:1 1 170px;min-width:0}.floor-tools input,.floor-tools select{width:100%;min-height:44px}
 .floor-zoom{display:flex;flex-shrink:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
@@ -3453,7 +3460,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
         <p class="eyebrow" id="showEyebrow">First Saturday or Sunday &middot; Hilton on Turfway Road &middot; Florence, KY</p>
         <h1>The Top Loaded Card Show</h1>
         <div class="show-clock"><span>Next card show</span><span id="showCountdown" role="timer" aria-live="off">Date to be confirmed</span></div>
-        <p class="lede">Once a month we take over the Hilton ballroom on Turfway Road with vendor tables from across the Tri-State. Buy, sell, trade, and rip packs &mdash; admission is free and the doors are open 10 to 4.</p>
+        <p class="lede">Once a month we fill the Hilton's Triple Crown Ballroom, pre-function room, and business center on Turfway Road with vendors from across the Tri-State. Buy, sell, trade, and rip packs &mdash; admission is free and the doors are open 10 to 4.</p>
       </div>
       <div class="show-hero">
         <div class="show-date-card">
@@ -3493,8 +3500,17 @@ a:hover .round-arrow{transform:rotate(45deg)}
           </div>
         </form>
       </div>
+      <section class="section show-wayfinding" aria-labelledby="showArrivalTitle">
+        <div class="section-head"><h2 id="showArrivalTitle">Use the Convention Entrance</h2><span class="collector-note">Your way to the card show</span></div>
+        <p>Enter through the <b>Convention Entrance</b> and follow the pre-function area to the ballroom's three doors. Visit Top Loaded's booth in the business center. <b>The Turfway Room is not the card show.</b></p>
+        <figure><a href="venue-plans/hilton-show-guide.svg" target="_blank" rel="noopener noreferrer" aria-label="Open the card show entrance guide at full size"><img src="venue-plans/hilton-show-guide.svg" width="1000" height="720" loading="lazy" decoding="async" alt="Enter at the Convention Entrance. Follow the pre-function area to Top Loaded in the business center or through the near, middle and far doors into the Triple Crown Ballroom. Do not go to the Turfway Room."></a><figcaption>Tap the guide to open it full-size. Simplified wayfinding only&mdash;not to scale or a seating/safety plan.</figcaption></figure>
+      </section>
       <section class="section" aria-labelledby="floorTitle">
         <div class="section-head"><h2 id="floorTitle">Flat plan</h2><span class="collector-note">Explore the tables &middot; TCG &amp; Sports</span></div>
+        <p id="showFloorCoverage" class="card-note"><b>The show spans three spaces:</b> Triple Crown Ballroom, pre-function room, and business center. The current table plan covers the ballroom only; layouts for the other two spaces will be added when available.</p>
+        <p class="card-note"><b>Find Top Loaded in the business center:</b> four tables along the wall by the entrance door, plus a fifth table forming an L for trades. These are the shop's booth, not separate vendor openings.</p>
+        <p class="card-note"><b>Ballroom access:</b> three entrances on the pre-function side&mdash;near, middle, and far relative to the entrance. Keep all three access paths clear.</p>
+        <p class="card-note"><b>Pre-function tables:</b> the arrangement extends two tables out from the wall, with end tables as well. The detailed layout and table count are awaiting the organizer's diagram.</p>
         <p id="showFloorNote" class="card-note"></p>
         <div id="showFloorMix" class="floor-mix" aria-hidden="true"></div>
         <ul id="showFloorLegend" class="floor-legend"></ul>
@@ -3507,7 +3523,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
           <details class="floor-directory"><summary>Table directory</summary><ul id="showFloorList" class="floor-vendors" aria-label="Vendor directory"></ul></details>
         </div>
         <details class="venue-reference-details" id="showVenueReference"><summary>Hotel building reference &amp; directions</summary><section class="venue-reference" aria-labelledby="hiltonPlanTitle">
-          <div class="venue-reference-copy"><p class="eyebrow">Know the venue</p><h3 id="hiltonPlanTitle">Hilton Cincinnati Airport</h3><p>The Triple Crown Ballroom is highlighted on the hotel's first-floor reference plan. Published ballroom dimensions: <b>96 &times; 41 ft</b>.</p><p class="card-note">The hotel diagram is a reference, not a confirmed vendor arrangement. Lobby use, doors, exits and table positions must be confirmed with the organizer and venue.</p><a class="linklike" href="https://marketfloor.app/venues/8a57c194-916e-410c-a085-efbac3b39ad7/guide?locationId=8fdb51c9-6da6-4d06-bfaa-0e90b26b8fc4" target="_blank" rel="noopener noreferrer">Explore the Hilton in Marketfloor ↗</a></div>
+          <div class="venue-reference-copy"><p class="eyebrow">Know the venue</p><h3 id="hiltonPlanTitle">Hilton Cincinnati Airport</h3><p>The show uses the Triple Crown Ballroom, pre-function room, and business center. The ballroom is highlighted on this hotel reference; its published dimensions are <b>96 &times; 41 ft</b>.</p><p class="card-note">The hotel diagram is a building reference, not the full show's table arrangement. Exact boundaries, entrances, exits and table positions for all three spaces must be confirmed with the organizer and venue.</p><a class="linklike" href="https://marketfloor.app/venues/8a57c194-916e-410c-a085-efbac3b39ad7/guide?locationId=8fdb51c9-6da6-4d06-bfaa-0e90b26b8fc4" target="_blank" rel="noopener noreferrer">Explore the Hilton in Marketfloor ↗</a></div>
           <figure><div class="venue-plan-paper"><img src="venue-plans/hilton-first-floor.svg" alt="Hilton first-floor diagram: Triple Crown Ballroom beside the lobby and pre-function area" width="610" height="551" loading="lazy" decoding="async"><span class="venue-ballroom-outline" aria-hidden="true"></span></div><figcaption>Hotel-provided diagram, via the Marketfloor venue reference. <a href="https://custom.cvent.com/95cbca96509142b49afebbf7b0599659/files/rfp/85804e05e44a47d195543aedf6aaa8f0/646e697186df40a3b16f75ebac28a570.pdf" target="_blank" rel="noopener noreferrer">Source plan, page 2 ↗</a></figcaption></figure>
         </section></details>
       </section>
@@ -3634,6 +3650,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
         <h1>Live stream</h1>
         <p class="lede">Card show style; you like the card, you claim it &mdash; sleeved, top loaded, and tracked. Shipped within two business days. <span class="demo-tag" id="liveDemoTag" hidden>simulated stream</span></p>
       </div>
+      <p id="streamCartNotice" class="card-note" role="status" hidden></p>
       <div class="live-grid">
         <div class="player">
           <div class="screen off" id="liveScreen">
@@ -3743,7 +3760,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
           <div class="field"><label for="claimFulfillment">Delivery</label><select id="claimFulfillment"><option value="ship">Ship</option><option value="pickup">Shop pickup</option></select></div>
           <div class="field"><button class="btn" type="submit">Post confirmed claim</button></div>
         </div><p id="claimDeskStatus" role="status"></p></form>
-        <div id="claimPaymentResult" class="panel" hidden><p>Send this link privately to the confirmed buyer. It is not shown on the public board.</p><a id="claimPaymentLink" target="_blank" rel="noopener noreferrer">Open Square checkout ↗</a><input id="claimPaymentUrl" readonly aria-label="Payment link to copy"><button type="button" class="btn btn-ghost" id="claimPaymentCopy">Copy payment link</button></div>
+        <div id="claimPaymentResult" class="panel" hidden><p>Send this private link only to the confirmed buyer. It opens their stream purchase in the cart; anyone with this link can access that claim's checkout. Links expire after seven days and are never shown on the public board.</p><a id="claimPaymentLink" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Open buyer's cart ↗</a><input id="claimPaymentUrl" readonly aria-label="Private buyer link to copy"><button type="button" class="btn btn-ghost" id="claimPaymentCopy">Copy private buyer link</button></div>
       </section>
       <div class="section" style="padding-bottom:0">
         <div class="section-head"><h2>Stream schedule</h2><span class="demo-tag" id="schedTag">Eastern time</span></div>
@@ -4154,7 +4171,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       <div class="admin-card" id="cardFloorplan">
         <h3>Card show floor plan</h3>
         <p class="card-note">Build the actual show layout: select a booth to edit, drag it to move, or use its arrow keys. TCG, Sports and Mixed percentages count vendor booths, not floor area. Keep aisles, exits and other required clearances open; this editor does not certify a safe or venue-approved layout.</p>
-        <div class="field"><label for="setFpRoom">Room reference</label><select id="setFpRoom"><option value="hilton-ballroom">Hilton · Triple Crown Ballroom · 96 × 41 ft</option><option value="schematic">Custom schematic · no physical scale</option></select><p class="card-note" id="fpScaleNote"></p></div>
+        <div class="field"><label for="setFpRoom">Room reference</label><select id="setFpRoom"><option value="hilton-ballroom">Hilton · ballroom only · 96 × 41 ft</option><option value="schematic">Custom schematic · no physical scale</option></select><p class="card-note" id="fpScaleNote"></p><p class="card-note">The Hilton show also uses the pre-function room and business center. This calibrated grid covers only the ballroom; do not place the additional rooms inside its boundaries. Their table layouts still need to be incorporated from the organizer's diagram.</p></div>
         <div class="form-grid"><div class="field"><label for="setFpRows">Grid rows</label><input id="setFpRows" type="number" min="1" max="100" value="82"></div><div class="field"><label for="setFpCols">Grid columns</label><input id="setFpCols" type="number" min="1" max="200" value="192"></div></div>
         <div class="floor-tools"><div class="field"><label for="fpBrush">New booth category</label><select id="fpBrush"><option value="tcg">TCG</option><option value="sports">Sports</option><option value="mixed">Mixed</option><option value="food">Food</option><option value="entry">Entry</option></select></div><button class="btn btn-ghost" id="fpPlace" type="button" aria-pressed="false">Place on floor</button><button class="btn btn-ghost" id="fpRotate" type="button" disabled>Rotate selected</button><div class="floor-zoom" aria-label="Editor zoom"><button type="button" data-floor-zoom="out" aria-label="Zoom editor out">&minus;</button><button type="button" data-floor-zoom="fit">Fit floor</button><button type="button" data-floor-zoom="in" aria-label="Zoom editor in">+</button></div></div>
         <p id="fpSelection" class="card-note" role="status">Add a booth, or choose Place on floor and tap an empty square.</p>
@@ -4365,14 +4382,15 @@ a:hover .round-arrow{transform:rotate(45deg)}
     <div class="cart-done" id="cartDone" hidden></div>
   </div>
   <div class="drawer-foot" id="drawerFoot">
-    <div class="cart-sums">
+    <div class="cart-sums" id="cartLegacySums">
       <div class="sum"><span>Subtotal</span><b id="cartSubtotal">$0.00</b></div>
       <div class="sum" id="cartShipRow"><span id="cartShipLbl">Pickup</span><b id="cartShip">Free</b></div>
       <div class="sum total"><span>Estimated total</span><b id="cartTotal">$0.00</b></div>
     </div>
     <div class="cart-err" id="cartErr" role="alert" hidden></div>
     <button class="btn" id="checkoutBtn" type="button" hidden>Checkout</button>
-    <a class="btn" id="cartTcgLink" href="https://www.tcgplayer.com/search/all/product?seller=5c356cdf&amp;view=grid" target="_blank" rel="noopener">Visit our TCGplayer store &#8599;</a>
+    <a class="btn btn-ghost" id="cartStreamLink" href="#/live" data-cart-live hidden>Return to the live stream &rarr;</a>
+    <a class="btn" id="cartTcgLink" href="https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf" target="_blank" rel="noopener noreferrer">Visit our TCGplayer store &#8599;</a>
     <p class="drawer-note" id="cartNoteLine">Purchase on TCGplayer or visit the shop. Saved items are not reserved.</p>
   </div>
 </aside>
@@ -7011,6 +7029,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
   })();
 
   /* ---------- cart & checkout ----------
+     Production separates external TCGplayer saved items from private stream claims.
+     37-stream-cart.js verifies and pays each claim independently; mixed carts never
+     enter the legacy checkout described below (sandbox/demo only).
      TL.cart = { add(item, qty, fromEl), remove(id), setQty(id, n), lines(), count(), total(),
                  subtotal(), shipping(), has(id), qty(id), fulfillment(), open(), close(),
                  isOpen(), clear(), checkout(), render() }
@@ -7053,9 +7074,12 @@ a:hover .round-arrow{transform:rotate(45deg)}
   function cartSaveOpts(){ TL.store.set("cart-opts", cartOpts); }
 
   /* ---- item helpers ---- */
-  function cartIsLive(it){ return !!(it && (it.live || String(it.id).indexOf("live-spot-") === 0)); }
+  function cartIsLive(it){ return !!(it && (it.live || /^(live-spot-|stream-claim-)/.test(String(it.id)))); }
+  function cartChannel(it){ return /^tcg-/.test(String(it.id)) || (it.tcg&&!cartIsLive(it)) ? 'tcg' : cartIsLive(it) ? 'stream' : 'shop'; }
+  function cartGroups(lines){var groups={stream:[],tcg:[],shop:[]};(lines||cartLines()).forEach(function(l){groups[cartChannel(l.item)].push(l);});return groups;}
+  function cartGroupSubtotal(lines){return Math.round(lines.reduce(function(n,l){return n+(cartChannel(l.item)==='stream'&&/^(paid|shipped|cancelled)$/.test(l.item.claimStatus)?0:l.qty*l.item.price);},0)*100)/100;}
   function cartGameLabel(it){ return it.lineName || (TL.GAMES && TL.GAMES[it.game]) || "TCG"; }
-  function cartMax(it){ return Math.max(0, Math.min(Number(it.stock) || 0, CART_MAX_QTY)); }
+  function cartMax(it){ return Math.max(0, Math.min(Number(it.stock) || 0, cartChannel(it)==='stream'?1:CART_MAX_QTY)); }
   function cartSnap(it){
     if(!it || typeof it !== "object" || it.id === undefined || it.id === null) return null;
     var price = Number(it.price), stock = Number(it.stock);
@@ -7065,8 +7089,10 @@ a:hover .round-arrow{transform:rotate(45deg)}
       type: it.type === "sealed" ? "sealed" : "single", cond: it.cond ? String(it.cond).slice(0, 24) : null,
       price: isFinite(price) && price > 0 ? Math.round(price * 100) / 100 : 0,
       stock: isFinite(stock) ? Math.max(0, Math.floor(stock)) : 0,
-      tcg: !!it.tcg, img: it.img ? String(it.img) : "", url: it.url ? String(it.url) : "",
-      live: !!it.live || String(it.id).indexOf("live-spot-") === 0
+      tcg: !!it.tcg, img: it.img ? String(it.img) : "", url: !cartIsLive(it) && it.url ? String(it.url) : "",
+      live: cartIsLive(it),
+      claimId: /^stream-claim-[a-f0-9-]{36}$/.test(String(it.id)) ? String(it.id).slice(13) : '',
+      claimStatus: /^(claimed|paid|shipped|cancelled)$/.test(it.claimStatus) ? it.claimStatus : ''
     };
   }
   /* Looks an id up in whatever catalog is around: TL.inventory (shop module), the live
@@ -7096,7 +7122,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
         else if(v && typeof v === "object"){ qty = Number(v.qty); snap = cartSnap(v.item); }
         if(!snap || !isFinite(qty) || qty < 1) return;
         snap.id = id;
-        out[id] = {qty: Math.max(1, Math.min(Math.floor(qty), CART_MAX_QTY)), item: snap};
+        out[id] = {qty: Math.max(1, Math.min(Math.floor(qty), cartChannel(snap)==='stream'?1:CART_MAX_QTY)), item: snap};
       });
     }
     cart = out;
@@ -7181,7 +7207,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     }
     cartAddedPill(snap);
     var q = cartQty();
-    cartAnnounce(snap.name + " added. " + q + (q === 1 ? " item" : " items") + ", " + money(cartSubtotal()) + " subtotal.");
+    cartAnnounce(snap.name + " added to " + (cartChannel(snap)==='tcg'?'your TCGplayer shopping list':cartChannel(snap)==='stream'?'Stream purchases':'your cart') + ". " + q + (q === 1 ? " item" : " items") + " saved in total.");
     return added;
   }
   function cartSetQty(id, n){
@@ -7237,18 +7263,19 @@ a:hover .round-arrow{transform:rotate(45deg)}
   }
   function cartLineInner(l){
     var it = l.item, q = l.qty, live = cartIsLive(it), name = esc(it.name), idA = esc(it.id);
-    var meta = live ? "Live break · rip & ship" : cartGameLabel(it) + (it.set ? " · " + it.set : "");
+    var meta = live ? "Live stream · shop checkout" : cartGameLabel(it) + (it.set ? " · " + it.set : "");
     var hint = cartStockHint(it, q), tags = "";
     var productId = /^tcg-(\d{1,12})$/.exec(String(it.id));
-    var buyLink = TL.production && productId ? '<a class="ct-buy linklike" href="https://www.tcgplayer.com/product/' + productId[1] + '?seller=5c356cdf" target="_blank" rel="noopener">Buy on TCGplayer ↗</a>' : '';
-    if(live) tags += '<i class="ct-live">Live</i>';
+    var buyLink = productId ? '<a class="ct-buy linklike" href="https://www.tcgplayer.com/product/' + productId[1] + '?seller=5c356cdf" target="_blank" rel="noopener noreferrer">Buy on TCGplayer ↗</a>' : '';
+    if(cartChannel(it)==='tcg')tags+='<i class="ct-source">TCGplayer · external purchase</i>';
+    if(live) tags += '<i class="ct-live">Stream claim</i>';
     else if(it.cond) tags += '<i class="ct-cond">' + esc(it.cond) + "</i>";
     else if(it.type === "sealed") tags += '<i class="ct-cond">Sealed</i>';
     tags += '<i class="ct-stock' + (it.stock <= 0 ? " out" : "") + '"' + (hint ? "" : " hidden") + ">" + esc(hint) + "</i>";
     return cartThumb(it) +
-      '<div class="ct"><b class="ct-name">' + name + '</b><span class="ct-meta">' + esc(meta) + '</span><span class="ct-tags">' + tags + '</span>' + buyLink + '</div>' +
+      '<div class="ct"><b class="ct-name">' + name + '</b><span class="ct-meta">' + esc(meta) + '</span><span class="ct-tags">' + tags + '</span>' + buyLink + '<div class="ct-payment">'+cartStreamAction(it)+'</div></div>' +
       '<span class="lp">' + cartLinePrice(it, q) + "</span>" +
-      '<div class="ct-ctrl"><div class="qty" role="group" aria-label="Quantity of ' + name + '">' +
+      '<div class="ct-ctrl"><div class="qty"'+(it.claimId?' hidden':'')+' role="group" aria-label="Quantity of ' + name + '">' +
         '<button type="button" data-dec="' + idA + '" aria-label="' + (q > 1 ? "Remove one " : "Remove ") + name + '">&minus;</button>' +
         '<span class="qty-n">' + q + "</span>" +
         '<button type="button" data-inc="' + idA + '" aria-label="Add one ' + name + '"' + (q >= cartMax(it) ? " disabled" : "") + ">+</button></div>" +
@@ -7274,6 +7301,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     var st = li.querySelector(".ct-stock"), hint = cartStockHint(it, q);
     if(st){ st.textContent = hint; st.hidden = !hint; st.classList.toggle("out", it.stock <= 0); }
     var nm = li.querySelector(".ct-name"); if(nm && nm.textContent !== it.name) nm.textContent = it.name;
+    var payment=li.querySelector('.ct-payment'),action=cartStreamAction(it);if(payment&&payment.innerHTML!==action)payment.innerHTML=action;
     li.classList.toggle("soldout", it.stock <= 0);
   }
   function cartRemoveLine(li){
@@ -7293,11 +7321,11 @@ a:hover .round-arrow{transform:rotate(45deg)}
   function cartRenderLines(body, lines){
     var list = body.querySelector("ul.cart-lines");
     if(!list){ body.innerHTML = '<ul class="cart-lines" role="list"></ul>'; list = body.querySelector("ul.cart-lines"); }
-    var have = {};
+    var have = {},wanted={};lines.forEach(function(l){wanted[l.item.id]=true;});
     $$(".cart-line", list).forEach(function(li){
       if(li.classList.contains("leaving")) return;
       var id = li.getAttribute("data-id");
-      if(cart[id]) have[id] = li; else cartRemoveLine(li);
+      if(wanted[id]) have[id] = li; else cartRemoveLine(li);
     });
     var prev = null;
     lines.forEach(function(l){
@@ -7313,6 +7341,16 @@ a:hover .round-arrow{transform:rotate(45deg)}
       } else cartLineUpdate(li, l);
       prev = li;
     });
+  }
+  function cartStreamAction(it){
+    if(cartChannel(it)!=='stream')return '';
+    return TL.streamCart?TL.streamCart.action(it):'<span class="ct-payment-note">Host confirmation required before payment.</span>';
+  }
+  function cartRenderGroups(body,lines){
+    var groups=cartGroups(lines),labels={stream:'Stream purchases',tcg:'TCGplayer shopping list',shop:'In-store items'};
+    var notes={stream:'Pay confirmed claims separately through the shop’s secure checkout. TCGplayer items are not included.',tcg:'Saved for shopping on TCGplayer. Use the links below; this list does not transfer automatically or reserve stock.',shop:'Contact the shop to confirm availability and purchase.'};
+    if(!body.querySelector('[data-cart-group]'))body.innerHTML=Object.keys(groups).map(function(k){return '<section class="cart-group cart-group-'+k+'" data-cart-group="'+k+'" aria-labelledby="cartGroup-'+k+'"><h3 id="cartGroup-'+k+'">'+labels[k]+'</h3><p class="cart-group-note">'+notes[k]+'</p><div class="cart-group-lines"></div><p class="cart-group-total"></p></section>';}).join('');
+    Object.keys(groups).forEach(function(k){var el=body.querySelector('[data-cart-group="'+k+'"]');el.hidden=!groups[k].length;if(el.hidden)return;cartRenderLines(el.querySelector('.cart-group-lines'),groups[k]);el.querySelector('.cart-group-total').textContent=(k==='tcg'?'TCGplayer estimate':k==='stream'?'Stream items awaiting payment':'Item estimate')+': '+money(cartGroupSubtotal(groups[k]))+(k==='stream'?' · shipping/tax at each checkout':'');});
   }
   /* Square is only promised when the API is up AND /health says Square is configured; until
      that answer arrives (or when it says no) the drawer tells the demo truth up front. */
@@ -7370,10 +7408,11 @@ a:hover .round-arrow{transform:rotate(45deg)}
       form.hidden = true;
     } else {
       clearTimeout(cartEmptyTimer);
-      cartRenderLines(body, lines);
-      form.hidden = !!TL.production;
+      cartRenderGroups(body, lines);
+      form.hidden = !!TL.production || !!cartGroups(lines).stream.length || !!cartGroups(lines).tcg.length;
     }
     cartRenderSums(lines);
+    cartUpdateMode();
   }
 
   /* ---- drawer open / close ---- */
@@ -7396,6 +7435,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     cartSetInert(true);
     if(cartTrapRelease) cartTrapRelease();
     cartTrapRelease = TL.trapFocus(drawer, {initial: $("#drawerClose")});
+    TL.emit('cart:open',{});
   }
   function closeCart(){
     if(!drawer.classList.contains("open")) return;
@@ -7509,6 +7549,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   function cartCheckout(){
     if(cartBusy) return;
     if((TL.production || TL.api.base) && !cartSquareLive()){cartError("Your cart is saved. Complete your purchase on TCGplayer or visit the shop.",false);return;}
+    var split=cartGroups();if(split.stream.length||split.tcg.length){cartError('Use the separate stream payment or TCGplayer links. These purchases cannot be combined.',false);return;}
     cartHideError();
     var lines = cartLines();
     if(!lines.length){ toast("Cart is empty — go pull some hits"); return; }
@@ -7599,13 +7640,16 @@ a:hover .round-arrow{transform:rotate(45deg)}
   }
   function cartUpdateMode(){
     var tcg = $("#cartTcgLink"), checkout = $("#checkoutBtn");
-    if(tcg) tcg.hidden = !TL.production;
-    if(checkout) checkout.hidden = !!TL.production;
+    var groups=cartGroups(),separate=!!TL.production||!!groups.stream.length||!!groups.tcg.length;
+    if(tcg) tcg.hidden = !groups.tcg.length;
+    if(checkout) checkout.hidden = separate;
+    $('#cartLegacySums').hidden=separate;
+    $('#cartStreamLink').hidden=!groups.stream.length;
     $("#cartShipRow").hidden = !!TL.production;
     if(!cartBusy){ var b = $("#checkoutBtn"); if(b) b.textContent = cartCheckoutLabel(); }
     var n = $("#cartNoteLine");
     if(!n) return;
-    if(TL.production) n.textContent = "Use each card’s TCGplayer link to purchase. Your saved cart does not transfer to TCGplayer or reserve stock. Prices exclude any shipping and tax.";
+    if(separate) n.textContent = groups.stream.length?'Stream and TCGplayer purchases are separate. A saved item or opened payment link is not proof of payment.':'Use each card’s TCGplayer link to purchase, or visit the shop. Saved items are not reserved; estimates exclude shipping and tax.';
     else if(cartSquareLive()) n.textContent = "Square sandbox checkout — testing only, not a real purchase";
     else if(TL.api.online) n.textContent = "Online shop checkout is not activated. Buy through TCGplayer or visit the store; live claims use a separate checkout.";
     else n.textContent = "Demo mode — no payment or reservation. Live checkout requires a verified API and exact inventory mapping.";
@@ -7630,6 +7674,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
 
   /* ---- wiring ---- */
   document.addEventListener("click", function(e){
+    if(e.target.closest('[data-cart-live]')){e.preventDefault();closeCart();TL.go('live');return;}
     var add = e.target.closest("[data-add]");
     if(add){
       if(add.disabled) return;
@@ -7769,6 +7814,81 @@ a:hover .round-arrow{transform:rotate(45deg)}
     var v = sel ? $(sel) : null, h1 = v && v.querySelector("h1");
     if(h1){ h1.setAttribute("tabindex", "-1"); try { h1.focus({preventScroll: true}); } catch(e){} }
   });
+
+  /* Private host-issued claim links enter the Stream group, never the TCGplayer
+     checkout. Capabilities live in session storage only; payment URLs and buyer
+     access tokens are never written into the persisted cart or public feed. */
+  TL.streamCart=(function(){
+    var grants=TL.session.get('claim-access',{}),records={},requests={},incoming=null;
+    if(!grants||typeof grants!=='object'||Array.isArray(grants))grants={};
+    var idPattern=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+    function save(){Object.keys(grants).forEach(function(id){if(!idPattern.test(id)||!grants[id]||Date.now()-grants[id].at>7*86400000)delete grants[id];});TL.session.set('claim-access',grants);}
+    function access(id){var g=grants[id];return g&&g.base===TL.api.base&&Date.now()-g.at<7*86400000&&/^[a-f0-9]{64}$/.test(g.token)?g.token:null;}
+    function safeUrl(value){try{var u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&/(^|\.)square\.(link|site)$/.test(u.hostname)?u.href:null;}catch(e){return null;}}
+    function notice(text){var el=$('#streamCartNotice');el.textContent=text;el.hidden=!text;}
+    function validate(d,id){if(!d||d.id!==id||typeof d.card!=='string'||!isFinite(d.price)||d.price<=0||d.qty!==1||!/^(claimed|paid|shipped|cancelled)$/.test(d.status))throw new Error('The claim details could not be verified.');return d;}
+    function apply(d,add){
+      var id='stream-claim-'+d.id;
+      var snap=cartSnap({id:id,name:d.card,set:'Confirmed live stream claim',price:d.price,stock:1,live:true,claimStatus:d.status});
+      if(cart[id]){cart[id]={qty:1,item:snap};cartCommit('sync',{changed:[id]});}
+      else if(add)TL.cart.add(snap,1);
+    }
+    function load(id,add){
+      if(requests[id])return requests[id];
+      var token=access(id);
+      if(!TL.api.online||!token)return Promise.reject(new Error(!TL.api.online?'Stream payments are not connected. Ask the host for help.':'Reopen the private claim link from the host in this browser.'));
+      requests[id]=TL.api.post('/live/claims/'+encodeURIComponent(id)+'/payment',{access:token},{noAuth:true}).then(function(data){
+        var d=validate(data,id);records[id]={data:d,at:Date.now()};apply(d,add);return d;
+      }).catch(function(e){records[id]={error:e.error||e.message||'The payment service could not be reached.',at:Date.now()};TL.cart.render();throw e;}).finally(function(){delete requests[id];});
+      return requests[id];
+    }
+    function action(it){
+      if(!it.claimId)return '<span class="ct-payment-note">Host confirmation required. This saved stream item has no verified payment link.</span><button type="button" class="btn btn-ghost" data-cart-live>Contact the stream host</button>';
+      var id=it.claimId,r=records[id],d=r&&r.data;
+      if(d&&d.status!=='claimed')return '<span class="ct-payment-note">'+esc(d.status==='paid'?'Paid — confirmed by Square':d.status==='shipped'?'Paid and shipped':'Claim cancelled — do not pay')+'</span>';
+      if(!TL.api.online)return '<span class="ct-payment-note">Stream payments unavailable. Contact the host; nothing has been charged.</span>';
+      if(!access(id))return '<span class="ct-payment-note">Open the host’s private claim link to access payment. This saved item alone does not authorize checkout.</span>';
+      if(d&&d.mode==='sandbox'&&TL.production)return '<span class="ct-payment-note">Sandbox checkout only — real payment is not available.</span>';
+      if(d&&!d.url)return '<span class="ct-payment-note">'+esc(d.reason||'The host has not activated this checkout.')+'</span><button type="button" class="btn btn-ghost" data-stream-review="'+id+'">Check again</button>';
+      var pay=!!(d&&safeUrl(d.url));
+      return (r&&r.error?'<span class="ct-payment-note">'+esc(r.error)+'</span>':'')+
+        '<button type="button" class="btn" data-stream-'+(pay?'pay':'review')+'="'+id+'">'+(pay?(d.mode==='sandbox'?'Test checkout · no charge':'Pay stream claim ↗'):'Review stream payment')+'</button>'+
+        (d?'<span class="ct-payment-note">'+(d.fulfillment==='ship'?'Shipping '+money(d.shippingCents/100):'In-store pickup')+' · tax finalized by Square</span>':'');
+    }
+    function review(id,pay){
+      if(requests[id])return;
+      var hadItem=TL.cart.has('stream-claim-'+id);
+      load(id,false).then(function(d){
+        if(!pay||!hadItem||!TL.cart.has('stream-claim-'+id))return;
+        if(d.status!=='claimed'||!d.url){toast('This claim is not awaiting payment.');return;}
+        if(TL.production&&d.mode!=='production'){toast('Sandbox link — real payment is not available.');return;}
+        var u=safeUrl(d.url);if(!u){toast('Unexpected checkout destination — contact the host.');return;}
+        // Never clear the cart or mark paid on click/redirect. Only the signed
+        // Square webhook changes the server-side claim status.
+        window.location.href=u;
+      }).catch(function(e){toast(e.error||e.message||'Could not verify this claim.');});
+    }
+    function accept(){
+      if(!incoming)return;
+      var p=incoming;
+      if(!TL.api.online){notice('Stream checkout is not connected yet. Keep the host’s private link and reopen it when the shop activates payments.');return;}
+      incoming=null;grants[p.id]={token:p.token,base:TL.api.base,at:Date.now()};save();
+      load(p.id,true).then(function(){notice('Your confirmed claim is in the Stream purchases section of your cart.');TL.cart.open();}).catch(function(e){notice(e.error||e.message||'This claim could not be opened. Ask the host for a new private link.');});
+    }
+    function route(d){
+      var p=d&&d.params;if(!p||!p.access)return;
+      var valid=idPattern.test(p.claim||'')&&/^[a-f0-9]{64}$/.test(p.access);
+      if(valid)incoming={id:p.claim,token:p.access};
+      var clean=Object.assign({},p);delete clean.access;delete clean.claim;TL.setParams(clean,{replace:true});
+      if(!valid){notice('Invalid claim link. Ask the host for a new private link.');return;}
+      TL.api.ready.then(accept);
+    }
+    function refresh(){if(!TL.api.online||document.hidden)return;TL.cart.lines().forEach(function(l){var id=l.item.claimId,r=records[id];if(id&&access(id)&&(!r||Date.now()-r.at>15000))load(id,false).catch(function(){});});}
+    TL.on('view:change',route);TL.on('api:ready',function(){accept();refresh();TL.cart.render();});TL.on('cart:open',refresh);
+    document.addEventListener('visibilitychange',function(){if(!document.hidden)refresh();});
+    document.addEventListener('click',function(e){var b=e.target.closest('[data-stream-pay],[data-stream-review]');if(!b)return;review(b.dataset.streamPay||b.dataset.streamReview,!!b.dataset.streamPay);});
+    save();return {action:action,safeUrl:safeUrl,refresh:refresh};
+  })();
 
   /* ---------- forms: one shared submit helper ----------
      TL.forms.bind(form, opts) wires a <form> to POST /forms/<kind>:
@@ -9371,6 +9491,12 @@ a:hover .round-arrow{transform:rotate(45deg)}
     function checkoutStatus(){if(!TL.api.online)return;TL.api.get('/live/checkout/status',{noAuth:true}).then(function(d){checkoutReady=!!d.ready;$('#claimCheckoutState').textContent=d.reason+(d.mode==='sandbox'?' Sandbox only — no real payments.':'');render();}).catch(function(){checkoutReady=false;$('#claimCheckoutState').textContent='Payment connection could not be checked.';});}
     function controls(c){if(!staff())return '';var states=c.paymentManaged?(c.status==='paid'?['paid','shipped']:[c.status]):['claimed','paid','shipped','cancelled'];return '<br><select data-claim-status="'+esc(c.id)+'" aria-label="Status of '+esc(c.card)+'">'+states.map(function(s){return '<option'+(s===c.status?' selected':'')+'>'+s+'</option>';}).join('')+'</select>'+(c.payable&&c.status==='claimed'?'<br><button type="button" class="btn btn-ghost" data-claim-pay="'+esc(c.id)+'"'+(!checkoutReady?' disabled':'')+'>Get payment link</button>':'')+(c.paymentManaged&&c.status==='claimed'?'<button type="button" class="btn btn-ghost" data-claim-cancel="'+esc(c.id)+'">Cancel unpaid checkout</button>':'');}
     function staff(){return TL.api.online && (TL.api.role==="staff"||TL.api.role==="admin");}
+    function buyerLink(d){
+      var u=new URL(d.cartUrl||d.url);
+      if(d.cartUrl){if(u.origin!==location.origin||u.pathname!==location.pathname||!/^#\/live\?claim=/.test(u.hash))throw new Error('Unexpected buyer cart link');}
+      else if(u.protocol!=='https:'||u.username||u.password||u.port||!/(^|\.)square\.(link|site)$/.test(u.hostname))throw new Error('Unexpected checkout link');
+      $('#claimPaymentLink').href=u.href;$('#claimPaymentLink').textContent=d.cartUrl?'Open buyer’s cart ↗':'Open Square checkout ↗';$('#claimPaymentUrl').value=u.href;
+    }
     function render(){
       var list=$("#claimFeed"),empty=$("#claimFeedEmpty"),note=$("#claimFeedNote");
       $("#claimDesk").hidden=!staff();
@@ -9402,7 +9528,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     });
     $("#claimFeed").addEventListener("change",function(e){var sel=e.target.closest("[data-claim-status]");if(!sel||!staff())return;sel.disabled=true;TL.api.put("/live/claims/"+encodeURIComponent(sel.dataset.claimStatus),{status:sel.value}).then(refresh).catch(function(){toast("Claim status was not saved");lastSig="";render();}).finally(function(){sel.disabled=false;});});
     $('#claimFeed').addEventListener('click',function(e){var btn=e.target.closest('[data-claim-pay],[data-claim-cancel]');if(!btn||!staff())return;var cancel=btn.hasAttribute('data-claim-cancel'),id=cancel?btn.dataset.claimCancel:btn.dataset.claimPay;if(cancel&&!confirm('Cancel this unpaid Square checkout? The payment link will stop accepting payment.'))return;btn.disabled=true;
-      TL.api.post('/live/claims/'+encodeURIComponent(id)+(cancel?'/cancel-checkout':'/checkout'),{}).then(function(d){if(cancel){$('#claimPaymentResult').hidden=true;toast('Unpaid checkout cancelled');}else{var u=new URL(d.url);if(u.protocol!=='https:'||!/(^|\.)square\.(link|site)$/.test(u.hostname))throw new Error('Unexpected checkout link');$('#claimPaymentLink').href=u.href;$('#claimPaymentUrl').value=u.href;$('#claimPaymentResult').hidden=false;$('#claimPaymentUrl').focus();$('#claimDeskStatus').textContent=d.mode==='sandbox'?'Sandbox link — no real money.':'Share privately with the confirmed buyer. Square will confirm payment.';}refresh();}).catch(function(err){toast(err.error||err.message||'Checkout could not be prepared');}).finally(function(){btn.disabled=false;});
+      TL.api.post('/live/claims/'+encodeURIComponent(id)+(cancel?'/cancel-checkout':'/checkout'),{}).then(function(d){if(cancel){$('#claimPaymentResult').hidden=true;toast('Unpaid checkout cancelled');}else{buyerLink(d);$('#claimPaymentResult').hidden=false;$('#claimPaymentUrl').focus();$('#claimDeskStatus').textContent=d.mode==='sandbox'?'Sandbox link — no real money.':'Share privately with the confirmed buyer. Square will confirm payment.';}refresh();}).catch(function(err){toast(err.error||err.message||'Checkout could not be prepared');}).finally(function(){btn.disabled=false;});
     });
     $('#claimPaymentCopy').addEventListener('click',function(){var input=$('#claimPaymentUrl');if(navigator.clipboard)navigator.clipboard.writeText(input.value).then(function(){toast('Payment link copied');}).catch(function(){input.focus();input.select();});else{input.focus();input.select();}});
     $('#claimCatalogFind').addEventListener('click',function(){if(!staff())return;var btn=this,el=$('#claimCatalogResults'),q=$('#claimCatalogQuery').value.trim();if(q.length<2){el.textContent='Enter at least two characters.';return;}btn.disabled=true;el.textContent='Searching Square…';TL.api.get('/live/catalog?q='+encodeURIComponent(q)).then(function(d){catalogResults=d.items||[];el.innerHTML=catalogResults.length?catalogResults.map(function(c,i){return '<button class="btn btn-ghost" type="button" data-claim-item="'+i+'">'+esc(c.name)+(c.sku?' · '+esc(c.sku):'')+(c.price>0?' · '+money(c.price):'')+'</button>';}).join('')+(d.more?'<p>Narrow the search for more specific results.</p>':''):'No tracked variations matched. Try the exact SKU.';}).catch(function(e){el.textContent=e.error||'Square catalog unavailable.';}).finally(function(){btn.disabled=false;});});
@@ -10095,15 +10221,16 @@ a:hover .round-arrow{transform:rotate(45deg)}
       var map=$("#showFloorMap"), note=$("#showFloorNote"), mix=$("#showFloorMix"), legend=$("#showFloorLegend"), list=$("#showFloorList"), scroll=$("#showFloorScroll");
       if(!map) return;
       $('#showVenueReference').hidden=!/hilton/i.test(String((TL.config.show||{}).venue));
+      $('#showFloorCoverage').hidden=f.room!=='hilton-ballroom'||$('#showVenueReference').hidden;
       var guide=$('#showFloorGuide');guide.hidden=!booths.length;
       scroll.hidden = !booths.length; mix.hidden = !booths.length;
       if(!booths.length){ note.textContent="The vendor layout is not published yet. Check back for the confirmed TCG and Sports booth locations and percentages."; map.innerHTML=legend.innerHTML=list.innerHTML=mix.innerHTML="";publicBooths=[];selected=-1;return; }
       var s=stats(booths);
       var pending=booths.filter(function(b){return b.type==='unassigned';}).length;
-      note.textContent=s.total?s.total+" assigned vendor booths · TCG/Sports percentages are by assigned booth, not floor area. Mixed vendors are separate."+(pending?' '+pending+' assignments to follow.':''):"Marketfloor table layout · vendor assignments for this show are to be announced. TCG/Sports percentages will appear as vendors are assigned. Positions are subject to organizer confirmation.";
+      note.textContent=s.total?s.total+" assigned vendor booths on this plan · TCG/Sports percentages cover these assigned booths only, not the full show or floor area. Mixed vendors are separate."+(pending?' '+pending+' assignments to follow.':''):"Marketfloor table layout · vendor assignments for this show are to be announced. TCG/Sports percentages for this plan will appear as vendors are assigned. Positions are subject to organizer confirmation.";
       mix.hidden=!s.total;
       layout(map,f.room,{rows:rows,cols:cols});
-      $('#floorScaleNote').textContent=f.room==='hilton-ballroom'?'Triple Crown Ballroom · 96 × 41 ft · table-layout guide':'Organizer’s table-layout guide';
+      $('#floorScaleNote').textContent=f.room==='hilton-ballroom'?'Ballroom-only table plan · Triple Crown Ballroom · 96 × 41 ft':'Organizer’s table-layout guide';
       map.innerHTML=booths.map(function(b,i){return '<button type="button" class="fp-cell t-'+b.type+'" data-floor-booth="'+i+'" aria-pressed="false" aria-label="'+esc(b.label+' · '+labels[b.type]+', row '+b.r+', column '+b.c)+'" title="'+esc(b.label+' · '+labels[b.type])+'" style="grid-row:'+b.r+' / span '+b.h+';grid-column:'+b.c+' / span '+b.w+'"><b>'+esc(b.label)+'</b><i>'+labels[b.type]+'</i></button>';}).join("");
       mix.innerHTML=Object.keys(s.pct).map(function(k){return '<span class="t-'+k+'" style="width:'+s.pct[k]+'%"></span>';}).join("");
       legend.innerHTML=Object.keys(labels).filter(function(k){return booths.some(function(b){return b.type===k;});}).map(function(k){return '<li><i class="t-'+k+'" aria-hidden="true"></i>'+labels[k]+(s.pct[k]!==undefined?' '+s.pct[k]+'% ('+s.counts[k]+')':'')+'</li>';}).join("");

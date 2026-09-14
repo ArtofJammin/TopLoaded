@@ -1,4 +1,5 @@
 /* A compact, theme-aware floor guide and visual editor. */
+.show-wayfinding>p{max-width:78ch;color:var(--ink2);line-height:1.7}.show-wayfinding figure{margin:24px 0 0;max-width:1000px}.show-wayfinding img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:14px}.show-wayfinding figcaption{font-size:.8rem;color:var(--ink2);margin-top:12px}
 .floor-tools{display:flex;align-items:end;flex-wrap:wrap;gap:12px;margin:18px 0 12px}
 .floor-tools .field{flex:1 1 170px;min-width:0}.floor-tools input,.floor-tools select{width:100%;min-height:44px}
 .floor-zoom{display:flex;flex-shrink:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}

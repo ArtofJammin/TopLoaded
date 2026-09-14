@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" role="img" aria-labelledby="guide-title guide-desc">
+  <title id="guide-title">Top Loaded card show — enter at the Convention Entrance</title>
+  <desc id="guide-desc">A simplified wayfinding guide, not to scale. Enter from the Convention Entrance into the pre-function area. Top Loaded's booth is in the business center. The ballroom has three entrances along the pre-function side: near, middle and far. The Turfway Room is not part of the card show. Door positions and room proportions are schematic.</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M1 1 6 4 1 7" fill="none" stroke="#a66b00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+  <rect width="1000" height="720" rx="18" fill="#f7f2e6"/>
+  <g font-family="Arial,Helvetica,sans-serif" fill="#241f13">
+    <text x="40" y="43" font-size="17" font-weight="700" letter-spacing="2">TOP LOADED • HILTON CARD SHOW</text>
+    <rect x="300" y="70" width="400" height="130" rx="5" fill="#fff0b8" stroke="#51452b" stroke-width="3"/>
+    <text x="324" y="102" font-size="15" letter-spacing="1">BUSINESS CENTER</text>
+    <text x="324" y="136" font-size="27" font-weight="700">TOP LOADED BOOTH</text>
+    <text x="324" y="164" font-size="17">Four wall tables + an L-shaped trade table</text>
+    <rect x="80" y="215" width="700" height="115" rx="5" fill="#fff0b8" stroke="#51452b" stroke-width="3"/>
+    <text x="104" y="244" font-size="22" font-weight="700">PRE-FUNCTION AREA</text>
+    <rect x="80" y="350" width="650" height="200" rx="5" fill="#fffdf6" stroke="#51452b" stroke-width="3"/>
+    <text x="405" y="452" text-anchor="middle" font-size="36" font-weight="700">CARD SHOW</text>
+    <text x="405" y="486" text-anchor="middle" font-size="21" letter-spacing="1">TRIPLE CROWN BALLROOM</text>
+    <text x="405" y="520" text-anchor="middle" font-size="16">All three entrances face the pre-function area</text>
+    <rect x="800" y="350" width="160" height="200" rx="5" fill="#e5e1d7" stroke="#aaa394" stroke-width="2"/>
+    <text x="880" y="437" text-anchor="middle" font-size="20">HOTEL</text>
+    <text x="880" y="467" text-anchor="middle" font-size="20">LOBBY</text>
+    <g fill="#f7f2e6" stroke="#51452b" stroke-width="3">
+      <path d="M590 199h50M590 215h50M171 350h48M366 350h48M591 350h48M780 251v39" stroke="#fff0b8" stroke-width="7"/>
+    </g>
+    <g fill="none" stroke="#a66b00" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M910 270H195"/>
+      <path d="M615 270V183" marker-end="url(#arrow)"/>
+      <path d="M195 270V383" marker-end="url(#arrow)"/>
+      <path d="M390 270V383" marker-end="url(#arrow)"/>
+      <path d="M615 270V383" marker-end="url(#arrow)"/>
+    </g>
+    <rect x="740" y="86" width="220" height="124" rx="12" fill="#241f13"/>
+    <text x="850" y="118" text-anchor="middle" fill="#ffda43" font-size="16" font-weight="700" letter-spacing="2">START HERE</text>
+    <text x="850" y="150" text-anchor="middle" fill="#fffdf6" font-size="24" font-weight="700">CONVENTION</text>
+    <text x="850" y="180" text-anchor="middle" fill="#fffdf6" font-size="24" font-weight="700">ENTRANCE</text>
+    <path d="M910 213V259" fill="none" stroke="#a66b00" stroke-width="5" marker-end="url(#arrow)"/>
+    <g font-size="16" font-weight="700" text-anchor="middle">
+      <text x="195" y="408">FAR DOOR</text><text x="390" y="408">MIDDLE DOOR</text><text x="615" y="408">NEAR DOOR</text>
+    </g>
+    <rect x="80" y="580" width="650" height="72" rx="5" fill="#e5e1d7" stroke="#aaa394" stroke-width="2" stroke-dasharray="7 6"/>
+    <text x="104" y="610" font-size="21" font-weight="700">TURFWAY ROOM</text>
+    <text x="104" y="637" font-size="18">Not the card show — use the Convention Entrance above.</text>
+    <text x="40" y="694" font-size="14" fill="#625b4c">WAYFINDING ONLY • NOT TO SCALE • Room proportions, paths and door positions are schematic, not a safety or seating plan.</text>
+  </g>
+</svg>

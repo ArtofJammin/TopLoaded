@@ -1,8 +1,9 @@
 import { requireRole } from '../lib/auth.js';
-import { HttpError,v } from '../lib/http.js';
+import { HttpError,v,readJson,json } from '../lib/http.js';
 import {squareConfigured,squareRequest} from '../lib/square.js';
 import { rateLimit } from '../lib/ratelimit.js';
 import {claimCheckoutStatus,checkoutClaim,cancelClaimCheckout} from '../lib/claim-checkout.js';
+import {issueClaimCartLink,readClaimCart} from '../lib/claim-cart.js';
 async function board({env,req}){
   if(!env.LIVE_CLAIMS)throw new HttpError(503,'The shared claims board has not been connected');
   const id=env.LIVE_CLAIMS.idFromName('shop-stream');
@@ -27,7 +28,12 @@ export function register(r){
     return {items:items.slice(0,20),more:!!res.body?.cursor||items.length>20};
   });
   r.get('/live/checkout/status',async({env})=>claimCheckoutStatus(env));
-  r.post('/live/claims/:id/checkout',requireRole('staff'),async({env,params,ip})=>{await rateLimit(env,'claim-pay:'+ip,{limit:20,windowSec:60});return checkoutClaim(env,params.id);});
+  r.post('/live/claims/:id/checkout',requireRole('staff'),async({env,params,ip})=>{await rateLimit(env,'claim-pay:'+ip,{limit:20,windowSec:60});const result=await checkoutClaim(env,params.id);return {...result,cartUrl:await issueClaimCartLink(env,params.id)};});
+  r.post('/live/claims/:id/payment',async({env,params,req,ip})=>{
+    await rateLimit(env,'claim-view:'+ip,{limit:60,windowSec:60});
+    const b=await readJson(req,1024);
+    return json(await readClaimCart(env,params.id,b.access),200,{'cache-control':'no-store','referrer-policy':'no-referrer'});
+  });
   r.post('/live/claims/:id/cancel-checkout',requireRole('staff'),async({env,params})=>cancelClaimCheckout(env,params.id));
   r.get('/live/claims',board);
   r.post('/live/claims',requireRole('staff'),post);

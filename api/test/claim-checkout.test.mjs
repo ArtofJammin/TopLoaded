@@ -4,6 +4,7 @@ import {createHmac} from 'node:crypto';
 import {makeEnv,client} from './helpers.mjs';
 import {StreamClaims} from '../src/lib/stream-claims.js';
 import {memoryObject} from '../src/lib/memory-object.js';
+import {sha256hex} from '../src/lib/auth.js';
 const webhook='https://api.test/square/webhook',key='test-signature-key';
 async function fixture({available=1,tracked=true,enabled=true}={}){
   const env=makeEnv({LIVE_CLAIMS:memoryObject(StreamClaims),CLAIM_CHECKOUT_ENABLED:String(enabled),SQUARE_ACCESS_TOKEN:'test',SQUARE_LOCATION_ID:'LOC',SQUARE_WEBHOOK_URL:webhook,SQUARE_WEBHOOK_SIGNATURE_KEY:key});
@@ -58,4 +59,38 @@ test('Square catalog search is staff-only and returns only safe variation fields
 
 test('signed order reference recovers a paid claim when the KV checkout index was not saved',async()=>{
   const f=await fixture();try{const id=await f.add(),r=await f.c.post('/live/claims/'+id+'/checkout',{},f.opts);await f.env.KV.delete('order:sq:SQ-'+id);await f.env.KV.delete('order:'+r.data.orderId);assert.equal((await f.pay(id)).status,200);assert.equal((await f.c.get('/checkout/orders/'+r.data.orderId)).data.order.status,'paid');assert.equal((await f.c.get('/live/claims')).data.claims[0].status,'paid');}finally{f.restore();}
+});
+
+test('private cart grant is scoped to one claim, hashed in storage, and absent from the public feed',async()=>{
+  const f=await fixture({available:2});try{
+    const id=await f.add(),other=await f.add(),r=await f.c.post('/live/claims/'+id+'/checkout',{},f.opts);
+    assert.equal(r.status,200);const u=new URL(r.data.cartUrl),params=new URLSearchParams(u.hash.split('?')[1]),access=params.get('access');
+    assert.equal(u.origin,'https://artofjammin.github.io');assert.equal(u.search,'');assert.equal(params.get('claim'),id);assert.match(access,/^[a-f0-9]{64}$/);
+    const path='/live/claims/'+id+'/payment';
+    assert.equal((await f.c.post(path,{})).status,403);
+    assert.equal((await f.c.post(path,{access:'f'.repeat(64)})).status,403);
+    assert.equal((await f.c.post('/live/claims/'+other+'/payment',{access})).status,403);
+    const view=await f.c.post(path,{access});assert.equal(view.status,200);assert.equal(view.data.price,12.5);assert.equal(view.data.qty,1);assert.equal(view.data.url,r.data.url);assert.equal(view.headers.get('cache-control'),'no-store');
+    assert.ok(!JSON.stringify(view.data).includes('Test-handle'));assert.ok(!JSON.stringify(view.data).includes('VAR'));
+    const board=JSON.stringify((await f.c.get('/live/claims')).data);assert.ok(!board.includes(access));assert.ok(!board.includes('cartUrl'));assert.ok(!board.includes('square.link'));
+    const stored=await f.env.KV.get('claim-access:'+await sha256hex(access),'json');assert.equal(stored.claimId,id);assert.ok(!JSON.stringify(stored).includes(access));
+    stored.expires=Date.now()-1;await f.env.KV.put('claim-access:'+await sha256hex(access),JSON.stringify(stored));assert.equal((await f.c.post(path,{access})).status,403);
+  }finally{f.restore();}
+});
+
+test('private cart status never offers a second payment for paid or cancelled claims',async()=>{
+  for(const finish of ['paid','cancelled']){
+    const f=await fixture();try{const id=await f.add(),r=await f.c.post('/live/claims/'+id+'/checkout',{},f.opts),access=new URLSearchParams(new URL(r.data.cartUrl).hash.split('?')[1]).get('access');
+      if(finish==='paid')await f.pay(id);else await f.c.post('/live/claims/'+id+'/cancel-checkout',{},f.opts);
+      const view=await f.c.post('/live/claims/'+id+'/payment',{access});assert.equal(view.status,200);assert.equal(view.data.status,finish);assert.equal(view.data.url,null);
+    }finally{f.restore();}
+  }
+});
+
+test('private cart endpoint rejects malformed bodies and forged ids without creating any order',async()=>{
+  const f=await fixture();try{
+    assert.equal((await f.c.call('POST','/live/claims/not-a-claim/payment',undefined,{raw:'null'})).status,400);
+    assert.equal((await f.c.post('/live/claims/not-a-claim/payment',{access:'a'.repeat(64)})).status,403);
+    assert.equal(f.calls.length,0);
+  }finally{f.restore();}
 });

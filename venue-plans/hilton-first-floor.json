@@ -44,10 +44,15 @@
     "rotationDeg": 277.03
   },
   "confidence": "approximate",
+  "showSpaces": ["Triple Crown Ballroom", "Pre-function room", "Business center"],
+  "currentTablePlanCoverage": "Triple Crown Ballroom only",
+  "ballroomAccess": {"side":"pre-function","doorCount":3,"description":"Near, middle and far entrances relative to the entrance, per the organizer's correction; exact table-clearance geometry is not supplied.","positionsConfirmed":false},
+  "preFunctionTables": {"description":"Tables extend two tables out from the wall, with end tables as well.","tableCount":null,"positionsConfirmed":false},
+  "businessCenterBooth": {"vendor":"Top Loaded","wallTables":4,"tradeTables":1,"description":"Four tables along the wall by the entrance door, with a fifth forming an L for trades.","positionsConfirmed":false,"advertisedVendorOpenings":0},
   "notes": [
     "The ballroom rectangle is calibrated to the published 96 by 41 foot dimensions.",
     "The source is schematic; outside-room dimensions are estimates and are not surveyed usable-space boundaries.",
-    "The blueprint includes public, private, and other meeting spaces as context. Only the ballroom is definite for this show.",
-    "A venue administrator must define approved optional space, entrances, exits, and obstacles."
+    "The organizer confirmed that the show also uses the pre-function room and business center. Their table layouts and exact usable boundaries have not been supplied.",
+    "A venue administrator must confirm usable boundaries, entrances, exits, and obstacles for all three show spaces. Other hotel spaces remain context only."
   ]
 }

@@ -1,4 +1,7 @@
   /* ---------- cart & checkout ----------
+     Production separates external TCGplayer saved items from private stream claims.
+     37-stream-cart.js verifies and pays each claim independently; mixed carts never
+     enter the legacy checkout described below (sandbox/demo only).
      TL.cart = { add(item, qty, fromEl), remove(id), setQty(id, n), lines(), count(), total(),
                  subtotal(), shipping(), has(id), qty(id), fulfillment(), open(), close(),
                  isOpen(), clear(), checkout(), render() }
@@ -41,9 +44,12 @@
   function cartSaveOpts(){ TL.store.set("cart-opts", cartOpts); }
 
   /* ---- item helpers ---- */
-  function cartIsLive(it){ return !!(it && (it.live || String(it.id).indexOf("live-spot-") === 0)); }
+  function cartIsLive(it){ return !!(it && (it.live || /^(live-spot-|stream-claim-)/.test(String(it.id)))); }
+  function cartChannel(it){ return /^tcg-/.test(String(it.id)) || (it.tcg&&!cartIsLive(it)) ? 'tcg' : cartIsLive(it) ? 'stream' : 'shop'; }
+  function cartGroups(lines){var groups={stream:[],tcg:[],shop:[]};(lines||cartLines()).forEach(function(l){groups[cartChannel(l.item)].push(l);});return groups;}
+  function cartGroupSubtotal(lines){return Math.round(lines.reduce(function(n,l){return n+(cartChannel(l.item)==='stream'&&/^(paid|shipped|cancelled)$/.test(l.item.claimStatus)?0:l.qty*l.item.price);},0)*100)/100;}
   function cartGameLabel(it){ return it.lineName || (TL.GAMES && TL.GAMES[it.game]) || "TCG"; }
-  function cartMax(it){ return Math.max(0, Math.min(Number(it.stock) || 0, CART_MAX_QTY)); }
+  function cartMax(it){ return Math.max(0, Math.min(Number(it.stock) || 0, cartChannel(it)==='stream'?1:CART_MAX_QTY)); }
   function cartSnap(it){
     if(!it || typeof it !== "object" || it.id === undefined || it.id === null) return null;
     var price = Number(it.price), stock = Number(it.stock);
@@ -53,8 +59,10 @@
       type: it.type === "sealed" ? "sealed" : "single", cond: it.cond ? String(it.cond).slice(0, 24) : null,
       price: isFinite(price) && price > 0 ? Math.round(price * 100) / 100 : 0,
       stock: isFinite(stock) ? Math.max(0, Math.floor(stock)) : 0,
-      tcg: !!it.tcg, img: it.img ? String(it.img) : "", url: it.url ? String(it.url) : "",
-      live: !!it.live || String(it.id).indexOf("live-spot-") === 0
+      tcg: !!it.tcg, img: it.img ? String(it.img) : "", url: !cartIsLive(it) && it.url ? String(it.url) : "",
+      live: cartIsLive(it),
+      claimId: /^stream-claim-[a-f0-9-]{36}$/.test(String(it.id)) ? String(it.id).slice(13) : '',
+      claimStatus: /^(claimed|paid|shipped|cancelled)$/.test(it.claimStatus) ? it.claimStatus : ''
     };
   }
   /* Looks an id up in whatever catalog is around: TL.inventory (shop module), the live
@@ -84,7 +92,7 @@
         else if(v && typeof v === "object"){ qty = Number(v.qty); snap = cartSnap(v.item); }
         if(!snap || !isFinite(qty) || qty < 1) return;
         snap.id = id;
-        out[id] = {qty: Math.max(1, Math.min(Math.floor(qty), CART_MAX_QTY)), item: snap};
+        out[id] = {qty: Math.max(1, Math.min(Math.floor(qty), cartChannel(snap)==='stream'?1:CART_MAX_QTY)), item: snap};
       });
     }
     cart = out;
@@ -169,7 +177,7 @@
     }
     cartAddedPill(snap);
     var q = cartQty();
-    cartAnnounce(snap.name + " added. " + q + (q === 1 ? " item" : " items") + ", " + money(cartSubtotal()) + " subtotal.");
+    cartAnnounce(snap.name + " added to " + (cartChannel(snap)==='tcg'?'your TCGplayer shopping list':cartChannel(snap)==='stream'?'Stream purchases':'your cart') + ". " + q + (q === 1 ? " item" : " items") + " saved in total.");
     return added;
   }
   function cartSetQty(id, n){
@@ -225,18 +233,19 @@
   }
   function cartLineInner(l){
     var it = l.item, q = l.qty, live = cartIsLive(it), name = esc(it.name), idA = esc(it.id);
-    var meta = live ? "Live break · rip & ship" : cartGameLabel(it) + (it.set ? " · " + it.set : "");
+    var meta = live ? "Live stream · shop checkout" : cartGameLabel(it) + (it.set ? " · " + it.set : "");
     var hint = cartStockHint(it, q), tags = "";
     var productId = /^tcg-(\d{1,12})$/.exec(String(it.id));
-    var buyLink = TL.production && productId ? '<a class="ct-buy linklike" href="https://www.tcgplayer.com/product/' + productId[1] + '?seller=5c356cdf" target="_blank" rel="noopener">Buy on TCGplayer ↗</a>' : '';
-    if(live) tags += '<i class="ct-live">Live</i>';
+    var buyLink = productId ? '<a class="ct-buy linklike" href="https://www.tcgplayer.com/product/' + productId[1] + '?seller=5c356cdf" target="_blank" rel="noopener noreferrer">Buy on TCGplayer ↗</a>' : '';
+    if(cartChannel(it)==='tcg')tags+='<i class="ct-source">TCGplayer · external purchase</i>';
+    if(live) tags += '<i class="ct-live">Stream claim</i>';
     else if(it.cond) tags += '<i class="ct-cond">' + esc(it.cond) + "</i>";
     else if(it.type === "sealed") tags += '<i class="ct-cond">Sealed</i>';
     tags += '<i class="ct-stock' + (it.stock <= 0 ? " out" : "") + '"' + (hint ? "" : " hidden") + ">" + esc(hint) + "</i>";
     return cartThumb(it) +
-      '<div class="ct"><b class="ct-name">' + name + '</b><span class="ct-meta">' + esc(meta) + '</span><span class="ct-tags">' + tags + '</span>' + buyLink + '</div>' +
+      '<div class="ct"><b class="ct-name">' + name + '</b><span class="ct-meta">' + esc(meta) + '</span><span class="ct-tags">' + tags + '</span>' + buyLink + '<div class="ct-payment">'+cartStreamAction(it)+'</div></div>' +
       '<span class="lp">' + cartLinePrice(it, q) + "</span>" +
-      '<div class="ct-ctrl"><div class="qty" role="group" aria-label="Quantity of ' + name + '">' +
+      '<div class="ct-ctrl"><div class="qty"'+(it.claimId?' hidden':'')+' role="group" aria-label="Quantity of ' + name + '">' +
         '<button type="button" data-dec="' + idA + '" aria-label="' + (q > 1 ? "Remove one " : "Remove ") + name + '">&minus;</button>' +
         '<span class="qty-n">' + q + "</span>" +
         '<button type="button" data-inc="' + idA + '" aria-label="Add one ' + name + '"' + (q >= cartMax(it) ? " disabled" : "") + ">+</button></div>" +
@@ -262,6 +271,7 @@
     var st = li.querySelector(".ct-stock"), hint = cartStockHint(it, q);
     if(st){ st.textContent = hint; st.hidden = !hint; st.classList.toggle("out", it.stock <= 0); }
     var nm = li.querySelector(".ct-name"); if(nm && nm.textContent !== it.name) nm.textContent = it.name;
+    var payment=li.querySelector('.ct-payment'),action=cartStreamAction(it);if(payment&&payment.innerHTML!==action)payment.innerHTML=action;
     li.classList.toggle("soldout", it.stock <= 0);
   }
   function cartRemoveLine(li){
@@ -281,11 +291,11 @@
   function cartRenderLines(body, lines){
     var list = body.querySelector("ul.cart-lines");
     if(!list){ body.innerHTML = '<ul class="cart-lines" role="list"></ul>'; list = body.querySelector("ul.cart-lines"); }
-    var have = {};
+    var have = {},wanted={};lines.forEach(function(l){wanted[l.item.id]=true;});
     $$(".cart-line", list).forEach(function(li){
       if(li.classList.contains("leaving")) return;
       var id = li.getAttribute("data-id");
-      if(cart[id]) have[id] = li; else cartRemoveLine(li);
+      if(wanted[id]) have[id] = li; else cartRemoveLine(li);
     });
     var prev = null;
     lines.forEach(function(l){
@@ -301,6 +311,16 @@
       } else cartLineUpdate(li, l);
       prev = li;
     });
+  }
+  function cartStreamAction(it){
+    if(cartChannel(it)!=='stream')return '';
+    return TL.streamCart?TL.streamCart.action(it):'<span class="ct-payment-note">Host confirmation required before payment.</span>';
+  }
+  function cartRenderGroups(body,lines){
+    var groups=cartGroups(lines),labels={stream:'Stream purchases',tcg:'TCGplayer shopping list',shop:'In-store items'};
+    var notes={stream:'Pay confirmed claims separately through the shop’s secure checkout. TCGplayer items are not included.',tcg:'Saved for shopping on TCGplayer. Use the links below; this list does not transfer automatically or reserve stock.',shop:'Contact the shop to confirm availability and purchase.'};
+    if(!body.querySelector('[data-cart-group]'))body.innerHTML=Object.keys(groups).map(function(k){return '<section class="cart-group cart-group-'+k+'" data-cart-group="'+k+'" aria-labelledby="cartGroup-'+k+'"><h3 id="cartGroup-'+k+'">'+labels[k]+'</h3><p class="cart-group-note">'+notes[k]+'</p><div class="cart-group-lines"></div><p class="cart-group-total"></p></section>';}).join('');
+    Object.keys(groups).forEach(function(k){var el=body.querySelector('[data-cart-group="'+k+'"]');el.hidden=!groups[k].length;if(el.hidden)return;cartRenderLines(el.querySelector('.cart-group-lines'),groups[k]);el.querySelector('.cart-group-total').textContent=(k==='tcg'?'TCGplayer estimate':k==='stream'?'Stream items awaiting payment':'Item estimate')+': '+money(cartGroupSubtotal(groups[k]))+(k==='stream'?' · shipping/tax at each checkout':'');});
   }
   /* Square is only promised when the API is up AND /health says Square is configured; until
      that answer arrives (or when it says no) the drawer tells the demo truth up front. */
@@ -358,10 +378,11 @@
       form.hidden = true;
     } else {
       clearTimeout(cartEmptyTimer);
-      cartRenderLines(body, lines);
-      form.hidden = !!TL.production;
+      cartRenderGroups(body, lines);
+      form.hidden = !!TL.production || !!cartGroups(lines).stream.length || !!cartGroups(lines).tcg.length;
     }
     cartRenderSums(lines);
+    cartUpdateMode();
   }
 
   /* ---- drawer open / close ---- */
@@ -384,6 +405,7 @@
     cartSetInert(true);
     if(cartTrapRelease) cartTrapRelease();
     cartTrapRelease = TL.trapFocus(drawer, {initial: $("#drawerClose")});
+    TL.emit('cart:open',{});
   }
   function closeCart(){
     if(!drawer.classList.contains("open")) return;
@@ -497,6 +519,7 @@
   function cartCheckout(){
     if(cartBusy) return;
     if((TL.production || TL.api.base) && !cartSquareLive()){cartError("Your cart is saved. Complete your purchase on TCGplayer or visit the shop.",false);return;}
+    var split=cartGroups();if(split.stream.length||split.tcg.length){cartError('Use the separate stream payment or TCGplayer links. These purchases cannot be combined.',false);return;}
     cartHideError();
     var lines = cartLines();
     if(!lines.length){ toast("Cart is empty — go pull some hits"); return; }
@@ -587,13 +610,16 @@
   }
   function cartUpdateMode(){
     var tcg = $("#cartTcgLink"), checkout = $("#checkoutBtn");
-    if(tcg) tcg.hidden = !TL.production;
-    if(checkout) checkout.hidden = !!TL.production;
+    var groups=cartGroups(),separate=!!TL.production||!!groups.stream.length||!!groups.tcg.length;
+    if(tcg) tcg.hidden = !groups.tcg.length;
+    if(checkout) checkout.hidden = separate;
+    $('#cartLegacySums').hidden=separate;
+    $('#cartStreamLink').hidden=!groups.stream.length;
     $("#cartShipRow").hidden = !!TL.production;
     if(!cartBusy){ var b = $("#checkoutBtn"); if(b) b.textContent = cartCheckoutLabel(); }
     var n = $("#cartNoteLine");
     if(!n) return;
-    if(TL.production) n.textContent = "Use each card’s TCGplayer link to purchase. Your saved cart does not transfer to TCGplayer or reserve stock. Prices exclude any shipping and tax.";
+    if(separate) n.textContent = groups.stream.length?'Stream and TCGplayer purchases are separate. A saved item or opened payment link is not proof of payment.':'Use each card’s TCGplayer link to purchase, or visit the shop. Saved items are not reserved; estimates exclude shipping and tax.';
     else if(cartSquareLive()) n.textContent = "Square sandbox checkout — testing only, not a real purchase";
     else if(TL.api.online) n.textContent = "Online shop checkout is not activated. Buy through TCGplayer or visit the store; live claims use a separate checkout.";
     else n.textContent = "Demo mode — no payment or reservation. Live checkout requires a verified API and exact inventory mapping.";
@@ -618,6 +644,7 @@
 
   /* ---- wiring ---- */
   document.addEventListener("click", function(e){
+    if(e.target.closest('[data-cart-live]')){e.preventDefault();closeCart();TL.go('live');return;}
     var add = e.target.closest("[data-add]");
     if(add){
       if(add.disabled) return;
