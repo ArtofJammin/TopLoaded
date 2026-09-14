@@ -78,7 +78,7 @@ export function validateOwnerSettings(cfg) {
   const fail = m => { throw new HttpError(400, m); };
   const fp=cfg.show?.floorplan;
   if(fp !== undefined){
-    if(!fp || !Number.isInteger(fp.rows)||fp.rows<1||fp.rows>240||!Number.isInteger(fp.cols)||fp.cols<1||fp.cols>320||!Array.isArray(fp.booths)||fp.booths.length>100)fail('Floor plan needs a 1–240 by 1–320 grid and at most 100 booths');
+    if(!fp || !Number.isInteger(fp.rows)||fp.rows<1||fp.rows>240||!Number.isInteger(fp.cols)||fp.cols<1||fp.cols>320||!Array.isArray(fp.booths)||fp.booths.length>150)fail('Floor plan needs a 1–240 by 1–320 grid and at most 150 booths');
     if(fp.room!==undefined&&!['schematic','hilton-ballroom','hilton-show'].includes(fp.room))fail('Choose a Hilton show, ballroom or schematic room');
     if(fp.room==='hilton-show'&&(fp.rows!==showGrid.rows||fp.cols!==showGrid.cols))fail('Use the full Hilton show outline dimensions: '+showGrid.rows+' by '+showGrid.cols);
     const occupied=new Set(),ids=new Set();
@@ -88,7 +88,7 @@ export function validateOwnerSettings(cfg) {
       if(!['r','c','w','h'].every(k=>Number.isInteger(b[k])&&b[k]>=1)||b.r+b.h-1>fp.rows||b.c+b.w-1>fp.cols)fail('Booths must fit inside the floor plan');
       if(fp.room==='hilton-show'){
         const inside=showGrid.rooms.some(a=>b.r>=a.r&&b.c>=a.c&&b.r+b.h<=a.r+a.h&&b.c+b.w<=a.c+a.w);
-        const blocked=showGrid.clearways.concat(showGrid.obstacles||[]).some(a=>b.c<a.c+a.w&&a.c<b.c+b.w&&b.r<a.r+a.h&&a.r<b.r+b.h);
+        const blocked=showGrid.clearways.concat(showGrid.obstacles||[],showGrid.aisles||[]).some(a=>b.c<a.c+a.w&&a.c<b.c+b.w&&b.r<a.r+a.h&&a.r<b.r+b.h);
         if(!inside||blocked)fail('Keep tables inside show rooms and clear of walkways, pillars, seating and the ATM');
       }
       for(let r=b.r;r<b.r+b.h;r++)for(let c=b.c;c<b.c+b.w;c++){const key=r+','+c;if(occupied.has(key))fail('Floor plan booths overlap');occupied.add(key);}

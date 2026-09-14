@@ -26,14 +26,14 @@ test('buyout emails preserve photo links, collection details, and verified-forma
   assert.match(read('src/js/41-buyout.js'),/if\(!TL.api.online\)return/);
   assert.match(read('src/html/14-buylist.html'),/attach JPG, PNG or WebP photos in your email app/);
 });
-test('confirmed October show uses the Marketfloor table arrangement with no invented vendor assignments',()=>{
+test('confirmed October show keeps its revised table arrangement unassigned pending organizer confirmation',()=>{
   const config=JSON.parse(read('config.default.json'));
   assert.equal(config.show.date,'2026-10-03');
   const ballroom=config.show.floorplan.booths.filter(b=>/^t\d+$/.test(b.id));
-  assert.equal(ballroom.length,49);
+  assert.equal(ballroom.length,91);
   assert.ok(ballroom.every(b=>b.type==='unassigned'));
   assert.equal(ballroom[0].label,'T1');
-  assert.equal(ballroom.at(-1).label,'T49');
+  assert.equal(ballroom.at(-1).label,'T91');
   assert.doesNotThrow(()=>validateOwnerSettings(config));
   const c={TL:{on(){}}};vm.runInNewContext(read('src/js/56-floorplan.js'),c);
   assert.equal(c.TL.floorplan.stats(config.show.floorplan.booths).total,0);

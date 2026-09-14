@@ -684,7 +684,7 @@
     fpCreate(spot);
   });
   function fpCreate(spot){
-    if(fpWork.length>=100){toast('A floor plan supports up to 100 locations');return;}
+    if(fpWork.length>=150){toast('A floor plan supports up to 150 locations');return;}
     fpWork.push({uid:'bnew'+(++fpUid),id:'',label:'',type:val('fpBrush')||'tcg',r:spot.r,c:spot.c,w:1,h:1});
     fpSelected=fpWork.length-1;fpPlacing=false;renderFpEditor();
     var inp=$('#fpEditor .fp-label');if(inp)inp.focus();

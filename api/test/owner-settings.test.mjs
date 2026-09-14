@@ -12,7 +12,7 @@ test('full show geometry saves all room tables but rejects blocked entrance rout
   assert.equal((await c.get('/config')).data.show.floorplan.booths.filter(b=>b.type==='shop').length,4);
   const booth={id:'outer-test',label:'Outer test',type:'unassigned',r:68,c:20,w:5,h:6};
   assert.equal((await c.put('/config',{show:{floorplan:{...floorplan,booths:[...floorplan.booths,booth]}}},opts)).status,200);
-  for(const blocked of [{r:48,c:25,w:6,h:3},{r:5,c:5,w:6,h:3},{r:82,c:45,w:10,h:2},{r:56,c:31,w:6,h:5},{r:64,c:150,w:4,h:12},{r:17,c:123,w:6,h:8},{r:100,c:210,w:5,h:5},{r:180,c:105,w:5,h:5}]){
+  for(const blocked of [{r:48,c:25,w:6,h:3},{r:5,c:5,w:6,h:3},{r:82,c:45,w:10,h:2},{r:56,c:31,w:6,h:5},{r:64,c:150,w:4,h:12},{r:17,c:123,w:6,h:8},{r:100,c:210,w:5,h:5},{r:180,c:105,w:5,h:5},{r:97,c:30,w:6,h:3},{r:112,c:30,w:6,h:2}]){
     assert.equal((await c.put('/config',{show:{floorplan:{...floorplan,booths:[...floorplan.booths,{...booth,...blocked}]}}},opts)).status,400);
   }
   assert.equal((await c.put('/config',{show:{floorplan:{...floorplan,rows:100}}},opts)).status,400);

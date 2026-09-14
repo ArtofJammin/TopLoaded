@@ -71,10 +71,10 @@ function floorContext(){
   vm.runInNewContext(read('src/js/56-floorplan.js'),c);
   return {f:c.TL.floorplan,grid,config:JSON.parse(read('config.default.json')).show.floorplan};
 }
-test('full show map keeps 49 ballroom tables with Trades replacing TL1, not an extra table',()=>{
+test('full show draft fills the perimeter and four inner rows without moving Top Loaded',()=>{
   const {f,grid,config}=floorContext(),ballroom=config.booths.filter(b=>/^t\d+$/.test(b.id)),shop=config.booths.filter(b=>b.type==='shop');
   assert.equal(config.room,'hilton-show');assert.equal(config.rows,grid.rows);assert.equal(config.cols,grid.cols);
-  assert.equal(ballroom.length,49);assert.equal(ballroom[0].r,89);assert.equal(ballroom[0].c,7);
+  assert.equal(ballroom.length,91);assert.equal(ballroom[0].r,84);assert.equal(ballroom[0].c,5);
   assert.equal(shop.length,4);assert.equal(shop.filter(b=>b.w>b.h).length,3);assert.equal(shop.filter(b=>b.h>b.w).length,1);
   assert.deepEqual(shop.find(b=>b.id==='tl-trades'),{id:'tl-trades',label:'Trades',type:'shop',r:16,c:143,w:5,h:16});
   assert.equal(shop.some(b=>b.label==='TL1'),false);
@@ -95,7 +95,7 @@ test('room outlines and all entrances are in the same zoomable map coordinate sy
 test('six two-table outer runs and two connecting caps match the annotated plan; missing positions can be restored',()=>{
   const {f,grid,config}=floorContext(),booths=config.booths.filter(b=>!b.id.startsWith('pf-'));
   const outer=config.booths.filter(b=>b.id.startsWith('pf-'));
-  assert.equal(outer.length,14);assert.equal(config.booths.length,67);
+  assert.equal(outer.length,14);assert.equal(config.booths.length,109);
   assert.deepEqual(outer.map(({r,c,w,h})=>({r,c,w,h})),grid.outerRuns.flat());
   const initial=booths.length;
   for(let i=0;i<6;i++){const run=f.outerRun(booths,config.room);assert.equal(run.length,[2,3,2,2,2,3][i]);assert.ok(run[0].h>run[0].w);assert.equal(run[1].r,run[0].r+run[0].h);booths.push(...run);}
@@ -106,6 +106,21 @@ test('six two-table outer runs and two connecting caps match the annotated plan;
   assert.equal(f.canPlace([],{r:5,c:5,w:6,h:3},config,-1),false,'outside room outline');
   for(const b of grid.doors.concat(grid.obstacles,grid.context))assert.equal(f.canPlace([],b,config,-1),false,b.label);
   assert.match(read('src/html/18-admin.html'),/id="fpAddOuterRun"/);
+});
+
+test('two double-row blocks separate three customer aisles from two protected vendor-only aisles',()=>{
+  const {f,grid,config}=floorContext(),ballroom=config.booths.filter(b=>/^t\d+$/.test(b.id));
+  const customers=grid.aisles.filter(a=>a.access==='customer'),vendors=grid.aisles.filter(a=>a.access==='vendor');
+  assert.equal(customers.length,3);assert.equal(vendors.length,2);
+  assert.equal(customers[0].r-grid.rooms.find(r=>r.id==='ballroom').r,grid.ballroomLayout.tableWidth);
+  for(const r of [105,116,131,142])assert.equal(ballroom.filter(b=>b.r===r&&b.w===12).length,13);
+  for(const [a,b,vendor]of [[105,116,vendors[0]],[131,142,vendors[1]]]){
+    assert.equal(a+5,vendor.r);assert.equal(vendor.r+vendor.h,b);
+  }
+  assert.equal(ballroom.filter(b=>b.r===84).length,13);assert.equal(ballroom.filter(b=>b.r===159).length,16);
+  for(const c of [6,191])assert.equal(ballroom.filter(b=>b.c===c&&b.w===5).length,5);
+  for(const aisle of grid.aisles)assert.equal(f.canPlace([],aisle,config,-1),false);
+  assert.match(f.backdrop(config.room),/CUSTOMER AISLE 3/);assert.match(f.backdrop(config.room),/VENDORS ONLY · 2/);
 });
 
 test('pointer focus does not move a table before its selection click can complete',()=>{

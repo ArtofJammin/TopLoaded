@@ -13,7 +13,7 @@
       "c": 5,
       "w": 192,
       "h": 82,
-      "labelR": 161,
+      "labelR": 169,
       "labelC": 70
     },
     {
@@ -69,12 +69,6 @@
       "h": 18
     },
     {
-      "r": 84,
-      "c": 6,
-      "w": 190,
-      "h": 4
-    },
-    {
       "r": 63,
       "c": 149,
       "w": 43,
@@ -85,6 +79,24 @@
       "c": 122,
       "w": 10,
       "h": 12
+    },
+    {
+      "r": 89,
+      "c": 6,
+      "w": 190,
+      "h": 6
+    },
+    {
+      "r": 95,
+      "c": 11,
+      "w": 12,
+      "h": 62
+    },
+    {
+      "r": 95,
+      "c": 179,
+      "w": 12,
+      "h": 62
     }
   ],
   "doors": [
@@ -317,5 +329,66 @@
         "h": 5
       }
     ]
-  ]
+  ],
+  "aisles": [
+    {
+      "id": "customer-1",
+      "access": "customer",
+      "label": "CUSTOMER AISLE 1",
+      "r": 95,
+      "c": 11,
+      "w": 180,
+      "h": 10
+    },
+    {
+      "id": "vendor-1",
+      "access": "vendor",
+      "label": "VENDORS ONLY · 1",
+      "r": 110,
+      "c": 23,
+      "w": 156,
+      "h": 6
+    },
+    {
+      "id": "customer-2",
+      "access": "customer",
+      "label": "CUSTOMER AISLE 2",
+      "r": 121,
+      "c": 11,
+      "w": 180,
+      "h": 10
+    },
+    {
+      "id": "vendor-2",
+      "access": "vendor",
+      "label": "VENDORS ONLY · 2",
+      "r": 136,
+      "c": 23,
+      "w": 156,
+      "h": 6
+    },
+    {
+      "id": "customer-3",
+      "access": "customer",
+      "label": "CUSTOMER AISLE 3",
+      "r": 147,
+      "c": 11,
+      "w": 180,
+      "h": 10
+    }
+  ],
+  "ballroomLayout": {
+    "tableWidth": 12,
+    "tableDepth": 5,
+    "entranceDepth": 12,
+    "innerRows": [
+      105,
+      116,
+      131,
+      142
+    ],
+    "innerStart": 23,
+    "innerTablesPerRow": 13,
+    "confirmation": "Draft table positions; final count and clearances require organizer confirmation."
+  }
 }

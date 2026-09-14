@@ -3,13 +3,14 @@
     var labels = {tcg:"TCG",sports:"Sports",mixed:"Mixed",unassigned:"Vendor to be announced",shop:"Top Loaded booth",food:"Food",entry:"Entry"};
     function venue(room){return room==='hilton-show'?window.TL_FLOOR_VENUE:null;}
     function inside(b,a){return b.r>=a.r&&b.c>=a.c&&b.r+b.h<=a.r+a.h&&b.c+b.w<=a.c+a.w;}
-    function accessible(b,size){var v=venue(size.room);return !v||(size.rows===v.rows&&size.cols===v.cols&&v.rooms.some(function(a){return inside(b,a);})&&!v.clearways.concat(v.obstacles||[]).some(function(a){return overlaps(b,a);}));}
+    function accessible(b,size){var v=venue(size.room);return !v||(size.rows===v.rows&&size.cols===v.cols&&v.rooms.some(function(a){return inside(b,a);})&&!v.clearways.concat(v.obstacles||[],v.aisles||[]).some(function(a){return overlaps(b,a);}));}
     function area(b,room){var v=venue(room),a=v&&v.rooms.find(function(a){return inside(b,a);});return a?{ballroom:'Ballroom',prefunction:'Pre-function',business:'Business center'}[a.id]:'';}
     function backdrop(room){
       var v=venue(room);if(!v)return '';
-      var out='<svg class="fp-venue" viewBox="0 0 '+v.cols+' '+v.rows+'" preserveAspectRatio="none" role="img" aria-label="Walkway behind the outer tables leads from the Convention Entrance to the three green ballroom doors. Pillars and seating are in the pre-function area; ATM and Top Loaded are in the business center. Hotel lobby and restaurant are context only. Turfway Room is not the show.">';
+      var out='<svg class="fp-venue" viewBox="0 0 '+v.cols+' '+v.rows+'" preserveAspectRatio="none" role="img" aria-label="Walkway behind the outer tables leads from the Convention Entrance to the three green ballroom doors. Pillars and seating are in the pre-function area; ATM and Top Loaded are in the business center. Inside the ballroom, four table rows form two blocks with two vendor-only aisles and three customer aisles. Hotel lobby and restaurant are context only. Turfway Room is not the show.">';
       (v.context||[]).forEach(function(a){out+='<rect class="fp-context" x="'+(a.c-1)+'" y="'+(a.r-1)+'" width="'+a.w+'" height="'+a.h+'"/><text class="fp-room-label" x="'+a.labelC+'" y="'+a.labelR+'">'+esc(a.label)+'</text>';});
       v.rooms.forEach(function(a){out+='<rect class="fp-room fp-room-'+a.id+'" x="'+(a.c-1)+'" y="'+(a.r-1)+'" width="'+a.w+'" height="'+a.h+'"/><text class="fp-room-label" x="'+a.labelC+'" y="'+a.labelR+'">'+esc(a.label)+'</text>';});
+      (v.aisles||[]).forEach(function(a){out+='<rect class="fp-aisle fp-aisle-'+(a.access==='vendor'?'vendor':'customer')+'" x="'+(a.c-1)+'" y="'+(a.r-1)+'" width="'+a.w+'" height="'+a.h+'"/><text class="fp-aisle-label" x="'+(a.c+a.w/2-1)+'" y="'+(a.r+a.h/2)+'" text-anchor="middle">'+esc(a.label)+'</text>';});
       out+='<text class="fp-map-title" x="7" y="10">TOP LOADED CARD SHOW</text><text class="fp-map-sub" x="7" y="17">Ballroom · Pre-function · Business center</text>';
       out+='<rect class="fp-passage" x="195" y="47" width="2" height="6"/><rect class="fp-passage" x="127" y="37" width="10" height="2"/>';
       out+='<path class="fp-route" d="M215 41V49H27 M132 49V29"/><path class="fp-route-arrow" d="m211 45 4 4 4-4 m-90-12 3-4 3 4"/>';
@@ -36,7 +37,7 @@
       var v=venue(room),added=[];if(!v)return added;
       v.outerRuns.some(function(run){
         var missing=run.filter(function(b){return !booths.some(function(a){return a.r===b.r&&a.c===b.c&&a.w===b.w&&a.h===b.h;});});
-        if(missing.length&&booths.length+missing.length<=100&&missing.every(function(b){return canPlace(booths,b,{rows:v.rows,cols:v.cols,room:room},-1);})){added=missing;return true;}return false;
+        if(missing.length&&booths.length+missing.length<=150&&missing.every(function(b){return canPlace(booths,b,{rows:v.rows,cols:v.cols,room:room},-1);})){added=missing;return true;}return false;
       });return added;
     }
     function roomMetrics(room,rows,cols){
@@ -49,7 +50,7 @@
       map.classList.toggle('is-hilton',m.hilton);
       map.classList.toggle('is-show-venue',room==='hilton-show');
       map.style.gridTemplateColumns='repeat('+size.cols+', var(--fp-cell))';map.style.gridTemplateRows='repeat('+size.rows+', var(--fp-row, var(--fp-cell)))';
-      return room==='hilton-show'?'Full show plan · Ballroom, pre-function and Top Loaded booth. Outlines and outer-room placements are schematic; marked walking routes stay clear.':m.hilton?'Triple Crown Ballroom · 96 × 41 ft. Each grid allocation is '+(96/size.cols).toFixed(1)+' × '+(41/size.rows).toFixed(1)+' ft. Booth placements are organizer-entered, not surveyed.':'Custom schematic · grid positions have no physical scale.';
+      return room==='hilton-show'?'Full show draft · Four inner table rows, two vendor-only aisles and three customer aisles. Final table count and clearances await organizer confirmation.':m.hilton?'Triple Crown Ballroom · 96 × 41 ft. Each grid allocation is '+(96/size.cols).toFixed(1)+' × '+(41/size.rows).toFixed(1)+' ft. Booth placements are organizer-entered, not surveyed.':'Custom schematic · grid positions have no physical scale.';
     }
     function viewport(root,map,scroll){
       var zoom=1,drag=null,fitMode=true;
@@ -157,10 +158,10 @@
       if(!booths.length){ note.textContent="The vendor layout is not published yet. Check back for the confirmed TCG and Sports booth locations and percentages."; map.innerHTML=legend.innerHTML=list.innerHTML=mix.innerHTML="";publicBooths=[];selected=-1;return; }
       var s=stats(booths);
       var pending=booths.filter(function(b){return b.type==='unassigned';}).length;
-      note.textContent=s.total?s.total+" assigned vendor booths on this plan · TCG/Sports percentages cover these assigned booths only, not the full show or floor area. Mixed vendors are separate."+(pending?' '+pending+' assignments to follow.':''):"Marketfloor table layout · vendor assignments for this show are to be announced. TCG/Sports percentages for this plan will appear as vendors are assigned. Positions are subject to organizer confirmation.";
+      note.textContent=s.total?s.total+" assigned vendor booths on this plan · TCG/Sports percentages cover these assigned booths only, not the full show or floor area. Mixed vendors are separate."+(pending?' '+pending+' assignments to follow.':''):"Draft table layout · final table count and vendor assignments await organizer confirmation. TCG/Sports percentages will appear as vendors are assigned.";
       mix.hidden=!s.total;
       layout(map,f.room,{rows:rows,cols:cols});
-      $('#floorScaleNote').textContent=f.room==='hilton-show'?'One map · all three show spaces. Table positions and walking routes are schematic and subject to organizer confirmation.':f.room==='hilton-ballroom'?'Ballroom-only table plan · Triple Crown Ballroom · 96 × 41 ft':'Organizer’s table-layout guide';
+      $('#floorScaleNote').textContent=f.room==='hilton-show'?'One map · all three show spaces. Four inner rows, two vendor-only aisles and three customer aisles. Schematic positions and final table count await organizer confirmation.':f.room==='hilton-ballroom'?'Ballroom-only table plan · Triple Crown Ballroom · 96 × 41 ft':'Organizer’s table-layout guide';
       map.innerHTML=backdrop(f.room)+booths.map(function(b,i){return '<button type="button" class="fp-cell t-'+b.type+'" data-floor-booth="'+i+'" aria-pressed="false" aria-label="'+esc(b.label+' · '+labels[b.type]+', row '+b.r+', column '+b.c)+'" title="'+esc(b.label+' · '+labels[b.type])+'" style="grid-row:'+b.r+' / span '+b.h+';grid-column:'+b.c+' / span '+b.w+'"><b>'+esc(b.label)+'</b><i>'+labels[b.type]+'</i></button>';}).join("");
       mix.innerHTML=Object.keys(s.pct).map(function(k){return '<span class="t-'+k+'" style="width:'+s.pct[k]+'%"></span>';}).join("");
       legend.innerHTML=Object.keys(labels).filter(function(k){return booths.some(function(b){return b.type===k;});}).map(function(k){return '<li><i class="t-'+k+'" aria-hidden="true"></i>'+labels[k]+(s.pct[k]!==undefined?' '+s.pct[k]+'% ('+s.counts[k]+')':'')+'</li>';}).join("")+(f.room==='hilton-show'?'<li><i class="key-door" aria-hidden="true"></i>Entrance</li><li><i class="key-walk" aria-hidden="true"></i>Walkway</li><li><i class="key-pillar" aria-hidden="true"></i>Pillar</li><li><i class="key-atm" aria-hidden="true"></i>ATM</li><li><i class="key-chair" aria-hidden="true"></i>Seating</li>':'');

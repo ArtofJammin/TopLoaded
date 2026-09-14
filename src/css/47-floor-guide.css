@@ -16,6 +16,7 @@
 .fp-door{fill:#63e69a;stroke:#166a3a;stroke-width:.35}.fp-door-label{fill:var(--ink);font-size:2.3px;font-weight:700}
 .fp-context{fill:var(--surface2);stroke:var(--ink2);stroke-width:.35;stroke-dasharray:2 1;opacity:.7}.fp-context-note{fill:var(--ink2);font-size:2.15px}
 .fp-passage{fill:color-mix(in srgb,var(--accent) 7%,var(--surface))}.fp-walk-label{fill:var(--ink);font-size:2px;font-weight:700}
+.fp-aisle-customer{fill:color-mix(in srgb,var(--ink) 5%,transparent)}.fp-aisle-vendor{fill:color-mix(in srgb,var(--accent) 12%,transparent);stroke:var(--accent);stroke-width:.25;stroke-dasharray:1 1}.fp-aisle-label{fill:var(--ink2);font-size:2.1px;font-weight:700;letter-spacing:.12px}
 .fp-obstacle{stroke-width:.5}.fp-pillar{fill:#131313;stroke:#92928c}.fp-chair,.fp-coffee{fill:#ecb04e;stroke:#774c10}.fp-atm{fill:#67c8fa;stroke:#15567c}.fp-atm-label{fill:#102b3b;font-size:1.8px;font-weight:800}
 .key-door{background:#63e69a;border:1px solid #166a3a}.key-walk{background:var(--ink)}.key-pillar{background:#131313;border:1px solid #92928c}.key-atm{background:#67c8fa;border:1px solid #15567c}.key-chair{background:#ecb04e;border:1px solid #774c10}
 #showFloorScroll{touch-action:none}
