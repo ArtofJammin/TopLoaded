@@ -71,14 +71,17 @@ function floorContext(){
   vm.runInNewContext(read('src/js/56-floorplan.js'),c);
   return {f:c.TL.floorplan,grid,config:JSON.parse(read('config.default.json')).show.floorplan};
 }
-test('full show map keeps the original 49 tables and adds the confirmed 4+1 Top Loaded booth',()=>{
+test('full show map keeps 49 ballroom tables with Trades replacing TL1, not an extra table',()=>{
   const {f,grid,config}=floorContext(),ballroom=config.booths.filter(b=>/^t\d+$/.test(b.id)),shop=config.booths.filter(b=>b.type==='shop');
   assert.equal(config.room,'hilton-show');assert.equal(config.rows,grid.rows);assert.equal(config.cols,grid.cols);
   assert.equal(ballroom.length,49);assert.equal(ballroom[0].r,89);assert.equal(ballroom[0].c,7);
-  assert.equal(shop.length,5);assert.equal(shop.filter(b=>b.w>b.h).length,3);assert.equal(shop.filter(b=>b.h>b.w).length,2);
+  assert.equal(shop.length,4);assert.equal(shop.filter(b=>b.w>b.h).length,3);assert.equal(shop.filter(b=>b.h>b.w).length,1);
+  assert.deepEqual(shop.find(b=>b.id==='tl-trades'),{id:'tl-trades',label:'Trades',type:'shop',r:16,c:143,w:5,h:16});
+  assert.equal(shop.some(b=>b.label==='TL1'),false);
+  assert.deepEqual(shop.filter(b=>b.id!=='tl-trades').map(b=>[b.label,b.r,b.c,b.w,b.h]),[['TL2',32,144,16,5],['TL3',32,160,16,5],['TL4',32,176,16,5]]);
   assert.ok(shop.every(b=>f.area(b,config.room)==='Business center'));
   assert.ok(config.booths.every((b,i)=>f.canPlace(config.booths,b,config,i)));
-  assert.equal(f.stats(shop).total,0,'five physical shop tables must not become five vendor assignments');
+  assert.equal(f.stats(shop).total,0,'shop tables must not become vendor assignments');
 });
 test('room outlines and all entrances are in the same zoomable map coordinate system',()=>{
   const {f,grid,config}=floorContext(),svg=f.backdrop(config.room);
@@ -92,7 +95,7 @@ test('room outlines and all entrances are in the same zoomable map coordinate sy
 test('six two-table outer runs and two connecting caps match the annotated plan; missing positions can be restored',()=>{
   const {f,grid,config}=floorContext(),booths=config.booths.filter(b=>!b.id.startsWith('pf-'));
   const outer=config.booths.filter(b=>b.id.startsWith('pf-'));
-  assert.equal(outer.length,14);assert.equal(config.booths.length,68);
+  assert.equal(outer.length,14);assert.equal(config.booths.length,67);
   assert.deepEqual(outer.map(({r,c,w,h})=>({r,c,w,h})),grid.outerRuns.flat());
   const initial=booths.length;
   for(let i=0;i<6;i++){const run=f.outerRun(booths,config.room);assert.equal(run.length,[2,3,2,2,2,3][i]);assert.ok(run[0].h>run[0].w);assert.equal(run[1].r,run[0].r+run[0].h);booths.push(...run);}

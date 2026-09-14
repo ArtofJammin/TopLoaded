@@ -519,8 +519,8 @@
           "h": 5
         },
         {
-          "id": "tl-wall-1",
-          "label": "TL1",
+          "id": "tl-trades",
+          "label": "Trades",
           "type": "shop",
           "r": 16,
           "c": 143,
@@ -553,15 +553,6 @@
           "c": 176,
           "w": 16,
           "h": 5
-        },
-        {
-          "id": "tl-trades",
-          "label": "Trades",
-          "type": "shop",
-          "r": 16,
-          "c": 187,
-          "w": 5,
-          "h": 16
         },
         {
           "id": "pf-1",
