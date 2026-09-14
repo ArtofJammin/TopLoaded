@@ -46,19 +46,19 @@
     },
     {
       "r": 50,
-      "c": 45,
+      "c": 21,
       "w": 10,
       "h": 55
     },
     {
       "r": 50,
-      "c": 81,
+      "c": 57,
       "w": 10,
       "h": 55
     },
     {
       "r": 50,
-      "c": 115,
+      "c": 91,
       "w": 10,
       "h": 55
     },
@@ -70,7 +70,7 @@
     },
     {
       "r": 63,
-      "c": 149,
+      "c": 125,
       "w": 43,
       "h": 15
     },
@@ -104,7 +104,7 @@
       "id": "far",
       "label": "Door 1",
       "r": 82,
-      "c": 45,
+      "c": 21,
       "w": 10,
       "h": 2
     },
@@ -112,7 +112,7 @@
       "id": "middle",
       "label": "Door 2",
       "r": 82,
-      "c": 81,
+      "c": 57,
       "w": 10,
       "h": 2
     },
@@ -120,7 +120,7 @@
       "id": "near",
       "label": "Door 3",
       "r": 82,
-      "c": 115,
+      "c": 91,
       "w": 10,
       "h": 2
     }
@@ -163,7 +163,7 @@
       "id": "pillar-1",
       "type": "pillar",
       "r": 56,
-      "c": 31,
+      "c": 7,
       "w": 6,
       "h": 5,
       "label": "Pillar"
@@ -172,7 +172,7 @@
       "id": "pillar-2",
       "type": "pillar",
       "r": 56,
-      "c": 100,
+      "c": 76,
       "w": 7,
       "h": 5,
       "label": "Pillar"
@@ -181,7 +181,7 @@
       "id": "pillar-3",
       "type": "pillar",
       "r": 55,
-      "c": 144,
+      "c": 120,
       "w": 7,
       "h": 6,
       "label": "Pillar"
@@ -190,7 +190,7 @@
       "id": "pillar-4",
       "type": "pillar",
       "r": 56,
-      "c": 184,
+      "c": 160,
       "w": 9,
       "h": 6,
       "label": "Pillar"
@@ -199,7 +199,7 @@
       "id": "chair-1",
       "type": "chair",
       "r": 64,
-      "c": 150,
+      "c": 126,
       "w": 4,
       "h": 12,
       "label": "Lounge chairs"
@@ -208,7 +208,7 @@
       "id": "chair-2",
       "type": "chair",
       "r": 65,
-      "c": 186,
+      "c": 162,
       "w": 4,
       "h": 11,
       "label": "Lounge chairs"
@@ -217,7 +217,7 @@
       "id": "coffee",
       "type": "coffee",
       "r": 67,
-      "c": 163,
+      "c": 139,
       "w": 12,
       "h": 5,
       "label": "Coffee table"
@@ -236,13 +236,13 @@
     [
       {
         "r": 58,
-        "c": 39,
+        "c": 15,
         "w": 5,
         "h": 12
       },
       {
         "r": 70,
-        "c": 39,
+        "c": 15,
         "w": 5,
         "h": 12
       }
@@ -250,19 +250,19 @@
     [
       {
         "r": 58,
-        "c": 58,
+        "c": 34,
         "w": 5,
         "h": 12
       },
       {
         "r": 70,
-        "c": 58,
+        "c": 34,
         "w": 5,
         "h": 12
       },
       {
         "r": 58,
-        "c": 63,
+        "c": 39,
         "w": 12,
         "h": 5
       }
@@ -270,13 +270,13 @@
     [
       {
         "r": 58,
-        "c": 75,
+        "c": 51,
         "w": 5,
         "h": 12
       },
       {
         "r": 70,
-        "c": 75,
+        "c": 51,
         "w": 5,
         "h": 12
       }
@@ -284,13 +284,27 @@
     [
       {
         "r": 58,
-        "c": 95,
+        "c": 71,
         "w": 5,
         "h": 12
       },
       {
         "r": 70,
-        "c": 95,
+        "c": 71,
+        "w": 5,
+        "h": 12
+      }
+    ],
+    [
+      {
+        "r": 58,
+        "c": 83,
+        "w": 5,
+        "h": 12
+      },
+      {
+        "r": 70,
+        "c": 83,
         "w": 5,
         "h": 12
       }
@@ -305,26 +319,12 @@
       {
         "r": 70,
         "c": 107,
-        "w": 5,
-        "h": 12
-      }
-    ],
-    [
-      {
-        "r": 58,
-        "c": 131,
-        "w": 5,
-        "h": 12
-      },
-      {
-        "r": 70,
-        "c": 131,
         "w": 5,
         "h": 12
       },
       {
         "r": 53,
-        "c": 131,
+        "c": 107,
         "w": 12,
         "h": 5
       }
@@ -335,6 +335,8 @@
       "id": "customer-1",
       "access": "customer",
       "label": "CUSTOMER AISLE 1",
+      "labelC": 148,
+      "labelC": 148,
       "r": 95,
       "c": 11,
       "w": 180,
@@ -390,5 +392,11 @@
     "innerStart": 23,
     "innerTablesPerRow": 13,
     "confirmation": "Draft table positions; final count and clearances require organizer confirmation."
+  },
+  "prefunctionShift": {
+    "direction": "left",
+    "tableLengths": 2,
+    "columns": -24,
+    "notes": "Entire pre-function group shifted together. Top Loaded booth, ATM, room outlines and Convention Entrance remain fixed."
   }
 }

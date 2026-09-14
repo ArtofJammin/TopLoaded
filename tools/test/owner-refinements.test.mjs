@@ -89,7 +89,7 @@ test('room outlines and all entrances are in the same zoomable map coordinate sy
   for(const label of ['Convention','Entrance','Door 1','Door 2','Door 3','BUSINESS CENTER','PRE-FUNCTION','TRIPLE CROWN','ATM','CHAIRS + COFFEE TABLE','HOTEL LOBBY','RESTAURANT / LOUNGE','Not the card show'])assert.ok(svg.includes(label),label);
   assert.ok(svg.includes('viewBox="0 0 272 212"'));
   assert.equal(grid.obstacles.filter(x=>x.type==='pillar').length,4);
-  assert.deepEqual(grid.doors.map(x=>x.c),[45,81,115]);
+  assert.deepEqual(grid.doors.map(x=>x.c),[21,57,91]);
   assert.match(read('src/js/60-settings.js'),/TL.floorplan.backdrop/);
 });
 test('six two-table outer runs and two connecting caps match the annotated plan; missing positions can be restored',()=>{
@@ -127,4 +127,18 @@ test('pointer focus does not move a table before its selection click can complet
   const script=read('src/js/56-floorplan.js');
   assert.match(script,/map.addEventListener\('focusin',[^\n]*matches\(':focus-visible'\)/);
   assert.match(script,/details\(i\);publicView.focus/);
+});
+
+test('pre-function group shifts two table lengths left together while Top Loaded and ATM stay fixed',()=>{
+  const {f,grid,config}=floorContext(),shift=-2*grid.ballroomLayout.tableWidth;
+  assert.equal(shift,-24);
+  assert.deepEqual(grid.doors.map(d=>d.c),[45,81,115].map(c=>c+shift));
+  const originalObstacleColumns={'pillar-1':31,'pillar-2':100,'pillar-3':144,'pillar-4':184,'chair-1':150,'chair-2':186,coffee:163};
+  for(const [id,c]of Object.entries(originalObstacleColumns))assert.equal(grid.obstacles.find(a=>a.id===id).c,c+shift,id);
+  assert.deepEqual(grid.obstacles.find(a=>a.id==='atm'),{id:'atm',type:'atm',r:17,c:123,w:6,h:8,label:'ATM'});
+  assert.deepEqual(grid.outerRuns.flat().map(b=>b.c),[39,39,58,58,63,75,75,95,95,107,107,131,131,131].map(c=>c+shift));
+  assert.ok(config.booths.every((b,i)=>f.canPlace(config.booths,b,config,i)));
+  for(const door of grid.doors)assert.ok(grid.clearways.some(a=>a.c===door.c&&a.w===door.w&&a.r<=door.r&&a.r+a.h>=105));
+  assert.match(f.backdrop(config.room),/M215 41V49H25/);
+  assert.match(f.backdrop(config.room),/x="131" y="81">CHAIRS/);
 });
