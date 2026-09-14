@@ -1534,6 +1534,12 @@ html.page-hidden .drawer .cart-empty::before{animation-play-state:paused}
 .floor-scroll.is-panning{cursor:grabbing;user-select:none}
 .floor-map{--fp-gap:6px;min-width:0;gap:var(--fp-gap);background-size:calc(var(--fp-cell) + var(--fp-gap)) calc(var(--fp-row,var(--fp-cell)) + var(--fp-gap));border:2px solid var(--line);box-sizing:content-box;isolation:isolate}
 .floor-map.is-hilton .fp-cell{margin:2px}
+.t-unassigned{background:var(--surface2);color:var(--ink2);border-color:var(--line)}
+#showFloorMap{background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:20px 20px}
+#showFloorMap .fp-cell.t-unassigned{border-color:color-mix(in srgb,var(--accent) 35%,var(--line));background:var(--surface2)}
+#showFloorMap .fp-cell.is-vertical b{writing-mode:vertical-rl;overflow:visible}
+#showFloorMap .fp-cell.is-vertical i{display:none}
+.venue-reference-details{margin:12px 0 20px}.venue-reference-details>summary{cursor:pointer;color:var(--ink2);padding:12px 0;min-height:44px}
 .venue-reference{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:28px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:26px;margin:20px 0 28px}
 .venue-reference h3{font-size:clamp(1.7rem,3vw,2.6rem);line-height:1.1;margin:12px 0 20px}.venue-reference p{margin-bottom:18px}.venue-reference figure{margin:0;min-width:0}.venue-reference figcaption{font-size:.75rem;color:var(--ink2);margin-top:10px;line-height:1.5}
 .venue-plan-paper{position:relative;background:#fff;border-radius:6px;overflow:hidden}.venue-plan-paper img{display:block;width:100%;height:auto}
@@ -1793,7 +1799,7 @@ form.is-done > :not(.form-done){display:none !important}
 @media(max-width:760px){.account-layout{grid-template-columns:1fr}.account-panel{padding:24px}.account-member-head{align-items:flex-start}}
 
 /* ============ BUYLIST ============ */
-/* Buying information only: estimates and collection intake happen in store. */
+/* Visit-first buying information and optional collection inquiries. */
 .buy-grid{display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:32px; align-items:start}
 .buy-col{display:grid; gap:20px; min-width:0}
 .form-card{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:26px; position:relative}
@@ -1812,6 +1818,7 @@ form.is-done > :not(.form-done){display:none !important}
 .buy-steps b{display:block;color:var(--ink);margin-bottom:4px}
 .buy-location{padding-top:20px;border-top:1px solid var(--line)}
 .buy-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.buy-inquiry summary{cursor:pointer;font-weight:700;line-height:1.5;min-height:44px}.buy-inquiry summary span{display:block;color:var(--accent);font-size:.9rem;margin-top:5px}.buy-inquiry>p{color:var(--ink2);margin:18px 0}.buy-inquiry input,.buy-inquiry textarea{width:100%;min-width:0}.buy-inquiry textarea{resize:vertical}.buy-result{margin-top:20px;padding-top:20px;border-top:1px solid var(--line);overflow-wrap:anywhere}.buy-result textarea{margin-top:14px}.buy-result[hidden],.buy-result [hidden]{display:none!important}
 @media (max-width:640px){
   .form-card{padding:22px 18px}
 }
@@ -3478,7 +3485,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
           <div class="show-date-top">
             <p class="eyebrow">Next show</p>
           </div>
-          <p class="show-date" id="showDateBig">Sat<br>Sep 5</p>
+          <p class="show-date" id="showDateBig">Sat<br>Oct 3</p>
           <p class="show-tbc" id="showTbc" hidden>Exact date confirmed on our socials &mdash; usually the first Saturday or Sunday.</p>
           <div class="show-meta">
             <span><b id="showHours">10 AM &ndash; 4 PM</b> &middot; vendor setup from <span id="showSetup">8 AM</span></span>
@@ -3513,15 +3520,15 @@ a:hover .round-arrow{transform:rotate(45deg)}
       </div>
       <section class="section" aria-labelledby="floorTitle">
         <div class="section-head"><h2 id="floorTitle">Floor plan</h2><span class="collector-note">TCG &amp; Sports vendor map</span></div>
-        <section class="venue-reference" id="showVenueReference" aria-labelledby="hiltonPlanTitle">
+        <details class="venue-reference-details" id="showVenueReference"><summary>Hotel building reference &amp; directions</summary><section class="venue-reference" aria-labelledby="hiltonPlanTitle">
           <div class="venue-reference-copy"><p class="eyebrow">Know the venue</p><h3 id="hiltonPlanTitle">Hilton Cincinnati Airport</h3><p>The Triple Crown Ballroom is highlighted on the hotel's first-floor reference plan. Published ballroom dimensions: <b>96 &times; 41 ft</b>.</p><p class="card-note">The hotel diagram is a reference, not a confirmed vendor arrangement. Lobby use, doors, exits and table positions must be confirmed with the organizer and venue.</p><a class="linklike" href="https://marketfloor.app/venues/8a57c194-916e-410c-a085-efbac3b39ad7/guide?locationId=8fdb51c9-6da6-4d06-bfaa-0e90b26b8fc4" target="_blank" rel="noopener noreferrer">Explore the Hilton in Marketfloor ↗</a></div>
           <figure><div class="venue-plan-paper"><img src="venue-plans/hilton-first-floor.svg" alt="Hilton first-floor diagram: Triple Crown Ballroom beside the lobby and pre-function area" width="610" height="551" loading="lazy" decoding="async"><span class="venue-ballroom-outline" aria-hidden="true"></span></div><figcaption>Hotel-provided diagram, via the Marketfloor venue reference. <a href="https://custom.cvent.com/95cbca96509142b49afebbf7b0599659/files/rfp/85804e05e44a47d195543aedf6aaa8f0/646e697186df40a3b16f75ebac28a570.pdf" target="_blank" rel="noopener noreferrer">Source plan, page 2 ↗</a></figcaption></figure>
-        </section>
+        </section></details>
         <p id="showFloorNote" class="card-note"></p>
         <div id="showFloorMix" class="floor-mix" aria-hidden="true"></div>
         <ul id="showFloorLegend" class="floor-legend"></ul>
         <div id="showFloorGuide" class="floor-guide" hidden>
-          <div class="floor-tools"><div class="field"><label for="floorSearch">Find a vendor</label><input id="floorSearch" type="search" placeholder="Vendor or booth name" maxlength="100"></div><div class="field"><label for="floorType">Show on map</label><select id="floorType"><option value="">All categories</option><option value="tcg">TCG</option><option value="sports">Sports</option><option value="mixed">Mixed</option><option value="food">Food</option><option value="entry">Entry</option></select></div><div class="floor-zoom" aria-label="Map zoom"><button type="button" data-floor-zoom="out" aria-label="Zoom out">&minus;</button><button type="button" data-floor-zoom="fit">Fit floor</button><button type="button" data-floor-zoom="in" aria-label="Zoom in">+</button></div></div>
+          <div class="floor-tools"><div class="field"><label for="floorSearch">Find a table or vendor</label><input id="floorSearch" type="search" placeholder="Table number or vendor name" maxlength="100"></div><div class="field"><label for="floorType">Show on map</label><select id="floorType"><option value="">All categories</option><option value="tcg">TCG</option><option value="sports">Sports</option><option value="mixed">Mixed</option><option value="unassigned">Vendor to be announced</option><option value="food">Food</option><option value="entry">Entry</option></select></div><div class="floor-zoom" aria-label="Map zoom"><button type="button" data-floor-zoom="out" aria-label="Zoom out">&minus;</button><button type="button" data-floor-zoom="fit">Fit floor</button><button type="button" data-floor-zoom="in" aria-label="Zoom in">+</button></div></div>
           <p class="card-note" id="floorScaleNote"></p>
           <p class="card-note">Select a booth for details. Drag empty floor to pan, use Ctrl + wheel to zoom, or scroll the map on touch.</p>
           <div class="floor-guide-body"><div class="floor-scroll" id="showFloorScroll" tabindex="0" role="region" aria-label="Interactive vendor floor plan"><div class="floor-map" id="showFloorMap"></div></div><aside class="floor-detail" id="showFloorDetail" aria-live="polite"><h3>Explore the floor</h3><p>Choose a vendor on the map or in the directory.</p></aside></div>
@@ -3612,7 +3619,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
           <section class="form-card buy-visit" aria-labelledby="buyVisitTitle">
             <p class="eyebrow">Let's see it in person</p>
             <h2 id="buyVisitTitle">Bring your collection<br>to the shop.</h2>
-            <p>No online estimates or quote requests. All pricing and offers happen in store, after we've seen the cards.</p>
+            <p>Coming in is the best way to get an offer. All pricing and offers happen in store, after we've seen the cards. Planning a large buyout? You can send the details below first.</p>
             <ol class="buy-steps">
               <li><b>Pack it up.</b> Keep cards protected; sorting by game helps us look through them.</li>
               <li><b>Stop in during shop hours.</b> For a large collection, call ahead so we can plan enough time.</li>
@@ -3621,6 +3628,22 @@ a:hover .round-arrow{transform:rotate(45deg)}
             <p class="buy-location" id="buyAddress">2514 Hazelwood Dr &middot; Crescent Springs, KY 41017</p>
             <div class="buy-actions"><a class="btn" href="#/visit" data-go="visit">Hours &amp; directions &rarr;</a><a class="btn btn-ghost" id="buyCall" href="tel:+15132222573">Call the shop</a></div>
           </section>
+          <details class="form-card buy-inquiry">
+            <summary>Planning a collection buyout? <span>Send us the details first &rarr;</span></summary>
+            <p>Tell us what you have so we can plan your visit. This is an inquiry, not an estimate or a guaranteed offer.</p>
+            <form id="buyForm" novalidate>
+              <div class="form-grid">
+                <div class="field"><label for="buyName">Name</label><input id="buyName" name="name" required minlength="2" maxlength="80" autocomplete="name"></div>
+                <div class="field"><label for="buyContact">Email or phone</label><input id="buyContact" name="contact" required maxlength="200" data-contact autocomplete="email"></div>
+                <div class="field full"><label for="buyGames">Games / collection types</label><input id="buyGames" name="games" required maxlength="200" placeholder="Pokémon binders, sealed One Piece…"></div>
+                <div class="field full"><label for="buyDesc">What would you like to sell?</label><textarea id="buyDesc" name="desc" rows="4" required minlength="3" maxlength="2000" placeholder="Approximate quantity, condition, and when you'd like to come in"></textarea></div>
+                <div class="field full"><label for="buyPhotos">Photo or album links <small>(optional)</small></label><textarea id="buyPhotos" name="photosUrl" rows="3" maxlength="2504" placeholder="https://photos.app.goo.gl/…" aria-describedby="buyPhotoHelp"></textarea><p class="card-note" id="buyPhotoHelp">Up to five HTTPS links, one per line. Share only your card photos, not IDs or payment details. Give the shop permission to view your album. Links are not loaded or previewed here.</p></div>
+                <div class="hp" aria-hidden="true"><label for="buyWebsite">Website</label><input id="buyWebsite" name="website" tabindex="-1" autocomplete="off"></div>
+                <div class="field full"><p id="buyDeliveryNote" class="card-note">Prepare an email to the shop. You can attach JPG, PNG or WebP photos in your email app before sending.</p><button type="submit" class="btn" id="buySubmit">Prepare email inquiry &rarr;</button></div>
+              </div>
+              <div id="buyResult" class="buy-result" hidden tabindex="-1"><p id="buyResultStatus" role="status"></p><div class="buy-actions"><a class="btn" id="buyEmailDraft" hidden>Open email draft &rarr;</a><button class="btn btn-ghost" id="buyCopy" type="button" hidden>Copy inquiry</button></div><textarea id="buyDraftText" readonly rows="6" hidden aria-label="Inquiry text to copy"></textarea></div>
+            </form>
+          </details>
         </div>
       </div>
     </div>
@@ -4155,7 +4178,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
         <h3>Card show floor plan</h3>
         <p class="card-note">Build the actual show layout: select a booth to edit, drag it to move, or use its arrow keys. TCG, Sports and Mixed percentages count vendor booths, not floor area. Keep aisles, exits and other required clearances open; this editor does not certify a safe or venue-approved layout.</p>
         <div class="field"><label for="setFpRoom">Room reference</label><select id="setFpRoom"><option value="hilton-ballroom">Hilton · Triple Crown Ballroom · 96 × 41 ft</option><option value="schematic">Custom schematic · no physical scale</option></select><p class="card-note" id="fpScaleNote"></p></div>
-        <div class="form-grid"><div class="field"><label for="setFpRows">Grid rows</label><input id="setFpRows" type="number" min="1" max="20" value="6"></div><div class="field"><label for="setFpCols">Grid columns</label><input id="setFpCols" type="number" min="1" max="26" value="10"></div></div>
+        <div class="form-grid"><div class="field"><label for="setFpRows">Grid rows</label><input id="setFpRows" type="number" min="1" max="100" value="82"></div><div class="field"><label for="setFpCols">Grid columns</label><input id="setFpCols" type="number" min="1" max="200" value="192"></div></div>
         <div class="floor-tools"><div class="field"><label for="fpBrush">New booth category</label><select id="fpBrush"><option value="tcg">TCG</option><option value="sports">Sports</option><option value="mixed">Mixed</option><option value="food">Food</option><option value="entry">Entry</option></select></div><button class="btn btn-ghost" id="fpPlace" type="button" aria-pressed="false">Place on floor</button><button class="btn btn-ghost" id="fpRotate" type="button" disabled>Rotate selected</button><div class="floor-zoom" aria-label="Editor zoom"><button type="button" data-floor-zoom="out" aria-label="Zoom editor out">&minus;</button><button type="button" data-floor-zoom="fit">Fit floor</button><button type="button" data-floor-zoom="in" aria-label="Zoom editor in">+</button></div></div>
         <p id="fpSelection" class="card-note" role="status">Add a booth, or choose Place on floor and tap an empty square.</p>
         <div class="floor-guide-body"><div class="floor-scroll" id="fpScroll" tabindex="0" role="region" aria-label="Floor plan editor"><div class="floor-map" id="fpMap"></div></div><div id="fpEditor" class="floor-inspector"></div></div>
@@ -4220,8 +4243,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
       <div class="account-layout">
         <div class="account-panel">
           <div id="accountGuest">
-            <h2 id="accountGuestTitle">Your store credit</h2><p id="accountGuestIntro">Check your credit at the counter, or sign in when online access is available.</p>
-            <form id="accountEmailForm"><label for="accountEmail">Email address</label><input id="accountEmail" type="email" autocomplete="email" maxlength="200" placeholder="you@example.com" required><button class="btn" id="accountSend" type="submit" disabled>Email me a sign-in code</button></form>
+            <h2 id="accountGuestTitle">Create an account or sign in</h2><p id="accountGuestIntro">Use your email to securely access your linked store credit. No Google account required.</p>
+            <form id="accountEmailForm" hidden><label for="accountEmail">Email address</label><input id="accountEmail" type="email" autocomplete="email" maxlength="200" placeholder="you@example.com" required><button class="btn" id="accountSend" type="submit" disabled>Email me a sign-in code</button></form>
+            <div id="accountUnavailable" hidden><p>Online account access is not active yet. The shop can still look up your credit in person using your phone number or email. Your balance is not stored on this website.</p><div class="buy-actions"><a class="btn" href="#/visit" data-go="visit">Contact the shop &rarr;</a><button class="btn btn-ghost" id="accountRetry" type="button">Check again</button></div></div>
             <form id="accountCodeForm" hidden><label for="accountCode">Paste the code from your email</label><input id="accountCode" type="text" autocomplete="one-time-code" autocapitalize="none" spellcheck="false" maxlength="64" required aria-describedby="accountCodeHint"><p id="accountCodeHint">Use the full 32-character code. Never share it with anyone.</p><button class="btn" id="accountVerify" type="submit">Sign in</button><button class="linklike" id="accountRestart" type="button">Use another email or request a new code</button></form>
           </div>
           <div id="accountMember" hidden>
@@ -4235,7 +4259,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
         </div>
         <aside class="account-panel account-benefits" aria-label="Account information">
           <p class="account-kicker">KEEP THE GOOD STUFF CLOSE</p><h2>Your collection.<br>Your next chapter.</h2>
-          <ul><li><b>Store credit, clearly.</b><span>Keep track of the credit earned from your trades.</span></li><li><b>Make it yours.</b><span>Ask the counter to link your email to your credit record.</span></li><li><b>Your saved cards.</b><span>Keep a wishlist and revisit your favorites on this browser.</span></li></ul>
+          <ul><li><b>Verify your email.</b><span>When online access opens, one emailed code creates or opens your account. No Google login or password required.</span></li><li><b>Link your credit.</b><span>Ask the counter to find your record by phone or email and link your verified email. Balances are never linked just by entering a phone number online.</span></li><li><b>Your saved cards.</b><span>Your wishlist works now, on this browser. Store credit is separate from your TCGplayer account and checkout.</span></li></ul>
           <a class="btn btn-ghost" href="#/shop?wish=1">Open my wishlist &rarr;</a><a class="linklike" href="#/visit" data-go="visit">Need help? Contact the shop &rarr;</a>
         </aside>
       </div>
@@ -4497,7 +4521,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   </div>
 </div>
 
-<script id="siteConfig">window.TL_DEFAULT_CONFIG={"title":"Top Loaded","tagline":"Trading Cards · NKY","phone":"(513) 222-2573","phoneRaw":"+15132222573","email":"toploadedtcg@gmail.com","address":{"line1":"2514 Hazelwood Dr","city":"Crescent Springs","state":"KY","zip":"41017"},"timezone":"America/New_York","hours":{"mon":null,"tue":["11:00","18:00"],"wed":["11:00","18:00"],"thu":["11:00","18:00"],"fri":["11:00","18:00"],"sat":["10:00","16:00"],"sun":["10:00","16:00"]},"hoursText":{"wk":"Tue–Fri · 11 AM – 6 PM","we":"Sat–Sun · 10 AM – 4 PM"},"banner":{"on":false,"text":""},"logo":null,"show":{"date":"2026-09-05","start":"10:00","end":"16:00","setup":"08:00","hours":"10 AM – 4 PM","venue":"Hilton Cincinnati Airport","address":"7373 Turfway Rd, Florence, KY 41042","tables":24,"booked":null,"cadence":"First Saturday or Sunday of every month","tablePrices":[{"n":1,"price":30},{"n":2,"price":60},{"n":3,"price":90}],"floorplan":{"room":"hilton-ballroom","rows":6,"cols":10,"booths":[]}},"events":[{"id":"op-wed","day":"Wed","dow":3,"name":"One Piece Locals","small":"Bandai official · winner & participation packs","time":"5:00 PM","start":"17:00","fee":"TBD","game":"op","signup":"tcgplus"},{"id":"op-sat","day":"Sat","dow":6,"name":"One Piece Locals","small":"Bandai official · winner & participation packs","time":"11:00 AM","start":"11:00","fee":"TBD","game":"op","signup":"tcgplus"},{"id":"gd-sat","day":"Sat","dow":6,"name":"Gundam Card Game","small":"Bandai official · winner & participation packs","time":"1:00 PM","start":"13:00","fee":"TBD","game":"gundam","signup":"tcgplus"},{"id":"pk-sun","day":"Sun","dow":0,"name":"Pokemon League","small":"All ages · league promo prizing","time":"11:00 AM","start":"11:00","fee":"TBD","game":"pk","signup":"form"}],"live":{"on":false,"title":"Streaming from the shop floor","platform":"facebook","embed":"","spotPrice":24.99,"spots":12,"packsPerSpot":3,"schedule":[]},"links":{"tcgplus":"https://www.bandai-tcg-plus.com/","facebook":"https://www.facebook.com/toploadedtradingcards","instagram":"https://www.instagram.com/toploadedtcg","tcgplayer":"https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf","whatnot":"","googleMaps":"https://www.google.com/maps/search/?api=1&query=Top+Loaded+Trading+Cards+2514+Hazelwood+Dr+Crescent+Springs+KY+41017","googleReviews":"https://share.google/ESpQQCzYsIL1Ffqo8","appleMaps":"https://maps.apple.com/place?place-id=I96E3F1088FE2244C"},"buy":{"rates":{"bulk":0.55,"standard":0.6,"hot":0.7,"graded":0.8},"creditBonus":0.1},"ticker":[["Charizard ex · 151","$85"],["Umbreon VMAX Alt","$450"],["Shanks OP-09 Leader","$42"],["The One Ring","$40"],["Prismatic ETBs","$70"],["Luffy OP-05 Alt","$88"],["Ragavan MH2","$41"],["Base Set holos","ask"],["Sealed booster boxes","top rates"]],"testimonials":[],"rip":{"prices":{"pk":4.49,"op":4.49,"mtg":5.49}},"reviews":{"tcgplayerAuto":true,"source":"google","googlePlaceId":"","minRating":5,"items":[]},"updatedAt":null};</script>
+<script id="siteConfig">window.TL_DEFAULT_CONFIG={"title":"Top Loaded","tagline":"Trading Cards · NKY","phone":"(513) 222-2573","phoneRaw":"+15132222573","email":"toploadedtcg@gmail.com","address":{"line1":"2514 Hazelwood Dr","city":"Crescent Springs","state":"KY","zip":"41017"},"timezone":"America/New_York","hours":{"mon":null,"tue":["11:00","18:00"],"wed":["11:00","18:00"],"thu":["11:00","18:00"],"fri":["11:00","18:00"],"sat":["10:00","16:00"],"sun":["10:00","16:00"]},"hoursText":{"wk":"Tue–Fri · 11 AM – 6 PM","we":"Sat–Sun · 10 AM – 4 PM"},"banner":{"on":false,"text":""},"logo":null,"show":{"date":"2026-10-03","start":"10:00","end":"16:00","setup":"08:00","hours":"10 AM – 4 PM","venue":"Hilton Cincinnati Airport","address":"7373 Turfway Rd, Florence, KY 41042","tables":24,"booked":null,"cadence":"First Saturday or Sunday of every month","tablePrices":[{"n":1,"price":30},{"n":2,"price":60},{"n":3,"price":90}],"floorplan":{"room":"hilton-ballroom","rows":82,"cols":192,"booths":[{"id":"t1","label":"T1","type":"unassigned","r":7,"c":17,"w":12,"h":5},{"id":"t2","label":"T2","type":"unassigned","r":7,"c":29,"w":12,"h":5},{"id":"t3","label":"T3","type":"unassigned","r":7,"c":41,"w":12,"h":5},{"id":"t4","label":"T4","type":"unassigned","r":7,"c":53,"w":12,"h":5},{"id":"t5","label":"T5","type":"unassigned","r":7,"c":65,"w":12,"h":5},{"id":"t6","label":"T6","type":"unassigned","r":7,"c":77,"w":12,"h":5},{"id":"t7","label":"T7","type":"unassigned","r":7,"c":89,"w":12,"h":5},{"id":"t8","label":"T8","type":"unassigned","r":7,"c":101,"w":12,"h":5},{"id":"t9","label":"T9","type":"unassigned","r":7,"c":113,"w":12,"h":5},{"id":"t10","label":"T10","type":"unassigned","r":7,"c":125,"w":12,"h":5},{"id":"t11","label":"T11","type":"unassigned","r":7,"c":137,"w":12,"h":5},{"id":"t12","label":"T12","type":"unassigned","r":7,"c":149,"w":12,"h":5},{"id":"t13","label":"T13","type":"unassigned","r":7,"c":161,"w":12,"h":5},{"id":"t14","label":"T14","type":"unassigned","r":17,"c":182,"w":5,"h":12},{"id":"t15","label":"T15","type":"unassigned","r":29,"c":182,"w":5,"h":12},{"id":"t16","label":"T16","type":"unassigned","r":41,"c":182,"w":5,"h":12},{"id":"t17","label":"T17","type":"unassigned","r":53,"c":182,"w":5,"h":12},{"id":"t18","label":"T18","type":"unassigned","r":72,"c":161,"w":12,"h":5},{"id":"t19","label":"T19","type":"unassigned","r":72,"c":149,"w":12,"h":5},{"id":"t20","label":"T20","type":"unassigned","r":72,"c":137,"w":12,"h":5},{"id":"t21","label":"T21","type":"unassigned","r":72,"c":125,"w":12,"h":5},{"id":"t22","label":"T22","type":"unassigned","r":72,"c":113,"w":12,"h":5},{"id":"t23","label":"T23","type":"unassigned","r":72,"c":101,"w":12,"h":5},{"id":"t24","label":"T24","type":"unassigned","r":72,"c":89,"w":12,"h":5},{"id":"t25","label":"T25","type":"unassigned","r":72,"c":77,"w":12,"h":5},{"id":"t26","label":"T26","type":"unassigned","r":72,"c":65,"w":12,"h":5},{"id":"t27","label":"T27","type":"unassigned","r":72,"c":53,"w":12,"h":5},{"id":"t28","label":"T28","type":"unassigned","r":72,"c":41,"w":12,"h":5},{"id":"t29","label":"T29","type":"unassigned","r":53,"c":7,"w":5,"h":12},{"id":"t30","label":"T30","type":"unassigned","r":41,"c":7,"w":5,"h":12},{"id":"t31","label":"T31","type":"unassigned","r":29,"c":7,"w":5,"h":12},{"id":"t32","label":"T32","type":"unassigned","r":17,"c":7,"w":5,"h":12},{"id":"t33","label":"T33","type":"unassigned","r":28,"c":28,"w":12,"h":5},{"id":"t34","label":"T34","type":"unassigned","r":28,"c":64,"w":12,"h":5},{"id":"t35","label":"T35","type":"unassigned","r":28,"c":76,"w":12,"h":5},{"id":"t36","label":"T36","type":"unassigned","r":28,"c":88,"w":12,"h":5},{"id":"t37","label":"T37","type":"unassigned","r":28,"c":100,"w":12,"h":5},{"id":"t38","label":"T38","type":"unassigned","r":28,"c":112,"w":12,"h":5},{"id":"t39","label":"T39","type":"unassigned","r":28,"c":136,"w":12,"h":5},{"id":"t40","label":"T40","type":"unassigned","r":28,"c":148,"w":12,"h":5},{"id":"t41","label":"T41","type":"unassigned","r":45,"c":40,"w":12,"h":5},{"id":"t42","label":"T42","type":"unassigned","r":45,"c":52,"w":12,"h":5},{"id":"t43","label":"T43","type":"unassigned","r":45,"c":64,"w":12,"h":5},{"id":"t44","label":"T44","type":"unassigned","r":45,"c":76,"w":12,"h":5},{"id":"t45","label":"T45","type":"unassigned","r":45,"c":88,"w":12,"h":5},{"id":"t46","label":"T46","type":"unassigned","r":45,"c":100,"w":12,"h":5},{"id":"t47","label":"T47","type":"unassigned","r":45,"c":112,"w":12,"h":5},{"id":"t48","label":"T48","type":"unassigned","r":45,"c":136,"w":12,"h":5},{"id":"t49","label":"T49","type":"unassigned","r":45,"c":148,"w":12,"h":5}]}},"events":[{"id":"op-wed","day":"Wed","dow":3,"name":"One Piece Locals","small":"Bandai official · winner & participation packs","time":"5:00 PM","start":"17:00","fee":"TBD","game":"op","signup":"tcgplus"},{"id":"op-sat","day":"Sat","dow":6,"name":"One Piece Locals","small":"Bandai official · winner & participation packs","time":"11:00 AM","start":"11:00","fee":"TBD","game":"op","signup":"tcgplus"},{"id":"gd-sat","day":"Sat","dow":6,"name":"Gundam Card Game","small":"Bandai official · winner & participation packs","time":"1:00 PM","start":"13:00","fee":"TBD","game":"gundam","signup":"tcgplus"},{"id":"pk-sun","day":"Sun","dow":0,"name":"Pokemon League","small":"All ages · league promo prizing","time":"11:00 AM","start":"11:00","fee":"TBD","game":"pk","signup":"form"}],"live":{"on":false,"title":"Streaming from the shop floor","platform":"facebook","embed":"","spotPrice":24.99,"spots":12,"packsPerSpot":3,"schedule":[]},"links":{"tcgplus":"https://www.bandai-tcg-plus.com/","facebook":"https://www.facebook.com/toploadedtradingcards","instagram":"https://www.instagram.com/toploadedtcg","tcgplayer":"https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf","whatnot":"","googleMaps":"https://www.google.com/maps/search/?api=1&query=Top+Loaded+Trading+Cards+2514+Hazelwood+Dr+Crescent+Springs+KY+41017","googleReviews":"https://share.google/ESpQQCzYsIL1Ffqo8","appleMaps":"https://maps.apple.com/place?place-id=I96E3F1088FE2244C"},"buy":{"rates":{"bulk":0.55,"standard":0.6,"hot":0.7,"graded":0.8},"creditBonus":0.1},"ticker":[["Charizard ex · 151","$85"],["Umbreon VMAX Alt","$450"],["Shanks OP-09 Leader","$42"],["The One Ring","$40"],["Prismatic ETBs","$70"],["Luffy OP-05 Alt","$88"],["Ragavan MH2","$41"],["Base Set holos","ask"],["Sealed booster boxes","top rates"]],"testimonials":[],"rip":{"prices":{"pk":4.49,"op":4.49,"mtg":5.49}},"reviews":{"tcgplayerAuto":true,"source":"google","googlePlaceId":"","minRating":5,"items":[]},"updatedAt":null};</script>
 <script id="cardArtData"></script>
 <script>
 (function(){
@@ -8030,6 +8054,76 @@ a:hover .round-arrow{transform:rotate(45deg)}
   }
   TL.forms = {bind: formsBind, submit: formsSubmit, local: formsLocal, mailto: formsMailto, looksEmail: formsLooksEmail, looksPhone: formsLooksPhone, setFieldError: formsSetFieldError, clearFieldError: formsClearFieldError};
 
+  /* Optional inquiry: API inbox when connected, explicit email draft otherwise.
+     No attachments, photo URLs or customer details are cached in browser storage. */
+  TL.buyout = (function(){
+    function photoLinks(value){
+      if(typeof value !== 'string') throw new Error('Enter photo links as text.');
+      var links=value.split(/\r?\n/).map(function(s){return s.trim();}).filter(Boolean);
+      if(links.length>5) throw new Error('Use up to five photo links, one per line.');
+      return links.map(function(s){
+        var u;try{u=new URL(s);}catch(e){throw new Error('Use full HTTPS photo or album links.');}
+        var hosts=['photos.app.goo.gl','photos.google.com','drive.google.com','imgur.com','www.imgur.com','i.imgur.com','dropbox.com','www.dropbox.com','1drv.ms','onedrive.live.com','icloud.com','www.icloud.com','postimg.cc','i.postimg.cc'];
+        if(s.length>500 || /[\s\u0000-\u001f\u007f]/.test(s) || /%0[ad]/i.test(s) || u.protocol!=='https:' || u.username || u.password || u.port || hosts.indexOf(u.hostname)<0)
+          throw new Error('Use HTTPS links from Google Photos/Drive, Imgur, Dropbox, OneDrive, iCloud or Postimages (500 characters each).');
+        return u.href;
+      });
+    }
+    var form=$('#buyForm');
+    if(!form) return {photoLinks:photoLinks};
+    var result=$('#buyResult'),status=$('#buyResultStatus'),send=$('#buySubmit'),draft=$('#buyDraftText'),version=0,sentVersion=-1;
+    function connection(){
+      if(form.getAttribute('aria-busy')==='true')return;
+      if(sentVersion===version){send.disabled=true;send.textContent='Inquiry sent';return;}
+      send.disabled=false;
+      send.textContent=TL.api.online?'Send buyout inquiry →':'Prepare email inquiry →';
+      $('#buyDeliveryNote').textContent=TL.api.online?'Send details and photo links privately to the shop. For photo attachments, use the email draft option below. No files are uploaded here.':'Prepare an email to the shop. Attach JPG, PNG or WebP photos in your email app before sending. Nothing is sent by this page.';
+    }
+    function showDraft(fields,links,message){
+      var lines=['Collection buyout inquiry','Name: '+fields.name,'Contact: '+fields.contact,'Games / types: '+fields.games,'',fields.desc,'',links.length?'Photo links:\n'+links.join('\n'):'I can attach photos to this email.'];
+      draft.value=lines.join('\n');
+      $('#buyEmailDraft').href=TL.forms.mailto('Collection buyout inquiry',lines);
+      $('#buyEmailDraft').hidden=false;$('#buyCopy').hidden=false;
+      status.textContent=message+' Open the email draft, attach photos if you like, then send it from your email app. If your email app leaves anything out, use Copy inquiry.';
+      result.hidden=false;result.focus({preventScroll:true});
+    }
+    form.addEventListener('input',function(e){
+      version++;result.hidden=true;draft.value='';draft.hidden=true;$('#buyEmailDraft').removeAttribute('href');
+      if(e.target.getAttribute('aria-invalid'))TL.forms.clearFieldError(e.target);
+      connection();
+    });
+    form.addEventListener('submit',async function(e){
+      e.preventDefault();if(send.disabled)return;
+      formsClearErrors(form);
+      var fields=formsCollect(form),bad=formsValidate(form),links;
+      if(fields.website)return;
+      if(!bad && (!TL.forms.looksEmail(fields.contact) && !/^\+?[\d\s().-]{7,24}$/.test(fields.contact)))bad={ctrl:$('#buyContact'),msg:'Enter an email or a phone number.'};
+      if(!bad && fields.name.length<2)bad={ctrl:$('#buyName'),msg:'Please enter your name.'};
+      if(!bad && fields.desc.length<3)bad={ctrl:$('#buyDesc'),msg:'Tell us a little about the collection.'};
+      try{links=photoLinks(fields.photosUrl);}catch(err){if(!bad)bad={ctrl:$('#buyPhotos'),msg:err.message};}
+      if(bad){TL.forms.setFieldError(bad.ctrl,bad.msg);bad.ctrl.focus();return;}
+      fields.photosUrl=links.join('\n');
+      showDraft(fields,links,'Your inquiry is ready, but has not been sent.');
+      if(!TL.api.online)return;
+      var attempt=version;formsSetBusy(form,true);
+      try{
+        var response=await TL.forms.submit('buylist',fields);
+        if(attempt!==version)return;
+        sentVersion=attempt;
+        status.textContent='Your inquiry is in the shop’s inbox. We’ll use the contact details you provided to follow up. No offer is guaranteed until an in-store review. To send additional photo attachments, open the email draft and mention inquiry '+response.id+'.';
+        $('#buyEmailDraft').href=TL.forms.mailto('Photos for buyout inquiry '+response.id,[draft.value]);
+      }catch(err){
+        if(attempt===version)status.textContent='Your inquiry could not be confirmed. Your answers are still here. You can retry or open the email draft and send it yourself.';
+      }finally{formsSetBusy(form,false);delete send.dataset.label;connection();}
+    });
+    $('#buyCopy').addEventListener('click',async function(){
+      try{await navigator.clipboard.writeText(draft.value);toast('Inquiry copied — paste it into your email.');}
+      catch(e){draft.hidden=false;draft.focus();draft.select();status.textContent='Copy the text below into an email to the shop. Nothing has been sent.';}
+    });
+    TL.api.ready.then(connection);TL.on('api:ready',connection);
+    return {photoLinks:photoLinks};
+  })();
+
   /* The "What's my card worth?" buylist estimator was removed at the owner's request (2026-09-12); this file intentionally does nothing. */
 
   /* ---------- admin: dashboard, integrations, sync, inventory table ----------
@@ -9971,7 +10065,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
 
   /* Marketfloor-inspired local guide. No external event's bookings are copied. */
   TL.floorplan = (function(){
-    var labels = {tcg:"TCG",sports:"Sports",mixed:"Mixed",food:"Food",entry:"Entry"};
+    var labels = {tcg:"TCG",sports:"Sports",mixed:"Mixed",unassigned:"Vendor to be announced",food:"Food",entry:"Entry"};
     function stats(booths){
       var counts = {tcg:0,sports:0,mixed:0};
       (booths || []).forEach(function(b){ if(b && Object.prototype.hasOwnProperty.call(counts,b.type)) counts[b.type]++; });
@@ -9997,7 +10091,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     function viewport(root,map,scroll){
       var zoom=1,drag=null,fitMode=true;
       function setZoom(z){
-        var old=zoom; zoom=Math.max(.18,Math.min(2.5,z));
+        var old=zoom; zoom=Math.max(.015,Math.min(2.5,z));
         var x=(scroll.scrollLeft+scroll.clientWidth/2)/old,y=(scroll.scrollTop+scroll.clientHeight/2)/old;
         map.style.setProperty('--fp-cell',(64*zoom)+'px');map.style.setProperty('--fp-row',((Number(map.dataset.rowBase)||64)*zoom)+'px');map.style.setProperty('--fp-gap',((Number(map.dataset.baseGap)||0)*zoom)+'px');
         map.classList.toggle('is-dense',zoom<.6);
@@ -10037,17 +10131,18 @@ a:hover .round-arrow{transform:rotate(45deg)}
     function match(b){var q=($('#floorSearch').value||'').trim().toLowerCase(),type=$('#floorType').value;return (!type||b.type===type)&&(!q||(b.label+' '+b.id+' '+labels[b.type]).toLowerCase().includes(q));}
     function details(i){
       var b=publicBooths[i];selected=b?i:-1;
-      $('#showFloorDetail').innerHTML=b?'<p class="eyebrow">'+esc(labels[b.type])+' vendor area</p><h3>'+esc(b.label)+'</h3><p>Find this vendor in the highlighted area of the map.</p>':'<h3>Explore the floor</h3><p>Choose a vendor on the map or in the directory.</p>';
+      $('#showFloorDetail').innerHTML=b?'<p class="eyebrow">'+esc(labels[b.type])+'</p><h3>'+esc(b.label)+'</h3><p>'+(b.type==='unassigned'?'The vendor for this position has not been announced for this show. This is not a table availability or reservation offer.':'Find this location in the highlighted area of the map.')+'</p>':'<h3>Explore the floor</h3><p>Choose a table on the map or in the directory.</p>';
       $$('#showFloorGuide [data-floor-booth]').forEach(function(el){el.setAttribute('aria-pressed',String(Number(el.dataset.floorBooth)===selected));});
     }
     function filter(){
       var count=0;
       publicBooths.forEach(function(b,i){var yes=match(b);if(yes)count++;var cell=$('#showFloorMap [data-floor-booth="'+i+'"]');cell.classList.toggle('is-muted',!yes);cell.disabled=!yes;cell.setAttribute('aria-hidden',String(!yes));});
       $('#showFloorList').innerHTML=publicBooths.map(function(b,i){return match(b)?'<li><button type="button" data-floor-booth="'+i+'" aria-pressed="'+(i===selected)+'"><span class="floor-swatch t-'+b.type+'" aria-hidden="true"></span><span><b>'+esc(b.label)+'</b><small>'+labels[b.type]+' · Row '+b.r+', column '+b.c+'</small></span><span aria-hidden="true">↗</span></button></li>':'';}).join('');
-      $('#floorResults').textContent=count+' of '+publicBooths.length+' locations shown'+(!count?' — try another name or category.':'. Vendor percentages above always describe the whole floor.');
+      $('#floorResults').textContent=count+' of '+publicBooths.length+' locations shown'+(!count?' — try another name or category.':'.');
       if(selected>=0&&!match(publicBooths[selected]))details(-1);
     }
     function render(){
+      var selectedId=publicBooths[selected]&&publicBooths[selected].id;
       var f = (TL.config.show || {}).floorplan || {}, rows = Number(f.rows)||6, cols = Number(f.cols)||10;
       var booths = (Array.isArray(f.booths) ? f.booths : []).filter(function(b){return b && labels[b.type] && b.r>=1 && b.c>=1 && b.w>=1 && b.h>=1 && b.r+b.h-1<=rows && b.c+b.w-1<=cols;});
       var map=$("#showFloorMap"), note=$("#showFloorNote"), mix=$("#showFloorMix"), legend=$("#showFloorLegend"), list=$("#showFloorList"), scroll=$("#showFloorScroll");
@@ -10057,12 +10152,16 @@ a:hover .round-arrow{transform:rotate(45deg)}
       scroll.hidden = !booths.length; mix.hidden = !booths.length;
       if(!booths.length){ note.textContent="The vendor layout is not published yet. Check back for the confirmed TCG and Sports booth locations and percentages."; map.innerHTML=legend.innerHTML=list.innerHTML=mix.innerHTML="";publicBooths=[];selected=-1;return; }
       var s=stats(booths);
-      note.textContent=s.total+" vendor booths · percentages are by booth, not floor area. Mixed vendors are counted separately; food and entry areas are excluded.";
-      $('#floorScaleNote').textContent=layout(map,f.room,{rows:rows,cols:cols});
+      var pending=booths.filter(function(b){return b.type==='unassigned';}).length;
+      note.textContent=s.total?s.total+" assigned vendor booths · TCG/Sports percentages are by assigned booth, not floor area. Mixed vendors are separate."+(pending?' '+pending+' assignments to follow.':''):"Marketfloor table layout · vendor assignments for this show are to be announced. TCG/Sports percentages will appear as vendors are assigned. Positions are subject to organizer confirmation.";
+      mix.hidden=!s.total;
+      layout(map,f.room,{rows:rows,cols:cols});
+      $('#floorScaleNote').textContent=f.room==='hilton-ballroom'?'Triple Crown Ballroom · 96 × 41 ft · table-layout guide':'Organizer’s table-layout guide';
       map.innerHTML=booths.map(function(b,i){return '<button type="button" class="fp-cell t-'+b.type+'" data-floor-booth="'+i+'" aria-pressed="false" aria-label="'+esc(b.label+' · '+labels[b.type]+', row '+b.r+', column '+b.c)+'" title="'+esc(b.label+' · '+labels[b.type])+'" style="grid-row:'+b.r+' / span '+b.h+';grid-column:'+b.c+' / span '+b.w+'"><b>'+esc(b.label)+'</b><i>'+labels[b.type]+'</i></button>';}).join("");
       mix.innerHTML=Object.keys(s.pct).map(function(k){return '<span class="t-'+k+'" style="width:'+s.pct[k]+'%"></span>';}).join("");
       legend.innerHTML=Object.keys(labels).filter(function(k){return booths.some(function(b){return b.type===k;});}).map(function(k){return '<li><i class="t-'+k+'" aria-hidden="true"></i>'+labels[k]+(s.pct[k]!==undefined?' '+s.pct[k]+'% ('+s.counts[k]+')':'')+'</li>';}).join("");
-      publicBooths=booths;details(-1);filter();
+      publicBooths=booths;details(booths.findIndex(function(b){return b.id===selectedId;}));filter();
+      $$('#showFloorMap [data-floor-booth]').forEach(function(el,i){el.classList.toggle('is-vertical',booths[i].h>booths[i].w);});
       if(!publicView){
         publicView=viewport(guide,map,scroll);
         $('#floorSearch').addEventListener('input',filter);$('#floorType').addEventListener('change',filter);
@@ -10071,6 +10170,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       publicView.refresh();
     }
     TL.on("init",render); TL.on("config:change",render);
+    TL.on('view:change',function(d){if(d.name==='show'&&publicView)requestAnimationFrame(function(){publicView.refresh();});});
     return {stats:stats,render:render,viewport:viewport,fits:fits,overlaps:overlaps,canPlace:canPlace,layout:layout,roomMetrics:roomMetrics};
   })();
 
@@ -11458,9 +11558,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
   /* ---- card show floor plan ----
      config.show.floorplan = {rows, cols, booths:[{id, r, c, w, h, type, label}]}.
      Grid is 1-indexed. Visual edits use the same geometry checks as numeric edits. */
-  var BOOTH_OPTS = [["tcg", "TCG"], ["sports", "Sports"], ["mixed", "Mixed"], ["food", "Food"], ["entry", "Entry"]];
-  var BOOTH_LAB = {tcg: "TCG", sports: "Sports", mixed: "Mixed", food: "Food", entry: "Entry"};
-  var FP_MAX_ROWS = 20, FP_MAX_COLS = 26;
+  var BOOTH_OPTS = [["unassigned", "Vendor to be announced"], ["tcg", "TCG"], ["sports", "Sports"], ["mixed", "Mixed"], ["food", "Food"], ["entry", "Entry"]];
+  var BOOTH_LAB = {unassigned:"Vendor to be announced",tcg: "TCG", sports: "Sports", mixed: "Mixed", food: "Food", entry: "Entry"};
+  var FP_MAX_ROWS = 100, FP_MAX_COLS = 200;
   var fpWork = [], fpReady = false, fpUid = 0, fpSelected = -1, fpPlacing = false, fpViewport = null, fpDrag = null, fpSuppressClick = false;
   function fpSize(){
     return {rows: TL.clamp(Math.round(num(val("setFpRows"), 6)), 1, FP_MAX_ROWS), cols: TL.clamp(Math.round(num(val("setFpCols"), 10)), 1, FP_MAX_COLS)};
@@ -11816,7 +11916,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
 
   /* ---- inbox ---- */
   var inboxItems = [], inboxKind = "all", inboxShowDone = false, inboxFromServer = false;
-  var KIND_LABEL = {vendor: "Vendor table", buylist: "Buylist quote", signup: "League signup", newsletter: "Newsletter", restock: "Restock", contact: "Contact"};
+  var KIND_LABEL = {vendor: "Vendor table", buylist: "Buyout inquiry", signup: "League signup", newsletter: "Newsletter", restock: "Restock", contact: "Contact"};
   var HIDE_FIELDS = {id: 1, kind: 1, at: 1, ip: 1, status: 1, local: 1, website: 1, server: 1, note: 1, emailed: 1};
   function localForms(){ var l = TL.store.get("forms", []); return Array.isArray(l) ? l : []; }
   function inboxTitle(f){
@@ -11826,6 +11926,11 @@ a:hover .round-arrow{transform:rotate(45deg)}
     if(v === undefined || v === null || v === "" || (typeof v === "object" && !Array.isArray(v))) return "";
     var s = Array.isArray(v) ? v.join(", ") : String(v);
     var out;
+    if(k==='photoLinks'||k==='photosUrl'){
+      var links;try{links=TL.buyout.photoLinks(Array.isArray(v)?v.join('\n'):s);}catch(e){return '<span>Photo links withheld: unsupported destination.</span>';}
+      return links.length?'<span>Customer-supplied photo links: '+links.map(function(url,i){return '<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Photo / album '+(i+1)+' ↗</a>';}).join(' · ')+'</span>':'';
+    }
+    if(k==='desc')return '<span style="white-space:pre-wrap;overflow-wrap:anywhere">Collection: '+esc(s)+'</span>';
     if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)) out = '<a href="mailto:' + esc(s) + '">' + esc(s) + '</a>';
     else if(/^\+?[\d\s().-]{7,}$/.test(s)) out = '<a href="tel:' + esc(s.replace(/[^\d+]/g, "")) + '">' + esc(s) + '</a>';
     else out = esc(s.length > 240 ? s.slice(0, 239) + "…" : s);
@@ -12227,12 +12332,13 @@ a:hover .round-arrow{transform:rotate(45deg)}
     var guest = $("#accountGuest"), member = $("#accountMember"), status = $("#accountStatus");
     if(!guest) return;
     var saved = TL.session.get("customer-session", null), token = saved && saved.exp > Date.now() ? saved.token : null;
-    var challenge = null, enabled = false, generation = 0;
+    var challenge = null, enabled = false, generation = 0, availabilityVersion = 0;
     function call(method, path, body, override){ return TL.api.request(method, path, body, {noAuth:true, token:override || token}); }
     function error(e){ return e && e.error ? e.error : "Could not reach the shop. Please try again."; }
     function reset(){
-      token = null; generation++; TL.session.del("customer-session");
+      token = null; saved = null; challenge = null; generation++; TL.session.del("customer-session");
       member.hidden = true; guest.hidden = false;
+      $('#accountCodeForm').hidden=true;$('#accountEmailForm').hidden=!enabled;$('#accountCode').value='';
       $("#accountHistory").textContent = ""; $("#accountBalance").textContent = "—"; $("#accountWho").textContent = "";
     }
     function stamp(iso){
@@ -12259,14 +12365,20 @@ a:hover .round-arrow{transform:rotate(45deg)}
       } finally { button.disabled = false; }
     }
     async function enter(){
+      var attempt=++availabilityVersion;
       await TL.api.ready;
+      if(attempt!==availabilityVersion)return;
       if(saved && saved.base !== TL.api.base){ saved = null; reset(); }
-      enabled = false;
-      try { if(TL.api.online) enabled = !!(await call("GET","/account/status")).enabled; } catch(e){}
+      var available=false;
+      try { if(TL.api.online) available = !!(await call("GET","/account/status")).enabled; } catch(e){}
+      if(attempt!==availabilityVersion)return;
+      enabled=available;
+      if(!enabled)reset();
       $("#accountSend").disabled = !enabled;
       $("#accountEmailForm").hidden = !enabled || !!challenge;
-      $("#accountGuestTitle").textContent = enabled ? "Sign in with your email" : "Store credit at the counter";
-      $("#accountGuestIntro").textContent = enabled ? "No password to remember. We’ll email a private sign-in code that expires in 10 minutes." : "Visit us or contact the shop to check your balance and plan your next trade.";
+      $('#accountUnavailable').hidden=enabled;
+      $("#accountGuestTitle").textContent = enabled ? "Create an account or sign in" : "Online accounts are coming soon";
+      $("#accountGuestIntro").textContent = enabled ? "New and returning customers use the same email code. No Google login or password needed. Your code expires in 10 minutes." : "Your store credit is still handled by the shop. Online access will use a verified email address, with no Google login required.";
       if(token){ await refresh(); return; }
       status.textContent = enabled ? "Use the email the shop has on your credit record. New here? You can sign in, then ask the counter to link your credit." : "Call (513) 222-2573 or stop by 2514 Hazelwood Drive.";
     }
@@ -12298,6 +12410,8 @@ a:hover .round-arrow{transform:rotate(45deg)}
       status.textContent = "Request a fresh code. Only the code from the email for this request will work here.";
     });
     $("#accountRefresh").addEventListener("click",refresh);
+    // Re-read published connection settings as well as service availability.
+    $('#accountRetry').addEventListener('click',function(){this.disabled=true;window.location.reload();});
     $("#accountLogout").addEventListener("click",async function(){
       var old = token; reset(); status.textContent = "Signing out…";
       try { await call("POST","/account/logout",{},old); status.textContent = "Signed out."; }
@@ -12305,6 +12419,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       $("#accountEmail").focus();
     });
     TL.on("view:change",function(d){ if(d.name === "account") enter(); });
+    TL.on('api:ready',function(){if(TL.route().name==='account')enter();});
   })();
 
   /* ---------- staff/admin auth ----------

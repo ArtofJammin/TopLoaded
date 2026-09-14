@@ -556,9 +556,9 @@
   /* ---- card show floor plan ----
      config.show.floorplan = {rows, cols, booths:[{id, r, c, w, h, type, label}]}.
      Grid is 1-indexed. Visual edits use the same geometry checks as numeric edits. */
-  var BOOTH_OPTS = [["tcg", "TCG"], ["sports", "Sports"], ["mixed", "Mixed"], ["food", "Food"], ["entry", "Entry"]];
-  var BOOTH_LAB = {tcg: "TCG", sports: "Sports", mixed: "Mixed", food: "Food", entry: "Entry"};
-  var FP_MAX_ROWS = 20, FP_MAX_COLS = 26;
+  var BOOTH_OPTS = [["unassigned", "Vendor to be announced"], ["tcg", "TCG"], ["sports", "Sports"], ["mixed", "Mixed"], ["food", "Food"], ["entry", "Entry"]];
+  var BOOTH_LAB = {unassigned:"Vendor to be announced",tcg: "TCG", sports: "Sports", mixed: "Mixed", food: "Food", entry: "Entry"};
+  var FP_MAX_ROWS = 100, FP_MAX_COLS = 200;
   var fpWork = [], fpReady = false, fpUid = 0, fpSelected = -1, fpPlacing = false, fpViewport = null, fpDrag = null, fpSuppressClick = false;
   function fpSize(){
     return {rows: TL.clamp(Math.round(num(val("setFpRows"), 6)), 1, FP_MAX_ROWS), cols: TL.clamp(Math.round(num(val("setFpCols"), 10)), 1, FP_MAX_COLS)};

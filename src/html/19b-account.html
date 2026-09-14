@@ -4,8 +4,9 @@
       <div class="account-layout">
         <div class="account-panel">
           <div id="accountGuest">
-            <h2 id="accountGuestTitle">Your store credit</h2><p id="accountGuestIntro">Check your credit at the counter, or sign in when online access is available.</p>
-            <form id="accountEmailForm"><label for="accountEmail">Email address</label><input id="accountEmail" type="email" autocomplete="email" maxlength="200" placeholder="you@example.com" required><button class="btn" id="accountSend" type="submit" disabled>Email me a sign-in code</button></form>
+            <h2 id="accountGuestTitle">Create an account or sign in</h2><p id="accountGuestIntro">Use your email to securely access your linked store credit. No Google account required.</p>
+            <form id="accountEmailForm" hidden><label for="accountEmail">Email address</label><input id="accountEmail" type="email" autocomplete="email" maxlength="200" placeholder="you@example.com" required><button class="btn" id="accountSend" type="submit" disabled>Email me a sign-in code</button></form>
+            <div id="accountUnavailable" hidden><p>Online account access is not active yet. The shop can still look up your credit in person using your phone number or email. Your balance is not stored on this website.</p><div class="buy-actions"><a class="btn" href="#/visit" data-go="visit">Contact the shop &rarr;</a><button class="btn btn-ghost" id="accountRetry" type="button">Check again</button></div></div>
             <form id="accountCodeForm" hidden><label for="accountCode">Paste the code from your email</label><input id="accountCode" type="text" autocomplete="one-time-code" autocapitalize="none" spellcheck="false" maxlength="64" required aria-describedby="accountCodeHint"><p id="accountCodeHint">Use the full 32-character code. Never share it with anyone.</p><button class="btn" id="accountVerify" type="submit">Sign in</button><button class="linklike" id="accountRestart" type="button">Use another email or request a new code</button></form>
           </div>
           <div id="accountMember" hidden>
@@ -19,7 +20,7 @@
         </div>
         <aside class="account-panel account-benefits" aria-label="Account information">
           <p class="account-kicker">KEEP THE GOOD STUFF CLOSE</p><h2>Your collection.<br>Your next chapter.</h2>
-          <ul><li><b>Store credit, clearly.</b><span>Keep track of the credit earned from your trades.</span></li><li><b>Make it yours.</b><span>Ask the counter to link your email to your credit record.</span></li><li><b>Your saved cards.</b><span>Keep a wishlist and revisit your favorites on this browser.</span></li></ul>
+          <ul><li><b>Verify your email.</b><span>When online access opens, one emailed code creates or opens your account. No Google login or password required.</span></li><li><b>Link your credit.</b><span>Ask the counter to find your record by phone or email and link your verified email. Balances are never linked just by entering a phone number online.</span></li><li><b>Your saved cards.</b><span>Your wishlist works now, on this browser. Store credit is separate from your TCGplayer account and checkout.</span></li></ul>
           <a class="btn btn-ghost" href="#/shop?wish=1">Open my wishlist &rarr;</a><a class="linklike" href="#/visit" data-go="visit">Need help? Contact the shop &rarr;</a>
         </aside>
       </div>

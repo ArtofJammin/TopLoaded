@@ -4,6 +4,18 @@ import { makeEnv, client } from './helpers.mjs';
 
 const vendor = { name: 'Jane Doe', email: 'Jane@Example.com', tables: 2, game: 'op', phone: '859-555-0101' };
 
+test('forms: buyout photos are private links, never arbitrary uploads or fetched previews', async () => {
+  const c=client(makeEnv()),base={name:'QA Collection',contact:'qa@example.com',games:'Pokemon',desc:'Two binders'};
+  for(const photosUrl of ['javascript:alert(1)','https://127.0.0.1/private','https://imgur.com.evil.test/album'])assert.equal((await c.post('/forms/buylist',{...base,photosUrl})).status,400);
+  assert.equal((await c.post('/forms/buylist',{...base,attachments:['data:text/html,x']})).status,400);
+  const sent=await c.post('/forms/buylist',{...base,photosUrl:'https://imgur.com/a/cards\nhttps://photos.app.goo.gl/album'});
+  assert.equal(sent.status,200);
+  assert.equal((await c.get('/forms?kind=buylist')).status,401);
+  const rows=(await c.get('/forms?kind=buylist',{token:await c.login('staff')})).data.forms;
+  assert.deepEqual(rows[0].photoLinks,['https://imgur.com/a/cards','https://photos.app.goo.gl/album']);
+  assert.equal(rows[0].email,'qa@example.com');
+});
+
 test('forms: vendor submission is stored, cleaned, and listed newest first for staff', async () => {
   const c = client(makeEnv());
   const r = await c.post('/forms/vendor', { ...vendor, name: '<b>Jane</b> Doe<script>x</script>', message: 'Bringing  singles\n\n\n\nand sealed' });

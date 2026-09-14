@@ -9,6 +9,12 @@
 .floor-scroll.is-panning{cursor:grabbing;user-select:none}
 .floor-map{--fp-gap:6px;min-width:0;gap:var(--fp-gap);background-size:calc(var(--fp-cell) + var(--fp-gap)) calc(var(--fp-row,var(--fp-cell)) + var(--fp-gap));border:2px solid var(--line);box-sizing:content-box;isolation:isolate}
 .floor-map.is-hilton .fp-cell{margin:2px}
+.t-unassigned{background:var(--surface2);color:var(--ink2);border-color:var(--line)}
+#showFloorMap{background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:20px 20px}
+#showFloorMap .fp-cell.t-unassigned{border-color:color-mix(in srgb,var(--accent) 35%,var(--line));background:var(--surface2)}
+#showFloorMap .fp-cell.is-vertical b{writing-mode:vertical-rl;overflow:visible}
+#showFloorMap .fp-cell.is-vertical i{display:none}
+.venue-reference-details{margin:12px 0 20px}.venue-reference-details>summary{cursor:pointer;color:var(--ink2);padding:12px 0;min-height:44px}
 .venue-reference{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:28px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:26px;margin:20px 0 28px}
 .venue-reference h3{font-size:clamp(1.7rem,3vw,2.6rem);line-height:1.1;margin:12px 0 20px}.venue-reference p{margin-bottom:18px}.venue-reference figure{margin:0;min-width:0}.venue-reference figcaption{font-size:.75rem;color:var(--ink2);margin-top:10px;line-height:1.5}
 .venue-plan-paper{position:relative;background:#fff;border-radius:6px;overflow:hidden}.venue-plan-paper img{display:block;width:100%;height:auto}

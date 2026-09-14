@@ -77,11 +77,11 @@ export function validateOwnerSettings(cfg) {
   const fail = m => { throw new HttpError(400, m); };
   const fp=cfg.show?.floorplan;
   if(fp !== undefined){
-    if(!fp || !Number.isInteger(fp.rows)||fp.rows<1||fp.rows>20||!Number.isInteger(fp.cols)||fp.cols<1||fp.cols>26||!Array.isArray(fp.booths)||fp.booths.length>100)fail('Floor plan needs a 1–20 by 1–26 grid and at most 100 booths');
+    if(!fp || !Number.isInteger(fp.rows)||fp.rows<1||fp.rows>100||!Number.isInteger(fp.cols)||fp.cols<1||fp.cols>200||!Array.isArray(fp.booths)||fp.booths.length>100)fail('Floor plan needs a 1–100 by 1–200 grid and at most 100 booths');
     if(fp.room!==undefined&&!['schematic','hilton-ballroom'].includes(fp.room))fail('Choose the Hilton ballroom or a schematic room');
     const occupied=new Set(),ids=new Set();
     for(const b of fp.booths){
-      if(!b || typeof b.id!=='string'||!b.id.trim()||ids.has(b.id)||typeof b.label!=='string'||!b.label.trim()||b.label.length>120||!['tcg','sports','mixed','food','entry'].includes(b.type))fail('Each booth needs a unique ID, name and valid type');
+      if(!b || typeof b.id!=='string'||!b.id.trim()||ids.has(b.id)||typeof b.label!=='string'||!b.label.trim()||b.label.length>120||!['tcg','sports','mixed','unassigned','food','entry'].includes(b.type))fail('Each booth needs a unique ID, name and valid type');
       ids.add(b.id);
       if(!['r','c','w','h'].every(k=>Number.isInteger(b[k])&&b[k]>=1)||b.r+b.h-1>fp.rows||b.c+b.w-1>fp.cols)fail('Booths must fit inside the floor plan');
       for(let r=b.r;r<b.r+b.h;r++)for(let c=b.c;c<b.c+b.w;c++){const key=r+','+c;if(occupied.has(key))fail('Floor plan booths overlap');occupied.add(key);}

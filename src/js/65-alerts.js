@@ -87,7 +87,7 @@
 
   /* ---- inbox ---- */
   var inboxItems = [], inboxKind = "all", inboxShowDone = false, inboxFromServer = false;
-  var KIND_LABEL = {vendor: "Vendor table", buylist: "Buylist quote", signup: "League signup", newsletter: "Newsletter", restock: "Restock", contact: "Contact"};
+  var KIND_LABEL = {vendor: "Vendor table", buylist: "Buyout inquiry", signup: "League signup", newsletter: "Newsletter", restock: "Restock", contact: "Contact"};
   var HIDE_FIELDS = {id: 1, kind: 1, at: 1, ip: 1, status: 1, local: 1, website: 1, server: 1, note: 1, emailed: 1};
   function localForms(){ var l = TL.store.get("forms", []); return Array.isArray(l) ? l : []; }
   function inboxTitle(f){
@@ -97,6 +97,11 @@
     if(v === undefined || v === null || v === "" || (typeof v === "object" && !Array.isArray(v))) return "";
     var s = Array.isArray(v) ? v.join(", ") : String(v);
     var out;
+    if(k==='photoLinks'||k==='photosUrl'){
+      var links;try{links=TL.buyout.photoLinks(Array.isArray(v)?v.join('\n'):s);}catch(e){return '<span>Photo links withheld: unsupported destination.</span>';}
+      return links.length?'<span>Customer-supplied photo links: '+links.map(function(url,i){return '<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Photo / album '+(i+1)+' ↗</a>';}).join(' · ')+'</span>':'';
+    }
+    if(k==='desc')return '<span style="white-space:pre-wrap;overflow-wrap:anywhere">Collection: '+esc(s)+'</span>';
     if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)) out = '<a href="mailto:' + esc(s) + '">' + esc(s) + '</a>';
     else if(/^\+?[\d\s().-]{7,}$/.test(s)) out = '<a href="tel:' + esc(s.replace(/[^\d+]/g, "")) + '">' + esc(s) + '</a>';
     else out = esc(s.length > 240 ? s.slice(0, 239) + "…" : s);

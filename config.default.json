@@ -48,7 +48,7 @@
   },
   "logo": null,
   "show": {
-    "date": "2026-09-05",
+    "date": "2026-10-03",
     "start": "10:00",
     "end": "16:00",
     "setup": "08:00",
@@ -74,9 +74,451 @@
     ],
     "floorplan": {
       "room": "hilton-ballroom",
-      "rows": 6,
-      "cols": 10,
-      "booths": []
+      "rows": 82,
+      "cols": 192,
+      "booths": [
+        {
+          "id": "t1",
+          "label": "T1",
+          "type": "unassigned",
+          "r": 7,
+          "c": 17,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t2",
+          "label": "T2",
+          "type": "unassigned",
+          "r": 7,
+          "c": 29,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t3",
+          "label": "T3",
+          "type": "unassigned",
+          "r": 7,
+          "c": 41,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t4",
+          "label": "T4",
+          "type": "unassigned",
+          "r": 7,
+          "c": 53,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t5",
+          "label": "T5",
+          "type": "unassigned",
+          "r": 7,
+          "c": 65,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t6",
+          "label": "T6",
+          "type": "unassigned",
+          "r": 7,
+          "c": 77,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t7",
+          "label": "T7",
+          "type": "unassigned",
+          "r": 7,
+          "c": 89,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t8",
+          "label": "T8",
+          "type": "unassigned",
+          "r": 7,
+          "c": 101,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t9",
+          "label": "T9",
+          "type": "unassigned",
+          "r": 7,
+          "c": 113,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t10",
+          "label": "T10",
+          "type": "unassigned",
+          "r": 7,
+          "c": 125,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t11",
+          "label": "T11",
+          "type": "unassigned",
+          "r": 7,
+          "c": 137,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t12",
+          "label": "T12",
+          "type": "unassigned",
+          "r": 7,
+          "c": 149,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t13",
+          "label": "T13",
+          "type": "unassigned",
+          "r": 7,
+          "c": 161,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t14",
+          "label": "T14",
+          "type": "unassigned",
+          "r": 17,
+          "c": 182,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "t15",
+          "label": "T15",
+          "type": "unassigned",
+          "r": 29,
+          "c": 182,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "t16",
+          "label": "T16",
+          "type": "unassigned",
+          "r": 41,
+          "c": 182,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "t17",
+          "label": "T17",
+          "type": "unassigned",
+          "r": 53,
+          "c": 182,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "t18",
+          "label": "T18",
+          "type": "unassigned",
+          "r": 72,
+          "c": 161,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t19",
+          "label": "T19",
+          "type": "unassigned",
+          "r": 72,
+          "c": 149,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t20",
+          "label": "T20",
+          "type": "unassigned",
+          "r": 72,
+          "c": 137,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t21",
+          "label": "T21",
+          "type": "unassigned",
+          "r": 72,
+          "c": 125,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t22",
+          "label": "T22",
+          "type": "unassigned",
+          "r": 72,
+          "c": 113,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t23",
+          "label": "T23",
+          "type": "unassigned",
+          "r": 72,
+          "c": 101,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t24",
+          "label": "T24",
+          "type": "unassigned",
+          "r": 72,
+          "c": 89,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t25",
+          "label": "T25",
+          "type": "unassigned",
+          "r": 72,
+          "c": 77,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t26",
+          "label": "T26",
+          "type": "unassigned",
+          "r": 72,
+          "c": 65,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t27",
+          "label": "T27",
+          "type": "unassigned",
+          "r": 72,
+          "c": 53,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t28",
+          "label": "T28",
+          "type": "unassigned",
+          "r": 72,
+          "c": 41,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t29",
+          "label": "T29",
+          "type": "unassigned",
+          "r": 53,
+          "c": 7,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "t30",
+          "label": "T30",
+          "type": "unassigned",
+          "r": 41,
+          "c": 7,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "t31",
+          "label": "T31",
+          "type": "unassigned",
+          "r": 29,
+          "c": 7,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "t32",
+          "label": "T32",
+          "type": "unassigned",
+          "r": 17,
+          "c": 7,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "t33",
+          "label": "T33",
+          "type": "unassigned",
+          "r": 28,
+          "c": 28,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t34",
+          "label": "T34",
+          "type": "unassigned",
+          "r": 28,
+          "c": 64,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t35",
+          "label": "T35",
+          "type": "unassigned",
+          "r": 28,
+          "c": 76,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t36",
+          "label": "T36",
+          "type": "unassigned",
+          "r": 28,
+          "c": 88,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t37",
+          "label": "T37",
+          "type": "unassigned",
+          "r": 28,
+          "c": 100,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t38",
+          "label": "T38",
+          "type": "unassigned",
+          "r": 28,
+          "c": 112,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t39",
+          "label": "T39",
+          "type": "unassigned",
+          "r": 28,
+          "c": 136,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t40",
+          "label": "T40",
+          "type": "unassigned",
+          "r": 28,
+          "c": 148,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t41",
+          "label": "T41",
+          "type": "unassigned",
+          "r": 45,
+          "c": 40,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t42",
+          "label": "T42",
+          "type": "unassigned",
+          "r": 45,
+          "c": 52,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t43",
+          "label": "T43",
+          "type": "unassigned",
+          "r": 45,
+          "c": 64,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t44",
+          "label": "T44",
+          "type": "unassigned",
+          "r": 45,
+          "c": 76,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t45",
+          "label": "T45",
+          "type": "unassigned",
+          "r": 45,
+          "c": 88,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t46",
+          "label": "T46",
+          "type": "unassigned",
+          "r": 45,
+          "c": 100,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t47",
+          "label": "T47",
+          "type": "unassigned",
+          "r": 45,
+          "c": 112,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t48",
+          "label": "T48",
+          "type": "unassigned",
+          "r": 45,
+          "c": 136,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "t49",
+          "label": "T49",
+          "type": "unassigned",
+          "r": 45,
+          "c": 148,
+          "w": 12,
+          "h": 5
+        }
+      ]
     }
   },
   "events": [

@@ -2,6 +2,10 @@
 
 The code is prepared; this procedure still requires the shop's Cloudflare account and service credentials. Nothing here activates real payments by default. Never paste credentials into Admin, GitHub repository variables, chat, or source files.
 
+Customer accounts do **not** require Google OAuth or the owner's Google credentials. New and returning customers verify their email with a one-time code. Deploy the Worker with private KV storage and a verified Resend sender (`RESEND_API_KEY`, `EMAIL_FROM`); the shop then links verified customer emails to existing credit records. The counter can locate records by phone or email, but a typed phone number alone never grants online balance access. SMS sign-in is not implemented. Google review credentials are an independent, optional integration.
+
+Until hosting and the sender are connected, the production account page explicitly reports that online access is not active. The buyout form prepares an email draft (with optional photo links), not a simulated submission. Customers attach photos in their email app; the Worker accepts links only and never downloads or publicly hosts those images.
+
 ## 1. Prepare an isolated sandbox
 
 From the repository root, install the official Wrangler CLI (`npm install -g wrangler`) and run `wrangler login` using the account that will own the shop's data. Check account limits/costs before provisioning storage or queues.

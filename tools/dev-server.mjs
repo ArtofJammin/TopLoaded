@@ -5,6 +5,7 @@
 //
 //   node tools/dev-server.mjs            → http://localhost:8787
 //   node tools/dev-server.mjs --port 3000 --no-watch --fresh
+//   node tools/dev-server.mjs --port 8799 --static-only --fresh --ephemeral  (Pages parity)
 //
 // Secrets: copy api/.dev.vars.example to api/.dev.vars (KEY=VALUE lines). Without
 // it the dev passcodes are staff / admin and every integration runs in dry-run mode.
@@ -134,7 +135,7 @@ createServer(async (req, res) => {
   try { pathname = decodeURIComponent(new URL(req.url, 'http://x').pathname); }
   catch { res.writeHead(400, { 'content-type': 'text/plain' }); res.end('bad request'); return; }
   try {
-    if (pathname === '/api' || pathname.startsWith('/api/')) await serveApi(req, res, pathname.slice(4) || '/');
+    if (!flag('--static-only') && (pathname === '/api' || pathname.startsWith('/api/'))) await serveApi(req, res, pathname.slice(4) || '/');
     else serveStatic(pathname, res);
   } catch (e) {
     console.error('[dev]', e);
@@ -142,6 +143,6 @@ createServer(async (req, res) => {
     res.end('server error: ' + (e && e.message));
   }
 }).listen(PORT, () => {
-console.log(`Top Loaded dev server → http://localhost:${PORT}   (API at /api, ${flag('--ephemeral') ? 'disposable in-memory data' : 'KV in '+KV_FILE})`);
-  console.log(`Dev passcodes: staff="${staffPin}"  admin="${adminPin}"  (override in api/.dev.vars)`);
+console.log(`Top Loaded dev server → http://localhost:${PORT}   (${flag('--static-only') ? 'static-only, no API' : 'API at /api, '+(flag('--ephemeral') ? 'disposable in-memory data' : 'KV in '+KV_FILE)})`);
+  if(!flag('--static-only')) console.log(`Dev passcodes: staff="${staffPin}"  admin="${adminPin}"  (override in api/.dev.vars)`);
 });

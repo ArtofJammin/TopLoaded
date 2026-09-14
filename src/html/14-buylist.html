@@ -29,7 +29,7 @@
           <section class="form-card buy-visit" aria-labelledby="buyVisitTitle">
             <p class="eyebrow">Let's see it in person</p>
             <h2 id="buyVisitTitle">Bring your collection<br>to the shop.</h2>
-            <p>No online estimates or quote requests. All pricing and offers happen in store, after we've seen the cards.</p>
+            <p>Coming in is the best way to get an offer. All pricing and offers happen in store, after we've seen the cards. Planning a large buyout? You can send the details below first.</p>
             <ol class="buy-steps">
               <li><b>Pack it up.</b> Keep cards protected; sorting by game helps us look through them.</li>
               <li><b>Stop in during shop hours.</b> For a large collection, call ahead so we can plan enough time.</li>
@@ -38,6 +38,22 @@
             <p class="buy-location" id="buyAddress">2514 Hazelwood Dr &middot; Crescent Springs, KY 41017</p>
             <div class="buy-actions"><a class="btn" href="#/visit" data-go="visit">Hours &amp; directions &rarr;</a><a class="btn btn-ghost" id="buyCall" href="tel:+15132222573">Call the shop</a></div>
           </section>
+          <details class="form-card buy-inquiry">
+            <summary>Planning a collection buyout? <span>Send us the details first &rarr;</span></summary>
+            <p>Tell us what you have so we can plan your visit. This is an inquiry, not an estimate or a guaranteed offer.</p>
+            <form id="buyForm" novalidate>
+              <div class="form-grid">
+                <div class="field"><label for="buyName">Name</label><input id="buyName" name="name" required minlength="2" maxlength="80" autocomplete="name"></div>
+                <div class="field"><label for="buyContact">Email or phone</label><input id="buyContact" name="contact" required maxlength="200" data-contact autocomplete="email"></div>
+                <div class="field full"><label for="buyGames">Games / collection types</label><input id="buyGames" name="games" required maxlength="200" placeholder="Pokémon binders, sealed One Piece…"></div>
+                <div class="field full"><label for="buyDesc">What would you like to sell?</label><textarea id="buyDesc" name="desc" rows="4" required minlength="3" maxlength="2000" placeholder="Approximate quantity, condition, and when you'd like to come in"></textarea></div>
+                <div class="field full"><label for="buyPhotos">Photo or album links <small>(optional)</small></label><textarea id="buyPhotos" name="photosUrl" rows="3" maxlength="2504" placeholder="https://photos.app.goo.gl/…" aria-describedby="buyPhotoHelp"></textarea><p class="card-note" id="buyPhotoHelp">Up to five HTTPS links, one per line. Share only your card photos, not IDs or payment details. Give the shop permission to view your album. Links are not loaded or previewed here.</p></div>
+                <div class="hp" aria-hidden="true"><label for="buyWebsite">Website</label><input id="buyWebsite" name="website" tabindex="-1" autocomplete="off"></div>
+                <div class="field full"><p id="buyDeliveryNote" class="card-note">Prepare an email to the shop. You can attach JPG, PNG or WebP photos in your email app before sending.</p><button type="submit" class="btn" id="buySubmit">Prepare email inquiry &rarr;</button></div>
+              </div>
+              <div id="buyResult" class="buy-result" hidden tabindex="-1"><p id="buyResultStatus" role="status"></p><div class="buy-actions"><a class="btn" id="buyEmailDraft" hidden>Open email draft &rarr;</a><button class="btn btn-ghost" id="buyCopy" type="button" hidden>Copy inquiry</button></div><textarea id="buyDraftText" readonly rows="6" hidden aria-label="Inquiry text to copy"></textarea></div>
+            </form>
+          </details>
         </div>
       </div>
     </div>

@@ -3,12 +3,13 @@
     var guest = $("#accountGuest"), member = $("#accountMember"), status = $("#accountStatus");
     if(!guest) return;
     var saved = TL.session.get("customer-session", null), token = saved && saved.exp > Date.now() ? saved.token : null;
-    var challenge = null, enabled = false, generation = 0;
+    var challenge = null, enabled = false, generation = 0, availabilityVersion = 0;
     function call(method, path, body, override){ return TL.api.request(method, path, body, {noAuth:true, token:override || token}); }
     function error(e){ return e && e.error ? e.error : "Could not reach the shop. Please try again."; }
     function reset(){
-      token = null; generation++; TL.session.del("customer-session");
+      token = null; saved = null; challenge = null; generation++; TL.session.del("customer-session");
       member.hidden = true; guest.hidden = false;
+      $('#accountCodeForm').hidden=true;$('#accountEmailForm').hidden=!enabled;$('#accountCode').value='';
       $("#accountHistory").textContent = ""; $("#accountBalance").textContent = "—"; $("#accountWho").textContent = "";
     }
     function stamp(iso){
@@ -35,14 +36,20 @@
       } finally { button.disabled = false; }
     }
     async function enter(){
+      var attempt=++availabilityVersion;
       await TL.api.ready;
+      if(attempt!==availabilityVersion)return;
       if(saved && saved.base !== TL.api.base){ saved = null; reset(); }
-      enabled = false;
-      try { if(TL.api.online) enabled = !!(await call("GET","/account/status")).enabled; } catch(e){}
+      var available=false;
+      try { if(TL.api.online) available = !!(await call("GET","/account/status")).enabled; } catch(e){}
+      if(attempt!==availabilityVersion)return;
+      enabled=available;
+      if(!enabled)reset();
       $("#accountSend").disabled = !enabled;
       $("#accountEmailForm").hidden = !enabled || !!challenge;
-      $("#accountGuestTitle").textContent = enabled ? "Sign in with your email" : "Store credit at the counter";
-      $("#accountGuestIntro").textContent = enabled ? "No password to remember. We’ll email a private sign-in code that expires in 10 minutes." : "Visit us or contact the shop to check your balance and plan your next trade.";
+      $('#accountUnavailable').hidden=enabled;
+      $("#accountGuestTitle").textContent = enabled ? "Create an account or sign in" : "Online accounts are coming soon";
+      $("#accountGuestIntro").textContent = enabled ? "New and returning customers use the same email code. No Google login or password needed. Your code expires in 10 minutes." : "Your store credit is still handled by the shop. Online access will use a verified email address, with no Google login required.";
       if(token){ await refresh(); return; }
       status.textContent = enabled ? "Use the email the shop has on your credit record. New here? You can sign in, then ask the counter to link your credit." : "Call (513) 222-2573 or stop by 2514 Hazelwood Drive.";
     }
@@ -74,6 +81,8 @@
       status.textContent = "Request a fresh code. Only the code from the email for this request will work here.";
     });
     $("#accountRefresh").addEventListener("click",refresh);
+    // Re-read published connection settings as well as service availability.
+    $('#accountRetry').addEventListener('click',function(){this.disabled=true;window.location.reload();});
     $("#accountLogout").addEventListener("click",async function(){
       var old = token; reset(); status.textContent = "Signing out…";
       try { await call("POST","/account/logout",{},old); status.textContent = "Signed out."; }
@@ -81,4 +90,5 @@
       $("#accountEmail").focus();
     });
     TL.on("view:change",function(d){ if(d.name === "account") enter(); });
+    TL.on('api:ready',function(){if(TL.route().name==='account')enter();});
   })();

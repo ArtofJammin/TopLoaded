@@ -18,6 +18,7 @@ import { HttpError, readJson, v } from '../lib/http.js';
 import { requireRole } from '../lib/auth.js';
 import { rateLimit } from '../lib/ratelimit.js';
 import { sendEmail } from '../lib/email.js';
+import { photoLinks } from '../lib/photo-links.js';
 import { loadConfig } from './config.js';
 
 export const KINDS = ['vendor', 'buylist', 'signup', 'newsletter', 'restock', 'contact'];
@@ -83,14 +84,18 @@ export function validateFields(kind, b) {
         waitlist: b.waitlist === true || b.waitlist === 'true' ? true : undefined,
       };
     case 'buylist': {
+      const contact = text(b.contact, { max: 200, name: 'contact', min: 3 });
+      const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact) ? v.email(contact) : '';
+      if (!email && (!/^\+?[\d\s().-]{7,24}$/.test(contact) || contact.replace(/\D/g,'').length < 7)) throw new HttpError(400, 'Enter an email or phone number.');
+      if (b.attachments !== undefined || b.photos !== undefined) throw new HttpError(400, 'Use photo links or attach photos in an email. File uploads are not supported.');
       const games = Array.isArray(b.games) ? b.games.slice(0, 10).map(g => text(g, { max: 40, name: 'games' })).filter(Boolean).join(', ') : text(b.games, { max: 200, name: 'games' });
       if (!games) throw new HttpError(400, 'games is required');
       return {
         name: text(b.name, { max: 80, min: 2, name: 'name' }),
-        contact: text(b.contact, { max: 200, min: 3, name: 'contact' }),
+        contact, email,
         games,
         desc: text(b.desc, { max: 2000, min: 3, name: 'desc' }),
-        photosUrl: optText(b.photosUrl, { max: 500, name: 'photosUrl' }),
+        photoLinks: photoLinks(b.photosUrl),
       };
     }
     case 'signup': {
@@ -148,8 +153,8 @@ export function emailFor(kind, f, extra = {}) {
       lines.push(`Name: ${f.name}`, `Email: ${f.email}`, f.phone && `Phone: ${f.phone}`, `Tables: ${f.tables}`, `Game: ${f.game}`, f.message && `\n${f.message}`);
       break;
     case 'buylist':
-      subject = `[Top Loaded] Buylist quote from ${f.name}`;
-      lines.push(`Name: ${f.name}`, `Contact: ${f.contact}`, `Games: ${f.games}`, `\n${f.desc}`);
+      subject = `[Top Loaded] Collection buyout inquiry from ${f.name}`;
+      lines.push(`Name: ${f.name}`, `Contact: ${f.contact}`, `Games: ${f.games}`, `\n${f.desc}`, ...(f.photoLinks || []).map(url => `Photo link (customer supplied): ${url}`));
       break;
     case 'signup':
       subject = `[Top Loaded] ${extra.eventName || 'Event'} signup from ${f.name} (${f.seats} seat${f.seats === 1 ? '' : 's'})`;

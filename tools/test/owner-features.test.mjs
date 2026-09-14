@@ -47,7 +47,8 @@ test('requested removals, section ordering and public catalog are packaged',()=>
   const home=read('src/html/10-home.html');
   assert.ok(home.indexOf('trade-band')<home.indexOf('id="playNow"'));assert.ok(home.indexOf('id="playNow"')<home.indexOf('FIND YOUR'));
   assert.doesNotMatch(home,/id="ticker"|id="featuredGrid"|id="nextUp"/);
-  assert.doesNotMatch(read('src/html/14-buylist.html'),/worthEstimator|worthForm|buyForm|Get my offer|Start a quote/);
+  assert.doesNotMatch(read('src/html/14-buylist.html'),/worthEstimator|worthForm|Get my offer|Start a quote/);
+  assert.match(read('src/html/14-buylist.html'),/id="buyForm"/);
   assert.match(read('src/html/14-buylist.html'),/All pricing and offers happen in store/);
   assert.match(read('src/html/14-buylist.html'),/What to bring/);
   assert.doesNotMatch(home,/start a quote/i);
