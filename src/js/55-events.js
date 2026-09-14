@@ -65,7 +65,7 @@
   }
   function evSlug(s){ return String(s || "event").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
   function shopLocation(){ var a = TL.config.address || {}; return (TL.config.title === "Top Loaded" ? "Top Loaded Trading Cards" : (TL.config.title || "Top Loaded")) + ", " + [a.line1, a.city, (a.state || "") + " " + (a.zip || "")].filter(Boolean).join(", ").replace(/\s+,/g, ","); }
-  function siteUrl(view){ return (location.origin && location.origin !== "null" ? location.origin + location.pathname : "https://artofjammin.github.io/toploaded-demo/") + "#/" + (view || ""); }
+  function siteUrl(view){ return (location.origin && location.origin !== "null" ? location.origin + location.pathname : "https://artofjammin.github.io/TopLoaded/") + "#/" + (view || ""); }
 
   /* ---- calendar builders ---- */
   function icsText(s){ return String(s || "").replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n"); }
@@ -291,7 +291,7 @@
   }
   var nuLastKey = null;
   function evSetText(node, txt){ if(node && node.textContent !== txt) node.textContent = txt; }
-  function tickEvents(){ if(document.hidden) return; var up = evUpcoming(); evRenderNextUp(up);
+  function tickEvents(){ if(document.hidden) return; TL.renderPlayNights("eventPlayGrid"); var up = evUpcoming(); evRenderNextUp(up);
     var nextEl = $("#schedList .is-next .next-tag"); if(nextEl && up.length){ evSetText(nextEl, up[0].occ.running ? "Happening now" : "Next up · " + evFmtUntil(up[0].occ.mins)); }
     var rowNow = $("#schedList .is-next"); if(rowNow && up.length && rowNow.dataset.ev !== (up[0].ev.id || "")) renderSched(); }
   function tcgplusIsGeneric(u){ return !u || /^https?:\/\/(www\.)?bandai-tcg-plus\.com\/?$/i.test(String(u).trim()); }
@@ -560,7 +560,13 @@
 
   /* ---- wiring ---- */
   var evTimer = null, showTimer = null, visitTimer = null;
-  function evRenderAll(){ renderSched(); renderSignups(); renderShow(); renderVisit(); renderFooter(); }
+  function evRenderAll(){ renderSched(); TL.renderPlayNights("eventPlayGrid"); renderSignups(); renderShow(); renderVisit(); renderFooter(); }
+  function startEventClocks(){
+    clearInterval(evTimer); evTimer = null;
+    if(TL.current !== "events" || document.hidden) return;
+    tickEvents(); evTimer = setInterval(tickEvents, reduceMotion ? 60000 : 1000);
+  }
+  TL.on("motion:change", startEventClocks);
   TL.on("init", function(){
     evRenderAll();
     bindSignup(); bindVendor(); bindBuylist(); bindNewsletter();
@@ -569,7 +575,7 @@
   TL.on("config:change", function(){ evRenderAll(); });
   TL.on("view:change", function(d){
     if(!d) return;
-    if(d.name === "events" && !evTimer){ tickEvents(); evTimer = setInterval(tickEvents, 60000); }
+    if(d.name === "events") startEventClocks();
     if(d.name === "show" && !showTimer){ tickShow(); showTimer = setInterval(function(){ if(!document.hidden) tickShow(); }, reduceMotion ? 60000 : 1000); }
     if(d.name === "visit"){ evLoadMap(); if(!visitTimer){ renderVisit(); visitTimer = setInterval(function(){ if(!document.hidden) tickVisit(); }, 60000); } }
     if(d.name === "admin") evEditorFallback();
@@ -581,6 +587,7 @@
     if(d.name === "visit" && visitTimer){ clearInterval(visitTimer); visitTimer = null; }
   });
   document.addEventListener("visibilitychange", function(){
+    startEventClocks();
     if(document.hidden) return;
     if(evTimer) tickEvents(); if(showTimer) tickShow(); if(visitTimer) tickVisit();
   });

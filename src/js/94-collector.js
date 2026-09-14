@@ -132,7 +132,7 @@
       return '<div class="discovery-pick"><span class="discovery-art' + (card.inStock ? '" role="button" tabindex="0" data-discovery-view aria-label="View ' + TL.esc(card.name) : '') + '">' + img + '</span>' +
         '<div><span class="case-label">A LITTLE DISCOVERY</span><h4>' + TL.esc(card.name) + '</h4>' +
         '<p>' + TL.esc(card.set || "") + (card.rarity ? ' · ' + TL.esc(card.rarity) : "") + '</p>' +
-        '<p>' + price + '</p>' + badge + action + '</div></div>';
+        '<p>' + price + '</p><div class="discovery-actions">' + badge + action + '</div></div></div>';
     }
 
     form.addEventListener("submit", function(e){

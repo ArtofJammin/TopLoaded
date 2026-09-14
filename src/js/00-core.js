@@ -42,6 +42,7 @@
   */
   var TL = window.TL = window.TL || {};
   TL.version = "2.0";
+  TL.production = !!document.querySelector('meta[name="tl-site-mode"][content="production"]');
   var _bus = {};
   TL.on = function(ev, fn){ (_bus[ev] = _bus[ev] || []).push(fn); return function(){ TL.off(ev, fn); }; };
   TL.off = function(ev, fn){ var l = _bus[ev]; if(!l) return; var i = l.indexOf(fn); if(i > -1) l.splice(i, 1); };

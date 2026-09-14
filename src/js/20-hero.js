@@ -151,36 +151,38 @@
     }
     return order.map(function(g){ return next[g]; }).sort(function(a, b){ return a.rank - b.rank; });
   }
-  var pnKey = "";
-  function renderPlayNow(){
-    var grid = $("#playNowGrid"); if(!grid) return;
+  var pnKeys = {};
+  function renderPlayNow(target){
+    var gridId = target || "playNowGrid", grid = document.getElementById(gridId); if(!grid) return;
+    var tagName = target ? "div" : "a";
     var rows = playNightsByGame();
     if(!rows.length){
-      if(pnKey !== "empty"){ pnKey = "empty"; grid.innerHTML = '<li class="playnow-empty">The weekly schedule is being set — <a href="#/events" data-go="events">see the play nights page</a>.</li>'; }
+      if(pnKeys[gridId] !== "empty"){ pnKeys[gridId] = "empty"; grid.innerHTML = '<li class="playnow-empty">New play dates are on the way. Contact the shop to find your next game.</li>'; }
       return;
     }
     var key = rows.map(function(r){ return r.game + r.ev.name + r.when.getTime(); }).join("|");
-    if(key !== pnKey){
-      pnKey = key;
+    if(key !== pnKeys[gridId]){
+      pnKeys[gridId] = key;
       grid.innerHTML = rows.map(function(r){
         var label = (TL.gameLabel ? TL.gameLabel(r.game) : r.game) || "Play night";
         var icon = document.getElementById("game-icon-" + r.game)
           ? '<svg class="game-icon" width="30" height="30" aria-hidden="true" focusable="false"><use href="#game-icon-' + esc(r.game) + '"></use></svg>' : "";
         return '<li class="playnow-card" data-game="' + esc(r.game) + '">' +
-          '<a class="playnow-btn" href="#/events" data-go="events">' +
+          '<' + tagName + ' class="playnow-btn"' + (target ? '' : ' href="#/events" data-go="events"') + '>' +
             '<span class="playnow-mark">' + icon + '</span>' +
             '<span class="playnow-game">' + esc(label) + '</span>' +
             '<span class="playnow-ev">' + esc(r.ev.name) + '</span>' +
             '<span class="playnow-when" data-when></span>' +
             '<span class="playnow-cd" data-cd role="timer" aria-live="off"></span>' +
-            (r.ev.fee ? '<span class="playnow-fee">' + esc(/tbd/i.test(r.ev.fee) ? "Entry TBD" : "Entry " + r.ev.fee) + '</span>' : "") +
-          '</a></li>';
+            (r.ev.fee && !/tbd/i.test(r.ev.fee) ? '<span class="playnow-fee">' + esc("Entry " + r.ev.fee) + '</span>' : "") +
+          '</' + tagName + '></li>';
       }).join("");
     }
     var cells = grid.querySelectorAll(".playnow-card");
     for(var i = 0; i < rows.length && i < cells.length; i++){
       setText(cells[i].querySelector("[data-when]"), fmtWhen(rows[i].when));
-      renderCd(cells[i].querySelector("[data-cd]"), rows[i].when);
+      if(rows[i].running) setHtml(cells[i].querySelector("[data-cd]"), '<span class="now">Happening now</span>');
+      else renderCd(cells[i].querySelector("[data-cd]"), rows[i].when);
     }
   }
   function startNextUp(){
@@ -192,7 +194,8 @@
   function stopNextUp(){ if(nuTimer){ clearInterval(nuTimer); nuTimer = 0; } }
   TL.on("motion:change",function(){if(homeActive)startNextUp();});
   document.addEventListener("visibilitychange", function(){ if(document.hidden) stopNextUp(); else if(homeActive) startNextUp(); });
-  TL.on("config:change", function(){ if(homeActive){ pnKey = ""; renderPlayNow(); } });
+  TL.on("config:change", function(){ pnKeys = {}; if(homeActive) renderPlayNow(); });
+  TL.renderPlayNights = renderPlayNow;
 
   /* ---- the wall ---- */
   var wallLive = false, wallImagesStarted = false;
@@ -328,13 +331,13 @@
     if(!list.length){
       var g = REVIEW_SOURCES.google.link(), tcg = (TL.config.links && TL.config.links.tcgplayer) || "";
       box.innerHTML = '<div class="panel review-empty">' +
-        '<p class="quote">Reviews from Google and TCGplayer land here.</p>' +
+        '<p class="quote">Pull up a chair. See what our community has to say.</p>' +
         '<p class="p-set quote-who">Been in lately? Telling people what you thought is the best thing you can do for a small shop.</p>' +
         '<p class="review-links">' +
           (g ? '<a class="btn btn-ghost" href="' + esc(g) + '" target="_blank" rel="noopener noreferrer">Read &amp; leave a Google review ↗</a>' : "") +
           (tcg ? '<a class="btn btn-ghost" href="' + esc(tcg) + '" target="_blank" rel="noopener noreferrer">Our TCGplayer feedback ↗</a>' : "") +
         '</p></div>';
-      if(tag){ tag.textContent = "No reviews published yet"; tag.hidden = false; }
+      if(tag){ tag.textContent = ""; tag.hidden = true; }
       return;
     }
     box.innerHTML = list.map(function(t){
@@ -342,17 +345,21 @@
       var who = [t.who, src.label].filter(Boolean).join(" · ");
       return '<div class="panel review-card">' + reviewStars(t.rating) +
         (t.source==="google"&&reviewRemote&&reviewRemote.mode==="google"?'<p><span class="google-maps-attribution" translate="no">Google Maps</span></p>':'')+
-        '<p class="quote">“' + esc(t.q) + '”</p>' + (t.excerpt?'<p class="p-set">Review excerpt</p>':'')+
+        '<p class="quote">“' + esc(t.q) + '”</p>' +
         (t.authorUrl ? '<a class="review-author" href="'+esc(t.authorUrl)+'" target="_blank" rel="noopener noreferrer">'+(t.photo?'<img src="'+esc(t.photo)+'" alt="" width="32" height="32" loading="lazy">':'')+esc(t.who)+'</a>' : '')+
         '<p class="p-set quote-who">' + (href
           ? '<a href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">' + esc(who) + ' ↗</a>'
           : esc(who)) + (t.at&&Number.isFinite(Date.parse(t.at))?' · '+esc(new Date(t.at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:TL.config.timezone||'America/New_York'})):'')+'</p></div>';
     }).join("");
-    if(reviewRemote && reviewRemote.mode==="google")box.insertAdjacentHTML("beforeend",'<p class="review-attribution">Google-selected reviews ordered by relevance, filtered to five stars. <a href="'+esc(reviewUrl(reviewRemote.allReviews))+'" target="_blank" rel="noopener">View all reviews</a> · <a href="'+esc(reviewUrl(reviewRemote.terms))+'">Terms</a> · <a href="'+esc(reviewUrl(reviewRemote.privacy))+'">Privacy</a></p>');
-    if(verifiedGoogle.length)box.insertAdjacentHTML('beforeend','<p class="review-attribution">Selected five-star Google excerpts · verified '+esc(new Date(reviewGoogleSnapshot.generated).toLocaleDateString())+'. Saved highlights, not a live Google feed or an overall rating.</p>');
-    if(tag){ tag.hidden = false;tag.textContent=min===5?'Selected five-star highlights · not an overall rating':"Selected positive reviews · "+min+"+ stars, not an overall rating"; }
-    var googleLink=reviewUrl(REVIEW_SOURCES.google.link());if(googleLink)box.insertAdjacentHTML('beforeend','<p class="review-attribution"><a href="'+esc(googleLink)+'" target="_blank" rel="noopener noreferrer">Read &amp; leave a Google review ↗</a></p>');
-    if(automatic.length)box.insertAdjacentHTML('beforeend','<p class="review-attribution">TCGplayer highlights: recent five-star feedback with short comments. Last refreshed '+esc(new Date(reviewSnapshot.generated).toLocaleDateString())+'. <a href="https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf/feedback" target="_blank" rel="noopener noreferrer">Read all feedback ↗</a></p>');
+    if(tag){ tag.hidden = true; tag.textContent=""; }
+    var googleLink=reviewUrl(reviewRemote && reviewRemote.allReviews)||reviewUrl(REVIEW_SOURCES.google.link()),reviewLinks=[];
+    if(googleLink)reviewLinks.push('<a href="'+esc(googleLink)+'" target="_blank" rel="noopener noreferrer">More on Google ↗</a>');
+    reviewLinks.push('<a href="https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf/feedback" target="_blank" rel="noopener noreferrer">More on TCGplayer ↗</a>');
+    if(reviewRemote && reviewRemote.mode==="google"){
+      if(reviewUrl(reviewRemote.terms))reviewLinks.push('<a href="'+esc(reviewUrl(reviewRemote.terms))+'">Terms</a>');
+      if(reviewUrl(reviewRemote.privacy))reviewLinks.push('<a href="'+esc(reviewUrl(reviewRemote.privacy))+'">Privacy</a>');
+    }
+    box.insertAdjacentHTML('beforeend','<p class="review-attribution">'+reviewLinks.join(' <span aria-hidden="true">·</span> ')+'</p>');
   }
   TL.on("config:change", function(){reviewRemote=null;renderTestimonials();fetchReviews();});
   TL.on("api:ready",fetchReviews);

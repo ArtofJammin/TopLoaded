@@ -40,8 +40,11 @@
       enabled = false;
       try { if(TL.api.online) enabled = !!(await call("GET","/account/status")).enabled; } catch(e){}
       $("#accountSend").disabled = !enabled;
+      $("#accountEmailForm").hidden = !enabled || !!challenge;
+      $("#accountGuestTitle").textContent = enabled ? "Sign in with your email" : "Store credit at the counter";
+      $("#accountGuestIntro").textContent = enabled ? "No password to remember. We’ll email a private sign-in code that expires in 10 minutes." : "Visit us or contact the shop to check your balance and plan your next trade.";
       if(token){ await refresh(); return; }
-      status.textContent = enabled ? "Use the email the shop has on your credit record. New here? You can sign in, then ask the counter to link your credit." : "Online account access is not connected yet. Please ask the shop to check your store credit; no credit balance is shown here until secure sign-in is available.";
+      status.textContent = enabled ? "Use the email the shop has on your credit record. New here? You can sign in, then ask the counter to link your credit." : "Call (513) 222-2573 or stop by 2514 Hazelwood Drive.";
     }
     $("#accountEmailForm").addEventListener("submit", async function(e){
       e.preventDefault(); if(!enabled) return;

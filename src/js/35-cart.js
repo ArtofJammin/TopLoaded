@@ -227,12 +227,14 @@
     var it = l.item, q = l.qty, live = cartIsLive(it), name = esc(it.name), idA = esc(it.id);
     var meta = live ? "Live break · rip & ship" : cartGameLabel(it) + (it.set ? " · " + it.set : "");
     var hint = cartStockHint(it, q), tags = "";
+    var productId = /^tcg-(\d{1,12})$/.exec(String(it.id));
+    var buyLink = TL.production && productId ? '<a class="ct-buy linklike" href="https://www.tcgplayer.com/product/' + productId[1] + '?seller=5c356cdf" target="_blank" rel="noopener">Buy on TCGplayer ↗</a>' : '';
     if(live) tags += '<i class="ct-live">Live</i>';
     else if(it.cond) tags += '<i class="ct-cond">' + esc(it.cond) + "</i>";
     else if(it.type === "sealed") tags += '<i class="ct-cond">Sealed</i>';
     tags += '<i class="ct-stock' + (it.stock <= 0 ? " out" : "") + '"' + (hint ? "" : " hidden") + ">" + esc(hint) + "</i>";
     return cartThumb(it) +
-      '<div class="ct"><b class="ct-name">' + name + '</b><span class="ct-meta">' + esc(meta) + '</span><span class="ct-tags">' + tags + "</span></div>" +
+      '<div class="ct"><b class="ct-name">' + name + '</b><span class="ct-meta">' + esc(meta) + '</span><span class="ct-tags">' + tags + '</span>' + buyLink + '</div>' +
       '<span class="lp">' + cartLinePrice(it, q) + "</span>" +
       '<div class="ct-ctrl"><div class="qty" role="group" aria-label="Quantity of ' + name + '">' +
         '<button type="button" data-dec="' + idA + '" aria-label="' + (q > 1 ? "Remove one " : "Remove ") + name + '">&minus;</button>' +
@@ -303,6 +305,7 @@
   /* Square is only promised when the API is up AND /health says Square is configured; until
      that answer arrives (or when it says no) the drawer tells the demo truth up front. */
   function cartSquareLive(){
+    if(TL.production) return false; /* Ordinary cart checkout is currently sandbox-only. */
     var ints = TL.api.integrations || (TL.api.health && TL.api.health.integrations) || null;
     return !!(TL.api.online && ints && ints.shopCheckout === true);
   }
@@ -315,7 +318,7 @@
     return m;
   }
   function cartRenderSums(lines){
-    var sub = cartSubtotal(), ship = cartShipping(), tot = Math.round((sub + ship) * 100) / 100;
+    var sub = cartSubtotal(), ship = TL.production ? 0 : cartShipping(), tot = Math.round((sub + ship) * 100) / 100;
     var shipping = cartOpts.fulfillment === "ship", quote = cartShipQuote(lines);
     $("#cartSubtotal").textContent = money(sub);
     $("#cartShipLbl").textContent = shipping ? "Shipping" : "Pickup";
@@ -356,7 +359,7 @@
     } else {
       clearTimeout(cartEmptyTimer);
       cartRenderLines(body, lines);
-      form.hidden = false;
+      form.hidden = !!TL.production;
     }
     cartRenderSums(lines);
   }
@@ -493,7 +496,7 @@
   }
   function cartCheckout(){
     if(cartBusy) return;
-    if(TL.api.base && !cartSquareLive()){cartError("Online shop checkout is not activated. Your cart is saved; buy through TCGplayer or visit the store.",false);return;}
+    if((TL.production || TL.api.base) && !cartSquareLive()){cartError("Your cart is saved. Complete your purchase on TCGplayer or visit the shop.",false);return;}
     cartHideError();
     var lines = cartLines();
     if(!lines.length){ toast("Cart is empty — go pull some hits"); return; }
@@ -583,10 +586,15 @@
     try { var p = new URL(s); if(p.protocol !== "http:" && p.protocol !== "https:") return null; return p.href; } catch(e){ return null; }
   }
   function cartUpdateMode(){
+    var tcg = $("#cartTcgLink"), checkout = $("#checkoutBtn");
+    if(tcg) tcg.hidden = !TL.production;
+    if(checkout) checkout.hidden = !!TL.production;
+    $("#cartShipRow").hidden = !!TL.production;
     if(!cartBusy){ var b = $("#checkoutBtn"); if(b) b.textContent = cartCheckoutLabel(); }
     var n = $("#cartNoteLine");
     if(!n) return;
-    if(cartSquareLive()) n.textContent = "Square sandbox checkout — testing only, not a real purchase";
+    if(TL.production) n.textContent = "Use each card’s TCGplayer link to purchase. Your saved cart does not transfer to TCGplayer or reserve stock. Prices exclude any shipping and tax.";
+    else if(cartSquareLive()) n.textContent = "Square sandbox checkout — testing only, not a real purchase";
     else if(TL.api.online) n.textContent = "Online shop checkout is not activated. Buy through TCGplayer or visit the store; live claims use a separate checkout.";
     else n.textContent = "Demo mode — no payment or reservation. Live checkout requires a verified API and exact inventory mapping.";
   }

@@ -14,22 +14,19 @@
     <div class="wrap">
       <div class="view-head" style="padding-top:36px; padding-bottom:20px">
         <h1>Today at Top Loaded</h1>
-        <p class="lede"><span id="adminDate">Today</span> &middot; register and website, one inventory.</p>
+        <p class="lede"><span id="adminDate">Today</span> &middot; your shop at a glance.</p>
       </div>
 
       <div class="stat-row stat-row-6">
         <div class="stat">
-          <span class="lab">Today's sales <span class="demo-tag">sample</span></span>
-          <span class="val"><span class="pre">$</span><span id="statSales">1,284</span></span>
-          <span class="sub up">Square totals land here once it's connected</span>
-          <div class="spark" aria-hidden="true">
-            <i style="height:36%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:68%"></i><i style="height:58%"></i><i style="height:80%"></i><i class="today" style="height:92%"></i>
-          </div>
+          <span class="lab">Today's sales</span>
+          <span class="val" id="statSales">&mdash;</span>
+          <span class="sub">View sales in Square</span>
         </div>
         <div class="stat">
-          <span class="lab">Orders today <span class="demo-tag">sample</span></span>
-          <span class="val" id="statOrders">23</span>
-          <span class="sub">18 in-store &middot; 5 online pickup</span>
+          <span class="lab">Orders today</span>
+          <span class="val" id="statOrders">&mdash;</span>
+          <span class="sub">View orders in Square</span>
         </div>
         <div class="stat">
           <span class="lab">Products in the case</span>
@@ -135,7 +132,7 @@
           <div class="log" id="tcgLog" tabindex="0" role="region" aria-label="Import log"></div>
           <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; align-items:center">
             <button class="btn btn-ghost" id="tcgRun" type="button">Run import now</button>
-            <a class="linklike" href="https://github.com/ArtofJammin/toploaded-demo/actions/workflows/inventory.yml" target="_blank" rel="noopener noreferrer">Open the Actions tab <span class="vh">(opens in a new tab)</span>&nearr;</a>
+            <a class="linklike" href="https://github.com/ArtofJammin/TopLoaded/actions/workflows/inventory.yml" target="_blank" rel="noopener noreferrer">Open the Actions tab <span class="vh">(opens in a new tab)</span>&nearr;</a>
           </div>
         </div>
       </div>
@@ -246,8 +243,8 @@
           <dl class="kv" style="margin-top:18px">
             <dt><label for="setLiveTitle">Stream title</label></dt><dd><input id="setLiveTitle" style="width:100%"></dd>
             <dt><label for="setLivePlatform">Platform</label></dt>
-            <dd><select id="setLivePlatform"><option value="">Not set</option><option value="whatnot">Whatnot</option><option value="youtube">YouTube</option><option value="twitch">Twitch</option><option value="tiktok">TikTok</option></select></dd>
-            <dt><label for="setLiveEmbed">Embed URL</label></dt><dd><input id="setLiveEmbed" type="url" placeholder="https://&hellip;" style="width:100%"></dd>
+            <dd><select id="setLivePlatform"><option value="">Not set</option><option value="facebook">Facebook</option><option value="tiktok">TikTok</option><option value="whatnot">Whatnot</option><option value="youtube">YouTube</option><option value="twitch">Twitch</option></select></dd>
+            <dt><label for="setLiveEmbed">Stream or profile URL</label></dt><dd><input id="setLiveEmbed" type="url" placeholder="https://&hellip;" style="width:100%" aria-describedby="livePlatformHelp"><small id="livePlatformHelp">Facebook / TikTok: paste your live video or profile link. Viewers watch and chat on that platform; claims remain on the site. YouTube and Twitch video links can play here.</small></dd>
             <dt>Schedule</dt><dd><div id="liveSchedEditor" class="rows-editor"></div><button class="linklike" type="button" id="liveSchedAdd" style="margin-top:6px">+ Add stream</button></dd>
           </dl>
           <div class="card-actions"><button class="btn" id="liveApply" type="button">Save live settings</button><span class="save-state" role="status" data-state-for="cardLive"></span></div>
@@ -275,7 +272,7 @@
             <div class="field full"><label for="setRevPlace">Google Place ID</label><input id="setRevPlace" placeholder="The shop's verified Google Place ID"></div>
           </div>
           <p class="card-note" id="revSourceNote"></p>
-          <label class="floor-auto-reviews"><input id="setRevTcgAuto" type="checkbox" checked> Include automatically refreshed TCGplayer highlights</label><p class="card-note">Up to three short, genuine five-star comments, refreshed each morning from the shop's public feedback. No order or account IDs are stored. <a href="https://github.com/ArtofJammin/toploaded-demo/actions/workflows/reviews.yml" target="_blank" rel="noopener noreferrer">Refresh job ↗</a></p>
+          <label class="floor-auto-reviews"><input id="setRevTcgAuto" type="checkbox" checked> Include automatically refreshed TCGplayer highlights</label><p class="card-note">Up to three short, genuine five-star comments, refreshed each morning from the shop's public feedback. No order or account IDs are stored. <a href="https://github.com/ArtofJammin/TopLoaded/actions/workflows/reviews.yml" target="_blank" rel="noopener noreferrer">Refresh job ↗</a></p>
           <div id="revEditor"></div>
           <p class="card-note" id="revPreview" role="status"></p>
           <div class="card-actions"><button class="btn" id="revApply" type="button">Publish reviews</button><button class="btn btn-ghost" id="revAdd" type="button">Add review</button><span class="save-state" role="status" data-state-for="cardReviews"></span></div>

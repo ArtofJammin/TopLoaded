@@ -221,7 +221,7 @@
     cardBusy(card, "on");
     setState($("#syncStatus"), "", "Working…");
     if(!TL.api.online){
-      window.open("https://github.com/ArtofJammin/toploaded-demo/actions/workflows/inventory.yml", "_blank", "noopener,noreferrer");
+      window.open("https://github.com/ArtofJammin/TopLoaded/actions/workflows/inventory.yml", "_blank", "noopener,noreferrer");
       logLine(logEl, "warn", "GitHub opened — sign in with repository access, choose Run workflow and select main. Nothing is dispatched until you confirm there. If the tab was blocked, use Open the Actions tab below.");
       done("warn", "Continue on GitHub · choose Run workflow");
       return;
@@ -412,7 +412,7 @@
       renderAdminDate(); renderConn(); renderIntegrations();
       if(TL.api.online) refreshHealth();
       ensureSummary(); renderShowStat();
-      statNum($("#statSales"), 1284, {from: 0}); statNum($("#statOrders"), 23, {from: 0});
+      $("#statSales").textContent = "—"; $("#statOrders").textContent = "—";
       if(invSummary) applySummary(invSummary);
       openAdminInventory();
     }

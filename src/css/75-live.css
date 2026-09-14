@@ -1,5 +1,10 @@
 /* ============ LIVE ============ */
 #view-live [hidden]{display:none !important}
+.platform-chat{display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:20px; padding:clamp(24px,3vw,40px); min-height:340px; background:radial-gradient(ellipse at 85% 5%,color-mix(in srgb,var(--accent) 10%,transparent),transparent 65%)}
+.platform-chat-mark{display:grid; place-items:center; width:56px; height:56px; border:1px solid var(--line2); border-radius:16px; color:var(--accent); font-size:30px}
+.platform-chat h3{font:700 clamp(30px,3vw,42px)/1 var(--disp); text-transform:uppercase}
+.platform-chat p:not(.eyebrow){color:var(--ink2); line-height:1.7; font-size:.9rem; max-width:36ch}
+.platform-chat .btn{white-space:normal}
 .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
 /* nav + hero dot, the Live pill and the viewer count exist only while the shop is on air */
 .live-dot{display:none; width:6px; height:6px; border-radius:50%; background:var(--crit); margin-left:7px; vertical-align:2px}

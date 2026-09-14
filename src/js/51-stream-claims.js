@@ -11,8 +11,8 @@
         lastSig=sig;list.innerHTML=rows.map(function(c){return '<li class="claim-entry"><div><b>'+esc(c.card)+'</b><br><small>'+esc(c.handle)+' · '+esc(new Date(c.at).toLocaleString())+'</small></div><div>'+money(c.price)+' · '+esc(c.status)+controls(c)+'</div></li>';}).join("");
       }
       empty.hidden=!!rows.length;$("#claimCount").textContent=rows.length?rows.length+" posted":"";
-      empty.textContent=TL.api.online?"No confirmed card claims posted yet.":"The shared claims board is not connected yet. Follow the stream host for claim confirmations.";
-      note.hidden=false;note.textContent=TL.api.online?"Refreshes every 5 seconds. Linked checkout payments are confirmed by Square; fulfillment and non-checkout claims are maintained by staff.":"No sample or device-only claims are displayed as real purchases.";
+      empty.textContent=TL.api.online?"No card claims posted yet.":"Claims will appear here during the stream. Follow the host to claim a card.";
+      note.hidden=!TL.api.online;note.textContent=TL.api.online?"Updated during the stream. Confirm your claim with the host.":"";
     }
     function refresh(){
       render();if(!active || document.hidden || busy || !TL.api.online)return;

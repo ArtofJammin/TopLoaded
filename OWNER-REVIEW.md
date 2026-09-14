@@ -1,6 +1,6 @@
 # Top Loaded — owner review
 
-September 13, 2026 · [Open the updated site](https://artofjammin.github.io/toploaded-demo/)
+September 13, 2026 · [Open the updated site](https://artofjammin.github.io/TopLoaded/)
 
 ## Changes ready to review
 

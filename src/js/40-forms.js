@@ -44,6 +44,7 @@
     var body = {}; Object.keys(fields).forEach(function(k){ if(fields[k] !== undefined && fields[k] !== "") body[k] = fields[k]; });
     body.website = "";
     if(!TL.api.online){
+      if(TL.production) return Promise.reject({status:503,error:"Your request wasn’t sent. Please call or email the shop."});
       var rec = formsQueueLocal(kind, fields);
       return Promise.resolve({ok: true, id: rec.id, local: true});
     }
@@ -148,6 +149,20 @@
     form.dataset.formsBound = "1";
     opts = opts || {};
     var kind = opts.kind || form.dataset.kind || "contact";
+    var contact = null;
+    function connection(){
+      if(!TL.production) return;
+      var offline = !TL.api.online;
+      form.hidden = offline;
+      if(offline && !contact){
+        contact = document.createElement("div"); contact.className = "form-contact";
+        contact.innerHTML = '<p>Have a question or want to join us? Get in touch with the shop.</p><div class="form-fail-actions"><a class="btn btn-sm" href="tel:+15132222573">Call the shop</a><a class="form-alt" href="' + esc(formsMailto("Top Loaded — " + kind + " inquiry", [])) + '">Email us ↗</a></div>';
+        form.insertAdjacentElement("afterend", contact);
+      }
+      if(contact) contact.hidden = !offline;
+    }
+    TL.api.ready.then(connection);
+    TL.on("api:ready", connection);
     form.setAttribute("novalidate", "");
     form.addEventListener("input", function(e){ if(e.target && e.target.getAttribute && e.target.getAttribute("aria-invalid")) formsClearFieldError(e.target); });
     form.addEventListener("submit", function(e){
@@ -185,6 +200,7 @@
         formsSetBusy(form, false);
         var why = err && err.status === 429 ? "Too many sends from this connection — give it a few minutes." :
                   err && err.status === 400 ? "The shop's server didn't like something in the form: " + ((err.data && err.data.error) || err.error || "check the fields") + "." :
+                  TL.production ? "Your request wasn’t sent. Please call or email the shop." :
                   err && err.status === 0 ? "Couldn't reach the shop's server — check your connection." :
                   "The shop's server hiccuped (" + ((err && err.error) || "error") + ").";
         formsShowFail(form, why + " Your answers are still here.", mailto);

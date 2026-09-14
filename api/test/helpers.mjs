@@ -10,7 +10,7 @@ export function makeEnv(extra = {}) {
     KV: new MemoryKV(),
     SITE_ORIGIN: 'https://artofjammin.github.io',
     SQUARE_ENV: 'sandbox',
-    SITE_URL: 'https://artofjammin.github.io/toploaded-demo/',
+    SITE_URL: 'https://artofjammin.github.io/TopLoaded/',
     TOKEN_SECRET: 'test-secret',
     STAFF_PIN_HASH: sha('staff'),
     ADMIN_PIN_HASH: sha('admin'),

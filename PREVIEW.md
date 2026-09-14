@@ -1,8 +1,8 @@
 # Collector preview
 
-The collector design was approved for promotion to the main site on September 9, 2026. The separate preview remains a historical comparison; use https://artofjammin.github.io/toploaded-demo/ for the current site.
+The collector design was approved for promotion to the main site on September 9, 2026. The separate preview remains a historical comparison; use https://artofjammin.github.io/TopLoaded/ for the current site.
 
-Source: [collector-preview branch](https://github.com/ArtofJammin/toploaded-demo/tree/codex/collector-preview). The separate `toploaded-design-preview` repository hosts a static copy for comparison; it is not a replacement production deployment. Its inventory is a snapshot, not a scheduled live refresh.
+Source: [collector-preview branch](https://github.com/ArtofJammin/TopLoaded/tree/codex/collector-preview). The separate `toploaded-design-preview` repository hosts a static copy for comparison; it is not a replacement production deployment. Its inventory is a snapshot, not a scheduled live refresh.
 
 Run `node tools/dev-server.mjs --port 8790` to preview locally. Build with `node tools/build.mjs`; verify with `node tools/check.mjs`.
 
@@ -12,7 +12,7 @@ The historical preview retains `noindex` metadata and its separate `tl-collector
 
 The preview deployment contains only the static site and its public assets. No API credentials, local notes, development data, or scheduled inventory workflows are published to the preview repository.
 
-September 9 update: full-width responsive header, hamburger menu, single-pass navigation, theme-aware discovery panels and a customer account portal. Customer email sign-in and private credit history have backend implementations, but stay disabled on the static preview until the Worker and email sender are connected. See [launch checklist](https://github.com/ArtofJammin/toploaded-demo/blob/codex/collector-preview/LAUNCH-CHECKLIST.md) for the explicit go-live requirements.
+September 9 update: full-width responsive header, hamburger menu, single-pass navigation, theme-aware discovery panels and a customer account portal. Customer email sign-in and private credit history have backend implementations, but stay disabled on the static preview until the Worker and email sender are connected. See [launch checklist](https://github.com/ArtofJammin/TopLoaded/blob/codex/collector-preview/LAUNCH-CHECKLIST.md) for the explicit go-live requirements.
 
 Rip a Pack is a free simulation, not a physical pack opening or a giveaway. The homepage, setup, reveal, results and shared text now state that no real pack is opened and no cards or prizes are awarded. Prices are catalog references, not winnings or store credit; physical products are sold separately through a separate checkout. The simulator does not add items to the cart automatically.
 

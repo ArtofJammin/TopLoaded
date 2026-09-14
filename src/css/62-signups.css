@@ -1,4 +1,7 @@
 /* ============ EVENT SIGNUPS + shared form states ============ */
+form[data-forms-bound][hidden], .form-contact[hidden], .demo-tag[hidden], #footVersion[hidden]{display:none!important}
+.form-contact{margin:16px 0; color:var(--ink2); font-size:.9rem; line-height:1.6}
+.form-contact .form-fail-actions{margin-top:12px; display:flex; align-items:center; flex-wrap:wrap; gap:16px}
 .signup-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
 .signup-card{padding:26px 24px; display:flex; flex-direction:column; gap:12px; position:relative}
 .signup-card h3{font-family:var(--disp); font-weight:700; text-transform:uppercase; font-size:1.5rem; letter-spacing:.03em}

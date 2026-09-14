@@ -49,7 +49,7 @@ const env = {
   LIVE_CLAIMS: memoryObject(StreamClaims),
   SITE_ORIGIN: '*',
   SQUARE_ENV: 'sandbox',
-  GITHUB_REPO: 'ArtofJammin/toploaded-demo',
+  GITHUB_REPO: 'ArtofJammin/TopLoaded',
   GITHUB_WORKFLOW: 'inventory.yml',
   SITE_URL: `http://localhost:${PORT}/`,
   TOKEN_SECRET: 'dev-secret-not-for-production',

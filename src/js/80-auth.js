@@ -30,7 +30,7 @@
   }
   var releaseLoginTrap = null;
   TL.auth = {
-    role: function(){ return TL.api.role || null; },
+    role: function(){ return TL.production && !(TL.api.online && TL.api.token) ? null : TL.api.role || null; },
     can: function(view){
       var r = TL.auth.role();
       if(view === "admin") return r === "admin";
@@ -41,7 +41,7 @@
       if(target) pendingView = target;
       var m = $("#loginModal"); if(!m) return;
       var hint = $("#loginHint");
-      if(hint) hint.textContent = TL.api.online ? "Passcodes are checked by the shop's API." : TL.api.base ? "The configured API is unavailable. Reconnect before signing in." : "Demo gate — real staff accounts run through the API.";
+      if(hint) hint.textContent = TL.api.online ? "For authorized shop staff." : "Staff sign-in is currently unavailable. Please contact the shop manager.";
       m.hidden = false;
       $("#loginOverlay").classList.add("open");
       $("#loginPin").value = "";
@@ -72,7 +72,7 @@
           return null;
         });
       }
-      if(TL.api.base) return Promise.reject({status:0,error:"The configured API is unavailable. Demo passcodes cannot unlock server access."});
+      if(TL.production || TL.api.base) return Promise.reject({status:0,error:"Staff sign-in is currently unavailable. Please contact the shop manager."});
       return demoRole(pin).then(function(role){
         if(role) TL.api.setAuth(null, role);
         return role;
@@ -124,12 +124,12 @@
   /* a role that was granted by the API is re-validated once the API answers */
   TL.on("api:ready", function(d){
     var hint=$("#loginHint");
-    if(hint)hint.textContent=TL.api.online?"Passcodes are checked by the shop's API.":TL.api.base?"The configured API is unavailable. Reconnect before signing in.":"Demo gate — real staff accounts run through the API.";
+    if(hint)hint.textContent=TL.api.online?"For authorized shop staff.":"Staff sign-in is currently unavailable. Please contact the shop manager.";
     function resumeRole(){
       document.documentElement.setAttribute("data-role",TL.api.role||"");
       if(pendingView && TL.auth.can(pendingView)){var target=pendingView;closeLogin();go(target,{}, {noTransition:true});}
     }
-    if(!d || !d.online){ if(TL.api.base) TL.api.setAuth(null, null); else resumeRole(); return; }
+    if(!d || !d.online){ if(TL.production || TL.api.base) TL.api.setAuth(null, null); else resumeRole(); return; }
     if(TL.api.token) TL.api.get("/auth/me").then(function(me){if(me && me.role){TL.api.setAuth(TL.api.token,me.role);resumeRole();}}).catch(function(){TL.api.setAuth(null,null);});
     else if(TL.api.role) TL.api.setAuth(null, null); /* demo role is not valid against a live API */
   });

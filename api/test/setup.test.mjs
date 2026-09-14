@@ -30,7 +30,7 @@ test('readiness distinguishes absent, unsafe and configured settings',()=>{
   assert.equal(squareConfigured({...env,SQUARE_ENV:'typo',SQUARE_ACCESS_TOKEN:'token',SQUARE_LOCATION_ID:'LOC'}),false);
 });
 test('read-only setup probes only the expected provider read endpoints and redact provider data',async()=>{
-  const env=makeEnv({SQUARE_ACCESS_TOKEN:'secret-token',SQUARE_LOCATION_ID:'LOC',GITHUB_TOKEN:'secret-gh',GITHUB_REPO:'ArtofJammin/toploaded-demo'}),c=client(env),token=await c.login('admin');
+  const env=makeEnv({SQUARE_ACCESS_TOKEN:'secret-token',SQUARE_LOCATION_ID:'LOC',GITHUB_TOKEN:'secret-gh',GITHUB_REPO:'ArtofJammin/TopLoaded'}),c=client(env),token=await c.login('admin');
   const real=globalThis.fetch,calls=[];
   globalThis.fetch=async(url,opts)=>{
     calls.push([String(url),opts]);

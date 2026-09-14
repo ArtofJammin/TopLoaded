@@ -118,12 +118,12 @@
     qty.hidden = out;
     $("#qvInc").disabled = out || QV.qty >= it.stock;
     $("#qvDec").disabled = true;
-    var rs = $("#qvRestock"); rs.hidden = !out; rs.reset();
+    var rs = $("#qvRestock"); rs.hidden = !out || (TL.production && !TL.api.online); rs.reset();
     var tcg = $("#qvTcg");
     if(it.tcg && it.url){ tcg.href = it.url; tcg.hidden = false; } else { tcg.hidden = true; tcg.removeAttribute("href"); }
     qvSyncWish();
     qvSyncNav();
-    $("#qvStatus").textContent = "";
+    $("#qvStatus").textContent = out && TL.production && !TL.api.online ? "For restock inquiries, call the shop at (513) 222-2573." : "";
     if(TL.recent) TL.recent.push(it.id);
     TL.emit("quickview:item", it);
   }
@@ -232,6 +232,7 @@
     if(!email){ toast("Add your email first"); return; }
     var payload = {email: email, productId: it.tcgId || it.id, productName: it.name, website: e.target.querySelector(".qv-hp").value || ""};
     function local(){
+      if(TL.production) throw new Error("Restock request was not sent");
       var forms = TL.store.get("forms", []); if(!Array.isArray(forms)) forms = [];
       forms.push({id: TL.uid(), kind: "restock", at: new Date().toISOString(), status: "new", local: true, email: email, productId: payload.productId, productName: it.name});
       TL.store.set("forms", forms);
@@ -243,6 +244,9 @@
       $("#qvRestock").hidden = true;
       $("#qvStatus").textContent = "You’re on the list — we’ll email " + email + " when " + it.name + " is back.";
       toast("We’ll email you when it’s back");
+    }).catch(function(){
+      if(btn) btn.disabled = false;
+      $("#qvStatus").textContent = "Your request wasn’t sent. Please contact the shop about restocks.";
     });
   });
   document.addEventListener("keydown", function(e){

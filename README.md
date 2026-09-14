@@ -1,12 +1,26 @@
 # Top Loaded Trading Cards — website
 
-The site for Top Loaded TCG (Crescent Springs, KY): live inventory from the shop's
-TCGplayer store, cart + Square checkout, live rip-and-ship breaks, play nights, the
-monthly card show, a buylist with a card-worth estimator, a virtual pack-rip game,
-and a staff desk + admin back office. Static page on GitHub Pages, dynamic pieces
-on a small Cloudflare Worker, and it runs in a full demo mode when the API is off.
+The production storefront for Top Loaded Trading Cards in Crescent Springs, KY:
+TCGplayer inventory, play nights, the Hilton card show and vendor floor plan,
+collection buying, live stream claims, and a clearly labeled virtual pack game.
+Built as a static GitHub Pages site with an optional Cloudflare Worker backend.
 
-Live: https://artofjammin.github.io/toploaded-demo/
+This repository is an independent copy of the original site, preserving its history.
+The original demo repository and website are not changed by releases here.
+
+Production mode never grants demo staff access or creates mock purchases. Card
+purchases go through TCGplayer; customer forms offer phone/email contact until the
+API is connected. Customer credit sign-in requires the real account service. Live
+claims checkout remains separately gated by the verified Square integration.
+Browser storage is isolated from the demo using the `toploaded-production-` prefix.
+
+Home and Play Nights show independent countdowns to each scheduled game's next event.
+Facebook is the default stream destination. In Admin, select Facebook or TikTok and
+paste the live video/profile URL: customers watch and chat on that platform while
+confirmed claims stay on the website. Native platform comments are not mirrored into
+the site's separate chat. YouTube and Twitch video embeds remain supported.
+
+Live: https://artofjammin.github.io/TopLoaded/
 
 ## Run it
 
@@ -48,4 +62,4 @@ Check: `node tools/check.mjs` (build + syntax + ids + API tests). CI runs the sa
 - **API**: `api/README.md` — `wrangler deploy`, set the secrets, then put the worker URL in
   `src/head.html` (`<meta name="tl-api">`), rebuild, commit.
 - **Passcodes**: production passcodes are Worker secrets (`STAFF_PIN_HASH`, `ADMIN_PIN_HASH`).
-  The demo-mode placeholders live in `src/js/80-auth.js` and must be changed before launch.
+  Production mode refuses all client-side demo passcodes, even with the API offline.

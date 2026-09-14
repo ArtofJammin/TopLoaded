@@ -35,8 +35,8 @@ function jsonLd(cfg) {
     '@type': 'OpeningHoursSpecification', dayOfWeek: days[d], opens: v[0], closes: v[1] }));
   return {
     '@context': 'https://schema.org', '@type': 'Store', name: 'Top Loaded Trading Cards',
-    url: 'https://artofjammin.github.io/toploaded-demo/', telephone: cfg.phoneRaw, email: cfg.email,
-    image: 'https://artofjammin.github.io/toploaded-demo/og-image.png',
+    url: 'https://artofjammin.github.io/TopLoaded/', telephone: cfg.phoneRaw, email: cfg.email,
+    image: 'https://artofjammin.github.io/TopLoaded/og-image.png',
     address: { '@type': 'PostalAddress', streetAddress: cfg.address.line1, addressLocality: cfg.address.city, addressRegion: cfg.address.state, postalCode: cfg.address.zip, addressCountry: 'US' },
     openingHoursSpecification: hours,
     sameAs: [cfg.links.facebook, cfg.links.instagram, cfg.links.tcgplayer].filter(Boolean),

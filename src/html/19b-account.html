@@ -4,7 +4,7 @@
       <div class="account-layout">
         <div class="account-panel">
           <div id="accountGuest">
-            <h2>Sign in with your email</h2><p>No password to remember. We will email a private sign-in code that expires in 10 minutes.</p>
+            <h2 id="accountGuestTitle">Your store credit</h2><p id="accountGuestIntro">Check your credit at the counter, or sign in when online access is available.</p>
             <form id="accountEmailForm"><label for="accountEmail">Email address</label><input id="accountEmail" type="email" autocomplete="email" maxlength="200" placeholder="you@example.com" required><button class="btn" id="accountSend" type="submit" disabled>Email me a sign-in code</button></form>
             <form id="accountCodeForm" hidden><label for="accountCode">Paste the code from your email</label><input id="accountCode" type="text" autocomplete="one-time-code" autocapitalize="none" spellcheck="false" maxlength="64" required aria-describedby="accountCodeHint"><p id="accountCodeHint">Use the full 32-character code. Never share it with anyone.</p><button class="btn" id="accountVerify" type="submit">Sign in</button><button class="linklike" id="accountRestart" type="button">Use another email or request a new code</button></form>
           </div>
@@ -19,7 +19,7 @@
         </div>
         <aside class="account-panel account-benefits" aria-label="Account information">
           <p class="account-kicker">KEEP THE GOOD STUFF CLOSE</p><h2>Your collection.<br>Your next chapter.</h2>
-          <ul><li><b>Store credit, clearly.</b><span>Balances and trade history come from the shop's ledger, not sample numbers.</span></li><li><b>A private way to sign in.</b><span>Access belongs to the email linked by the shop. Staff/admin accounts stay separate.</span></li><li><b>Your saved cards.</b><span>Wishlists and recently viewed cards currently stay on this browser.</span></li></ul>
+          <ul><li><b>Store credit, clearly.</b><span>Keep track of the credit earned from your trades.</span></li><li><b>Make it yours.</b><span>Ask the counter to link your email to your credit record.</span></li><li><b>Your saved cards.</b><span>Keep a wishlist and revisit your favorites on this browser.</span></li></ul>
           <a class="btn btn-ghost" href="#/shop?wish=1">Open my wishlist &rarr;</a><a class="linklike" href="#/visit" data-go="visit">Need help? Contact the shop &rarr;</a>
         </aside>
       </div>

@@ -66,7 +66,7 @@
     function match(b){var q=($('#floorSearch').value||'').trim().toLowerCase(),type=$('#floorType').value;return (!type||b.type===type)&&(!q||(b.label+' '+b.id+' '+labels[b.type]).toLowerCase().includes(q));}
     function details(i){
       var b=publicBooths[i];selected=b?i:-1;
-      $('#showFloorDetail').innerHTML=b?'<p class="eyebrow">'+esc(labels[b.type])+' vendor area</p><h3>'+esc(b.label)+'</h3><dl><dt>Booth reference</dt><dd>'+esc(b.id)+'</dd><dt>Find it</dt><dd>Row '+b.r+' · Column '+b.c+'</dd><dt>Footprint</dt><dd>'+b.w+' × '+b.h+' grid squares</dd></dl><p class="card-note">Location shown on the published show layout. A listing is not a live availability or booking guarantee.</p>':'<h3>Explore the floor</h3><p>Choose a vendor on the map or in the directory.</p>';
+      $('#showFloorDetail').innerHTML=b?'<p class="eyebrow">'+esc(labels[b.type])+' vendor area</p><h3>'+esc(b.label)+'</h3><p>Find this vendor in the highlighted area of the map.</p>':'<h3>Explore the floor</h3><p>Choose a vendor on the map or in the directory.</p>';
       $$('#showFloorGuide [data-floor-booth]').forEach(function(el){el.setAttribute('aria-pressed',String(Number(el.dataset.floorBooth)===selected));});
     }
     function filter(){

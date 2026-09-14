@@ -42,6 +42,7 @@ html.cart-open, html.cart-open body{overflow:hidden}
 .ct{grid-area:text; min-width:0; display:flex; flex-direction:column; gap:2px}
 .ct-name{font-weight:600; font-size:.92rem; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere}
 .ct-meta{font-family:var(--mono); font-size:.66rem; color:var(--ink3); letter-spacing:.03em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.ct-buy{align-self:flex-start; padding:8px 0; color:var(--accent); font-size:.75rem; min-height:32px}
 .ct-tags{display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-top:3px}
 .ct-tags i{font-style:normal; font-family:var(--mono); font-size:.62rem; letter-spacing:.08em; text-transform:uppercase; padding:1px 6px; border-radius:3px; border:1px solid var(--line); color:var(--ink2); line-height:1.5}
 .ct-tags i.ct-live{border-color:var(--accent); color:var(--accent)}

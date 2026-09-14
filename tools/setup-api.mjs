@@ -19,11 +19,11 @@ export function deploymentConfig({ kvId, apiUrl, mode = 'sandbox', saleChecks = 
     kv_namespaces: [{ binding: 'KV', id: kvId }],
     triggers: { crons: ['0 11 * * *'] },
     vars: {
-      SITE_ORIGIN: 'https://artofjammin.github.io', SITE_URL: 'https://artofjammin.github.io/toploaded-demo/',
+      SITE_ORIGIN: 'https://artofjammin.github.io', SITE_URL: 'https://artofjammin.github.io/TopLoaded/',
       SQUARE_ENV: mode, SQUARE_WEBHOOK_URL: apiBase + '/square/webhook',
       CLAIM_CHECKOUT_ENABLED: 'false', SHOP_CHECKOUT_ENABLED: 'false',
       LISTING_CHECKS_ENABLED: 'true', INVENTORY_ALERT_EMAIL_ENABLED: 'false', TCG_NOTIFICATION_ENABLED: 'false',
-      GITHUB_REPO: 'ArtofJammin/toploaded-demo', GITHUB_WORKFLOW: 'inventory.yml', GITHUB_REF: 'main',
+      GITHUB_REPO: 'ArtofJammin/TopLoaded', GITHUB_WORKFLOW: 'inventory.yml', GITHUB_REF: 'main',
       SHIPPING_CENTS: '499', FREE_SHIPPING_CENTS: '10000',
     },
   };

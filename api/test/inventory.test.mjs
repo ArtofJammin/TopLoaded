@@ -41,7 +41,7 @@ test('GET /inventory/status reads the site summary, caches it 5 min, merges last
     assert.equal(r.data.square.configured, false);
     assert.equal(r.data.github.configured, false);
     assert.deepEqual(r.data.hooks, {});
-    assert.equal(s.calls[0].url, 'https://artofjammin.github.io/toploaded-demo/inventory-summary.json');
+    assert.equal(s.calls[0].url, 'https://artofjammin.github.io/TopLoaded/inventory-summary.json');
     const again = await c.get('/inventory/status');
     assert.equal(again.data.cached, true);
     assert.equal(s.calls.length, 1, 'second call served from KV');
@@ -85,7 +85,7 @@ test('POST /inventory/sync: admin only, honest without a token, dispatches the w
   const env = makeEnv();
   const c = client(env);
   const s = stubFetch({ github: (u, init) => {
-    assert.equal(u, 'https://api.github.com/repos/ArtofJammin/toploaded-demo/actions/workflows/inventory.yml/dispatches');
+    assert.equal(u, 'https://api.github.com/repos/ArtofJammin/TopLoaded/actions/workflows/inventory.yml/dispatches');
     assert.equal(init.method, 'POST');
     assert.equal(init.headers.authorization, 'Bearer ghp_test');
     assert.equal(init.headers.accept, 'application/vnd.github+json');
@@ -104,7 +104,7 @@ test('POST /inventory/sync: admin only, honest without a token, dispatches the w
     assert.equal(s.calls.length, 0);
 
     env.GITHUB_TOKEN = 'ghp_test';
-    env.GITHUB_REPO = 'ArtofJammin/toploaded-demo';
+    env.GITHUB_REPO = 'ArtofJammin/TopLoaded';
     env.GITHUB_WORKFLOW = 'inventory.yml';
     await env.KV.put('inventory:status', JSON.stringify({ generated: 'old', fetchedAt: 'x' }));
     const ok = await c.post('/inventory/sync', {}, { token: admin });

@@ -77,7 +77,7 @@
 .collector-home .section-head h2{font-size:clamp(32px,3.5vw,48px); letter-spacing:-.015em; text-transform:uppercase; line-height:1.04}
 .collector-kicker{font:10px var(--mono); color:var(--accent); letter-spacing:.13em; margin-bottom:14px}
 .collector-note{font:12px var(--body); color:var(--ink3)}
-.collector-mosaic{display:grid; grid-template-columns:1.12fr 1fr; grid-template-rows:auto auto; gap:16px}
+.collector-mosaic{display:grid; grid-template-columns:minmax(0,1.12fr) minmax(0,1fr); grid-template-rows:auto auto; gap:16px}
 .tile-number{font:9px var(--mono); letter-spacing:.12em}
 .discovery-tile{grid-row:span 2; padding:32px; border:1px solid var(--line2); border-radius:14px; background:radial-gradient(ellipse at 95% 90%,color-mix(in srgb,var(--collect-detail) 12%,transparent),transparent 60%),var(--surface); display:flex; flex-direction:column; position:relative; overflow:hidden}
 .discovery-tile .tile-number{color:var(--ink3)}
@@ -101,6 +101,24 @@
 .discovery-pick h4{font:600 22px/1.1 var(--disp); margin:7px 0; text-wrap:balance}
 .discovery-pick p{font-size:12px; color:var(--ink2); margin:10px 0}
 .discovery-pick .linklike{font-size:10px; min-height:36px}
+.discovery-pick > div{min-width:0; flex:1}
+.discovery-actions{display:flex; flex-wrap:wrap; align-items:center; gap:14px 24px; margin-top:18px}
+.discovery-actions .linklike{display:inline-flex; align-items:center; padding:10px 0; font-size:12px; min-height:44px}
+.discovery-actions .stock-badge{margin:0}
+.show-tile{display:flex; flex-direction:column; gap:22px; min-width:0; min-height:260px; padding:28px; border:1px solid var(--line2); border-radius:14px; background:radial-gradient(ellipse at 85% 20%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 65%),var(--surface2); color:var(--ink); text-decoration:none; overflow:hidden}
+.show-tile .tile-number{color:var(--ink3)}
+.show-tile h3{font:700 34px/1 var(--disp); text-transform:uppercase}
+.show-tile p{max-width:35ch; margin-top:10px; font-size:13px; line-height:1.6; color:var(--ink2)}
+.show-tile-art{display:flex; align-items:center; justify-content:space-around; gap:24px; min-height:130px; color:var(--accent)}
+.show-ticket{display:flex; flex-direction:column; gap:8px; padding:14px 18px; border:1px dashed currentColor; border-radius:6px; font:9px var(--mono); transform:rotate(-7deg); transition:transform .25s}
+.show-ticket b{font:700 27px/.95 var(--disp)}
+.show-ticket small{font-size:8px; letter-spacing:.12em}
+.show-tile-art svg{width:46%; max-width:175px; opacity:.55; transform:rotate(7deg); transition:transform .25s,opacity .25s}
+.show-tile:hover .show-ticket,.show-tile:focus-visible .show-ticket{transform:rotate(-2deg)}
+.show-tile:hover svg,.show-tile:focus-visible svg{transform:rotate(2deg); opacity:.85}
+.collector-home .why-loaded{padding-top:clamp(56px,6vw,88px)}
+.event-game-clocks{margin:28px 0 36px}
+.event-game-clocks .playnow-btn{height:100%}
 .play-tile{display:flex; flex-direction:column; min-height:345px; padding:28px; background:radial-gradient(ellipse at 50% 30%,color-mix(in srgb,var(--accent) 9%,transparent),transparent 65%),var(--collect-play-bg); color:var(--collect-play-ink); border:1px solid var(--line2); border-radius:14px; text-decoration:none; overflow:hidden; position:relative}
 .pack-stack{height:200px; position:relative; perspective:800px}
 .pack-stack i{position:absolute; top:18px; left:50%; width:120px; height:168px; border:1px solid var(--accent-dim); background:var(--accent); transform:translateX(-50%) rotate(-18deg); transition:transform .45s cubic-bezier(.2,.7,.2,1); border-radius:2px; box-shadow:0 12px 22px #0003}
@@ -159,7 +177,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   .discovery-tile{grid-column:1/-1;grid-row:auto;display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
   .discovery-tile h3{font-size:42px}.discovery-display{margin:0;min-width:0}
   .discovery-pick{flex-direction:column;gap:14px}.discovery-orbit{right:0;bottom:12%}
-  .play-tile,.trade-tile{padding:22px}
+  .play-tile,.trade-tile,.show-tile{padding:22px}
   .play-tile h3,.trade-tile h3{font-size:28px}
   .trade-tile > div{flex-direction:column;align-items:flex-start;gap:24px}
   .trade-stamp{width:70px;height:70px}
@@ -243,6 +261,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
 }
 @media (prefers-reduced-motion: reduce){
   .playnow-btn{transition:none}
+  .show-ticket,.show-tile-art svg{transition:none}
+  .show-tile:hover .show-ticket,.show-tile:focus-visible .show-ticket{transform:rotate(-7deg)}
+  .show-tile:hover svg,.show-tile:focus-visible svg{transform:rotate(7deg)}
   .playnow-btn:hover,.playnow-btn:focus-visible{transform:none}
 }
 

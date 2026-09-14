@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   refresh:
-    if: github.repository == 'ArtofJammin/toploaded-demo'
+    if: github.repository == 'ArtofJammin/TopLoaded'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

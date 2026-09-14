@@ -89,7 +89,7 @@ export function register(r) {
 // Also used by the authenticated notification coordinator; never exposed as an
 // anonymous full-import trigger. Both paths share the existing dispatch cooldown.
 export async function dispatchInventory(env) {
-    const repo = env.GITHUB_REPO || 'ArtofJammin/toploaded-demo';
+    const repo = env.GITHUB_REPO || 'ArtofJammin/TopLoaded';
     const workflow = env.GITHUB_WORKFLOW || 'inventory.yml';
     const runsUrl = `https://github.com/${repo}/actions/workflows/${workflow}`;
     if (!env.GITHUB_TOKEN) {

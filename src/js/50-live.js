@@ -56,12 +56,13 @@
     pack: 7, packs: 36, ripped: 0, hitPool: [], hits: [], hitMap: {}, lastRip: "", onCamera: ""
   };
   function liveCfg(){ return (TL.config && TL.config.live) || {}; }
-  function liveIsOn(){ return !!liveCfg().on; }
+  function liveIsOn(){ return !!liveCfg().on && (!TL.production || !!lvParseEmbed(liveCfg())); }
   function liveOnline(){ return !!(TL.api && TL.api.online) && lv.api !== false; }
   /* spots and chat are simulated when there is no API at all, or the live endpoints answer 404.
      While the health check is still pending (API configured, api:ready not yet fired) the answer is
      "not yet" — the grid shows a loading state instead of sample seats. */
   function lvDemoMode(){
+    if(TL.production) return false;
     if(lv.api === false) return true;
     if(lv.api === true) return false;
     if(!TL.api || !TL.api.base) return true;
@@ -92,12 +93,12 @@
     var on = liveIsOn(), online = liveOnline();
     if(online){
       lvRefresh(); lvEvery("spots", lvRefresh, 10000);
-      lvPollChat(); lvEvery("chat", lvPollChat, 3000);
+      if(!lvChatDestination()){ lvPollChat(); lvEvery("chat", lvPollChat, 3000); }
       if(on){ lvHeartbeat(); lvEvery("viewers", lvHeartbeat, 20000); }
     } else {
       lvChatMode("sim");
       lvSimStart();
-      if(on) lvEvery("viewers", lvSimViewers, 5000);
+      if(on && !TL.production) lvEvery("viewers", lvSimViewers, 5000);
     }
     if(on) lvScheduleRip(); else { lvRenderOffair(); lvEvery("clock", lvRenderOffair, 60000); }
   }
@@ -139,16 +140,47 @@
   }
   /* ---- embed ---- */
   function lvParseEmbed(cfg){
-    var url = String(cfg.embed || "").trim(), plat = String(cfg.platform || "").toLowerCase(), m;
-    if(!url && plat === "whatnot" && TL.config.links && TL.config.links.whatnot) url = String(TL.config.links.whatnot).trim();
-    if(!url || !/^https?:\/\//i.test(url)) return null;
-    var host = encodeURIComponent(location.hostname || "localhost");
-    if((m = url.match(/youtube\.com\/channel\/(UC[\w-]+)\/live/i))) return {kind: "youtube", src: "https://www.youtube.com/embed/live_stream?channel=" + m[1] + "&autoplay=1&mute=1&playsinline=1", href: url};
-    if((m = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|live\/|shorts\/)|youtu\.be\/)([\w-]{6,})/i))) return {kind: "youtube", src: "https://www.youtube.com/embed/" + m[1] + "?autoplay=1&mute=1&playsinline=1", href: url};
-    if((m = url.match(/twitch\.tv\/videos\/(\d+)/i))) return {kind: "twitch", src: "https://player.twitch.tv/?video=v" + m[1] + "&parent=" + host + "&autoplay=true&muted=true", href: url};
-    if((m = url.match(/twitch\.tv\/([\w]+)/i))) return {kind: "twitch", src: "https://player.twitch.tv/?channel=" + m[1] + "&parent=" + host + "&autoplay=true&muted=true", href: url};
-    if(/whatnot\.com/i.test(url) || plat === "whatnot") return {kind: "whatnot", href: url};
-    return {kind: "link", href: url};
+    var url = String(cfg.embed || "").trim(), plat = String(cfg.platform || "").toLowerCase(), m, u;
+    if(!url && /^(facebook|tiktok|whatnot)$/.test(plat)) url = String((TL.config.links || {})[plat] || "").trim();
+    try { u = new URL(url); } catch(e){ return null; }
+    if(u.protocol !== "https:" || u.username || u.password || u.port) return null;
+    var domain = u.hostname.toLowerCase().replace(/^www\./, ""), path = u.pathname;
+    var host = encodeURIComponent(location.hostname || "localhost"), video = null;
+    if(domain === "youtube.com" || domain === "youtu.be"){
+      if((m = path.match(/^\/channel\/(UC[\w-]+)\/live\/?$/))) return {kind:"youtube", src:"https://www.youtube.com/embed/live_stream?channel="+m[1]+"&autoplay=1&mute=1&playsinline=1", href:u.href};
+      video = domain === "youtu.be" ? path.slice(1) : u.searchParams.get("v") || ((path.match(/^\/(?:embed|live|shorts)\/([\w-]+)/) || [])[1]);
+      if(video && /^[\w-]{6,}$/.test(video)) return {kind:"youtube", src:"https://www.youtube.com/embed/"+video+"?autoplay=1&mute=1&playsinline=1", href:u.href};
+      return {kind:"youtube", href:u.href};
+    }
+    if(domain === "twitch.tv"){
+      if((m = path.match(/^\/videos\/(\d+)\/?$/))) return {kind:"twitch",src:"https://player.twitch.tv/?video=v"+m[1]+"&parent="+host+"&autoplay=true&muted=true",href:u.href};
+      if((m = path.match(/^\/([\w]+)\/?$/))) return {kind:"twitch",src:"https://player.twitch.tv/?channel="+m[1]+"&parent="+host+"&autoplay=true&muted=true",href:u.href};
+      return {kind:"twitch",href:u.href};
+    }
+    if(domain === "player.twitch.tv"){
+      var channel = u.searchParams.get("channel");
+      if(channel && /^\w+$/.test(channel)) return {kind:"twitch",src:"https://player.twitch.tv/?channel="+channel+"&parent="+host+"&autoplay=true&muted=true",href:"https://www.twitch.tv/"+channel};
+      return null;
+    }
+    if(domain === "facebook.com" || domain === "m.facebook.com" || domain === "fb.watch") return {kind:"facebook",href:u.href};
+    if(domain === "tiktok.com" || domain === "vm.tiktok.com" || domain === "vt.tiktok.com") return {kind:"tiktok",href:u.href};
+    if(domain === "whatnot.com") return {kind:"whatnot",href:u.href};
+    return null;
+  }
+  function lvPlatformLabel(kind){ return {facebook:"Facebook",tiktok:"TikTok",youtube:"YouTube",twitch:"Twitch",whatnot:"Whatnot"}[kind] || "the stream"; }
+  function lvChatDestination(){ var emb=lvParseEmbed(liveCfg()); return emb && /^(facebook|tiktok|whatnot)$/.test(emb.kind) ? emb : null; }
+  function lvRenderNativeChat(){
+    var destination=lvChatDestination(), panel=lvEl("livePlatformChat"), wrap=lvEl("chatWrap"), head=lvEl("chatHead");
+    if(panel) panel.hidden=!destination;
+    if(wrap) wrap.hidden=!!destination;
+    if(head) head.textContent=destination ? "Stream chat" : "Shop chat";
+    if(destination){
+      var name=lvPlatformLabel(destination.kind), link=lvEl("liveChatLink");
+      if(link){ link.href=destination.href; link.textContent=(liveIsOn()?"Watch & chat on ":"Follow us on ")+name+" ↗"; }
+      var copy=lvEl("liveChatCopy");
+      if(copy) copy.textContent=liveIsOn()?"Watch, comment and claim cards with the host on "+name+". Your confirmed claims stay listed below.":"Catch our next stream on "+name+". That’s where you’ll find the host, the cards and the conversation.";
+    }
+    return !!destination;
   }
   /* ---- rendering ---- */
   function lvLoadCfg(){
@@ -176,7 +208,7 @@
     var sub = lvEl("liveSub"), tag = lvEl("liveDemoTag"), screen = lvEl("liveScreen");
     if(on){
       if(emb && emb.src){ if(sub) sub.textContent = "Streaming live on " + (emb.kind === "youtube" ? "YouTube" : "Twitch") + " · claim a card with the host"; if(tag) tag.hidden = true; }
-      else if(emb){ if(sub) sub.textContent = "Streaming live on Whatnot — open the stream to watch and bid"; if(tag) tag.hidden = true; }
+      else if(emb){ if(sub) sub.textContent = "Live on " + lvPlatformLabel(emb.kind) + " — watch and chat with the host"; if(tag) tag.hidden = true; }
       else { if(sub) sub.textContent = "Simulated stream — the live site embeds Whatnot, YouTube, or Twitch here"; if(tag){ tag.hidden = false; tag.textContent = "simulated stream"; } }
     } else {
       var ns = lvNextStream();
@@ -190,7 +222,9 @@
     /* every card on the strip is drawn from our own inventory by the simulation — there is no real stream log yet */
     var ht = lvEl("hitsDemoTag"); if(ht) ht.hidden = false;
     var vn = lvEl("viewerNum"); if(vn && on && !vn.dataset.set){ vn.dataset.set = "1"; vn.textContent = lv.viewers; }
-    var ct = lvEl("chatTag"); if(ct){ ct.hidden = liveOnline() && lv.api === true; ct.textContent = on ? "simulated" : "replay · simulated"; }
+    var ct = lvEl("chatTag"); if(ct){ ct.hidden = TL.production || (liveOnline() && lv.api === true); ct.textContent = on ? "simulated" : "replay · simulated"; }
+    var viewers = lvEl("viewerCount"); if(viewers) viewers.hidden = !!TL.production;
+    lvRenderNameRow();
     if(was !== on){ lvDispatch("tl:live-state", {on: on}); }
   }
   function lvRenderPlayer(){
@@ -212,10 +246,9 @@
       f.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
       host.appendChild(f);
     } else {
-      var wn = emb.kind === "whatnot";
-      host.innerHTML = '<div class="embed-card"><span class="embed-k">' + (wn ? "Live on Whatnot" : "Live stream") + '</span><b>' + esc(lvTitle()) + '</b>' +
-        '<a class="btn" href="' + esc(emb.href) + '" target="_blank" rel="noopener noreferrer">Watch on ' + (wn ? "Whatnot" : "the stream") + ' ↗<span class="sr-only"> (opens in a new tab)</span></a>' +
-        '<span class="embed-sub">Whatnot has no embed — the stream runs in their app, claims and chat stay here.</span></div>';
+      host.innerHTML = '<div class="embed-card"><span class="embed-k">Live on ' + esc(lvPlatformLabel(emb.kind)) + '</span><b>' + esc(lvTitle()) + '</b>' +
+        '<a class="btn" href="' + esc(emb.href) + '" target="_blank" rel="noopener noreferrer">Watch &amp; chat ↗<span class="sr-only"> (opens in a new tab)</span></a>' +
+        '<span class="embed-sub">Join the host on ' + esc(lvPlatformLabel(emb.kind)) + '. Follow your confirmed claims here.</span></div>';
     }
   }
   function lvRenderOffair(){
@@ -237,7 +270,7 @@
       var next = !!(ns && ns.entry === s);
       return '<div class="panel' + (next ? " next" : "") + '"><span class="num">' + esc(s.day || "") + ' · ' + esc(s.time || "") +
         (next ? '<em class="next-tag">Next up</em>' : "") + '</span><h3>' + esc(s.name || "Stream") + '</h3><p>' + esc(s.desc || "") + '</p></div>';
-    }).join("") || '<p class="lede">Stream schedule coming soon — follow us on Instagram for go-live posts.</p>';
+    }).join("") || '<p class="lede">New stream dates are on the way. Follow our social pages for go-live announcements.</p>';
   }
   function lvRenderRip(){
     var el = lvEl("ripLabel"); if(!el) return;
@@ -254,16 +287,24 @@
     var on = liveIsOn(), email = TL.store.get("liveNotify", "");
     wrap.hidden = on;
     if(on) return;
+    if(TL.production && !liveOnline()){
+      form.hidden = true; msg.hidden = false;
+      var follow=lvChatDestination() || {kind:"facebook",href:"https://www.facebook.com/toploadedtradingcards"};
+      msg.innerHTML = 'Catch the next stream. <a href="'+esc(follow.href)+'" target="_blank" rel="noopener">Follow Top Loaded on '+esc(lvPlatformLabel(follow.kind))+' ↗</a>';
+      return;
+    }
     if(email){
       form.hidden = true; msg.hidden = false;
       msg.innerHTML = "We'll email <b>" + esc(email) + "</b> before we go live. <button class=\"linklike\" type=\"button\" id=\"notifyChange\">Change</button>";
     } else { form.hidden = false; msg.hidden = true; msg.textContent = ""; var b = form.querySelector("button"); if(b) b.disabled = false; }
   }
   function lvRenderNameRow(){
+    var nativeChat=lvRenderNativeChat();
+    ["chatForm", "chatReacts"].forEach(function(id){ var el = lvEl(id); if(el) el.hidden = nativeChat || !!(TL.production && !liveOnline()); });
     var row = lvEl("chatNameRow"), as = lvEl("chatAs"); if(!row) return;
     var online = liveOnline();
     row.hidden = !(online && !lv.name);
-    if(as){ as.hidden = !lv.name; as.textContent = "as " + lv.name; as.setAttribute("aria-label", "Chatting as " + lv.name + " — change display name"); }
+    if(as){ as.hidden = nativeChat || !lv.name; as.textContent = "as " + lv.name; as.setAttribute("aria-label", "Chatting as " + lv.name + " — change display name"); }
   }
   /* ---- spots ---- */
   function lvSaveSpots(){ TL.store.set("liveSpots", {mine: lv.mine, at: lv.claimTimes}); }
@@ -435,6 +476,7 @@
   }
   /* ---- viewers ---- */
   function lvSetViewers(n){
+    if(TL.production) return; /* Site heartbeat counts are not platform viewer counts. */
     lv.viewers = n;
     var num = lvEl("viewerNum"), vc = lvEl("viewerCount");
     if(num){ num.dataset.set = "1"; TL.countUp(num, n); }
@@ -472,27 +514,30 @@
     if(stick || opts.me || opts.seed){ body.scrollTop = body.scrollHeight; } else lvNewPill(true);
   }
   function lvChatMode(mode){
+    if(TL.production && mode === "sim") mode = "unavailable";
     if(lv.chatMode === mode) return;
     lv.chatMode = mode;
     var body = lvEl("chatBody"); if(!body) return;
     body.innerHTML = "";
     lv.chatSeen = {}; lv.chatSeenN = 0; lv.chatSince = 0;
-    if(mode === "sim"){
+    if(mode === "unavailable"){
+      pushChat(null, "Join the conversation on our stream. We’ll see you there!", true, {seed: true});
+    } else if(mode === "sim"){
       pushChat(null, liveIsOn() ? "Welcome to the stream — chat is simulated for this demo" : "Off air — sample chat, not a real stream replay", true, {seed: true});
       CHAT_FEED.slice(0, 4).forEach(function(c){ pushChat(c[0], c[1], false, {seed: true}); });
       lv.chatIdx = 4;
     } else {
-      pushChat(null, liveIsOn() ? "You're in the live chat — be cool, we ship what we pull" : "Chat is open while we're off air — say hi", true, {seed: true});
+      pushChat(null, liveIsOn() ? "Welcome to the stream — say hi and enjoy the cards" : "Chat is open while we're off air — say hi", true, {seed: true});
     }
     lvNewPill(false);
     /* filler is never announced; real chat is read politely (own sends are also reported through the toast) */
     body.setAttribute("aria-live", mode === "api" ? "polite" : "off");
     if(mode === "sim"){ lv.simN = 0; lv.simIdle = false; }
-    var ct = lvEl("chatTag"); if(ct) ct.hidden = mode === "api";
+    var ct = lvEl("chatTag"); if(ct) ct.hidden = TL.production || mode === "api";
     lvRenderChatPause();
   }
   /* ---- simulated feed: runs while the view shows, stops after LV_SIM_MAX lines until the visitor interacts, and has a visible pause ---- */
-  function lvSimRunning(){ return lv.active && !document.hidden && lv.chatMode === "sim" && !lv.chatPaused && !lv.simIdle; }
+  function lvSimRunning(){ return !TL.production && lv.active && !document.hidden && lv.chatMode === "sim" && !lv.chatPaused && !lv.simIdle; }
   function lvSimStart(){ lvStop("chat"); if(lvSimRunning()) lvEvery("chat", lvSimChat, 4200); lvRenderChatPause(); }
   function lvSimChat(){
     if(!lvSimRunning()){ lvStop("chat"); lvRenderChatPause(); return; }
@@ -548,13 +593,14 @@
   }
   /* returns false when the message could not be taken yet (a display name is needed first) — the caller keeps the text */
   function lvSendChat(text){
+    if(lvChatDestination() || (TL.production && !liveOnline())){ toast("Join the chat on our stream"); return false; }
     if(liveOnline()){
       if(!lv.name){ lvRenderNameRow(); var ni = lvEl("chatNameInput"); if(ni){ lvEl("chatNameRow").hidden = false; ni.focus(); } toast("Pick a display name, then hit Send again"); return false; }
       TL.api.post("/live/chat", {user: lv.name, text: text}).then(function(d){
         var m = d && (d.message || (d.id ? d : null));
         if(m && m.id){ lvAddServerMsg(m); } else lvPollChat();
       }).catch(function(e){
-        if(e && e.status === 404){ lv.api = false; pushChat(lv.name || "you", text, false, {me: true}); if(lv.active) lvStart(); return; }
+        if(e && e.status === 404){ lv.api = false; if(!TL.production) pushChat(lv.name || "you", text, false, {me: true}); else toast("Message didn’t send. Join the chat on our stream."); lvRenderNameRow(); if(lv.active) lvStart(); return; }
         toast(e && e.status === 429 ? "Slow down — chat is rate limited" : "Message didn't send — try again");
       });
     } else pushChat(lv.name || "you", text, false, {me: true});
@@ -616,8 +662,9 @@
     var pool = lv.hitPool, order = [3, 1, 6, 2, 4];
     for(var i = order.length - 1; i >= 0; i--){ var it = pool[order[i] % pool.length]; if(it) lvAddHit(it, false); }
   }
-  function lvScheduleRip(){ lvLater("rip", function(){ lvRip(); lvScheduleRip(); }, 16000 + Math.random() * 6000); }
+  function lvScheduleRip(){ if(TL.production) return; lvLater("rip", function(){ lvRip(); lvScheduleRip(); }, 16000 + Math.random() * 6000); }
   function lvRip(item){
+    if(TL.production) return;
     if(!liveIsOn()) return;
     lv.pack = (lv.pack % lv.packs) + 1;
     lv.ripped++;
@@ -655,7 +702,7 @@
   TL.on("api:ready", function(){
     lv.apiReady = true;
     /* offline: the board becomes a labelled sample; online: it stays "checking" until the first /live answer */
-    if(lv.booted){ lvLoadCfg(); lvRenderSpots(); lvRenderNameRow(); lvRenderState(); }
+    if(lv.booted){ lvLoadCfg(); lvRenderSpots(); lvRenderNameRow(); lvRenderState(); lvRenderNotify(); }
     if(lv.active) lvStart();
   });
   TL.on("live:change", function(){
@@ -708,6 +755,7 @@
     });
     var reacts = lvEl("chatReacts");
     if(reacts) reacts.addEventListener("click", function(e){
+      if(lvChatDestination() || (TL.production && !liveOnline())) return;
       var b = e.target.closest("[data-react]"); if(!b) return;
       var now = Date.now(); if(now - lv.lastReact < 350) return; lv.lastReact = now;
       var em = b.dataset.react;
@@ -715,7 +763,7 @@
       lvSimResume();
       if(liveOnline()){
         TL.api.post("/live/chat", {user: lv.name || "guest", text: em}).then(function(d){ var m = d && (d.message || (d.id ? d : null)); if(m && m.id) lvAddServerMsg(m); })
-          .catch(function(err){ if(err && err.status === 404){ lv.api = false; pushChat(lv.name || "you", em, false, {me: true}); if(lv.active) lvStart(); } });
+          .catch(function(err){ if(err && err.status === 404){ lv.api = false; if(!TL.production) pushChat(lv.name || "you", em, false, {me: true}); lvRenderNameRow(); if(lv.active) lvStart(); } });
       } else pushChat(lv.name || "you", em, false, {me: true});
     });
     var nf = lvEl("notifyForm");
@@ -727,6 +775,7 @@
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ toast("Enter a valid email address"); if(inp) inp.focus(); return; }
       if(btn) btn.disabled = true;
       function local(){
+        if(TL.production) throw new Error("Notification signup was not sent");
         var forms = TL.store.get("forms", []); if(!Array.isArray(forms)) forms = [];
         forms.push({id: TL.uid(), kind: "newsletter", at: new Date().toISOString(), status: "new", local: true, email: email, topic: "live"});
         TL.store.set("forms", forms);
@@ -738,7 +787,7 @@
           TL.store.set("liveNotify", email);
           lvRenderNotify();
           toast("You're on the list — we'll email you before we go live");
-        }, function(){ if(btn) btn.disabled = false; toast("Too many tries — wait a few minutes"); });
+        }, function(){ if(btn) btn.disabled = false; toast("Signup wasn’t sent. Please try again later or follow our social pages."); });
     });
   })();
   TL.live = TL.live || {};

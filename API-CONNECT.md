@@ -32,7 +32,7 @@ Optional services, using the same helper with each name:
 | --- | --- | --- |
 | Square catalog + claim payments | `SQUARE_ACCESS_TOKEN`, `SQUARE_LOCATION_ID`, `SQUARE_WEBHOOK_SIGNATURE_KEY` | Sandbox first; active USD location, exact catalog variations, stock tracking, taxes, delivery rules, and signed webhook subscription |
 | Email sign-in / notifications | `RESEND_API_KEY`, `EMAIL_FROM`, `NOTIFY_EMAIL` | Verify the sender domain in Resend; confirm delivery to a consenting staff test address |
-| Admin Sync now | `GITHUB_TOKEN` | Fine-grained token scoped to ArtofJammin/toploaded-demo, Actions read/write; no broad account access required |
+| Admin Sync now | `GITHUB_TOKEN` | Fine-grained token scoped to ArtofJammin/TopLoaded, Actions read/write; no broad account access required |
 | Google reviews | `GOOGLE_PLACES_API_KEY` | Places API/billing; actual Place ID in Admin; published terms/privacy URLs in Worker vars `GOOGLE_REVIEWS_TERMS_URL` and `GOOGLE_REVIEWS_PRIVACY_URL` |
 
 No secret value is returned by the setup report. Sender addresses and public URLs may also be set in the Cloudflare dashboard. Google’s share URL/FID is not its Places API Place ID. Do not substitute one for the other.

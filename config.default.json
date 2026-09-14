@@ -132,7 +132,7 @@
   "live": {
     "on": false,
     "title": "Streaming from the shop floor",
-    "platform": "",
+    "platform": "facebook",
     "embed": "",
     "spotPrice": 24.99,
     "spots": 12,

@@ -11,23 +11,24 @@
 <meta property="og:site_name" content="Top Loaded Trading Cards">
 <meta property="og:title" content="Top Loaded Trading Cards — Buy. Sell. Trade.">
 <meta property="og:description" content="Pokemon, One Piece, Magic, and Gundam singles and sealed in Crescent Springs, KY. We buy collections — cash on the spot or store credit +10%. Play nights weekly, card show monthly at the Hilton on Turfway Rd, Florence.">
-<meta property="og:image" content="https://artofjammin.github.io/toploaded-demo/og-image.png">
-<meta property="og:url" content="https://artofjammin.github.io/toploaded-demo/">
+<meta property="og:image" content="https://artofjammin.github.io/TopLoaded/og-image.png">
+<meta property="og:url" content="https://artofjammin.github.io/TopLoaded/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="favicon.png">
-<!-- Point the site at the deployed Cloudflare Worker (api/) here, e.g. https://toploaded-api.<account>.workers.dev
-     Leave empty and the site runs fully in demo mode with localStorage fallbacks. -->
+<!-- Public runtime API connection may also be supplied by api-config.json. -->
 <meta name="tl-api" content="">
+<meta name="tl-site-mode" content="production">
+<meta name="tl-storage-prefix" content="toploaded-production-">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#EFF1F4">
 <meta name="theme-color" content="#0C0A06">
 <script>(function(){var p=document.querySelector('meta[name="tl-storage-prefix"]');window.TL_STORAGE_PREFIX=p?p.content:"tl-";var t="tl";try{var s=localStorage.getItem(window.TL_STORAGE_PREFIX+"theme");if(s==="light"||s==="dark"||s==="tl")t=s}catch(e){}document.documentElement.setAttribute("data-theme",t)})()</script>
-<link rel="canonical" href="https://artofjammin.github.io/toploaded-demo/">
+<link rel="canonical" href="https://artofjammin.github.io/TopLoaded/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://tcgplayer-cdn.tcgplayer.com">
 <link rel="preconnect" href="https://product-images.tcgplayer.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Spline+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Store","name":"Top Loaded Trading Cards","url":"https://artofjammin.github.io/toploaded-demo/","telephone":"+15132222573","email":"toploadedtcg@gmail.com","image":"https://artofjammin.github.io/toploaded-demo/og-image.png","address":{"@type":"PostalAddress","streetAddress":"2514 Hazelwood Dr","addressLocality":"Crescent Springs","addressRegion":"KY","postalCode":"41017","addressCountry":"US"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":"Tuesday","opens":"11:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Wednesday","opens":"11:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Thursday","opens":"11:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Friday","opens":"11:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"10:00","closes":"16:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"10:00","closes":"16:00"}],"sameAs":["https://www.facebook.com/toploadedtradingcards","https://www.instagram.com/toploadedtcg","https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf"],"priceRange":"$"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Store","name":"Top Loaded Trading Cards","url":"https://artofjammin.github.io/TopLoaded/","telephone":"+15132222573","email":"toploadedtcg@gmail.com","image":"https://artofjammin.github.io/TopLoaded/og-image.png","address":{"@type":"PostalAddress","streetAddress":"2514 Hazelwood Dr","addressLocality":"Crescent Springs","addressRegion":"KY","postalCode":"41017","addressCountry":"US"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":"Tuesday","opens":"11:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Wednesday","opens":"11:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Thursday","opens":"11:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Friday","opens":"11:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"10:00","closes":"16:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"10:00","closes":"16:00"}],"sameAs":["https://www.facebook.com/toploadedtradingcards","https://www.instagram.com/toploadedtcg","https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf"],"priceRange":"$"}</script>
 <style>
 /* ============ TOKENS -- dark-first (matte sleeve black), light = grading-slab acrylic ============ */
 :root{
@@ -1247,6 +1248,7 @@ html.cart-open, html.cart-open body{overflow:hidden}
 .ct{grid-area:text; min-width:0; display:flex; flex-direction:column; gap:2px}
 .ct-name{font-weight:600; font-size:.92rem; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere}
 .ct-meta{font-family:var(--mono); font-size:.66rem; color:var(--ink3); letter-spacing:.03em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.ct-buy{align-self:flex-start; padding:8px 0; color:var(--accent); font-size:.75rem; min-height:32px}
 .ct-tags{display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-top:3px}
 .ct-tags i{font-style:normal; font-family:var(--mono); font-size:.62rem; letter-spacing:.08em; text-transform:uppercase; padding:1px 6px; border-radius:3px; border:1px solid var(--line); color:var(--ink2); line-height:1.5}
 .ct-tags i.ct-live{border-color:var(--accent); color:var(--accent)}
@@ -1705,6 +1707,9 @@ html.page-hidden .drawer .cart-empty::before{animation-play-state:paused}
 #loginPin[aria-invalid="true"]{border-color:var(--crit)}
 
 /* ============ EVENT SIGNUPS + shared form states ============ */
+form[data-forms-bound][hidden], .form-contact[hidden], .demo-tag[hidden], #footVersion[hidden]{display:none!important}
+.form-contact{margin:16px 0; color:var(--ink2); font-size:.9rem; line-height:1.6}
+.form-contact .form-fail-actions{margin-top:12px; display:flex; align-items:center; flex-wrap:wrap; gap:16px}
 .signup-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px}
 .signup-card{padding:26px 24px; display:flex; flex-direction:column; gap:12px; position:relative}
 .signup-card h3{font-family:var(--disp); font-weight:700; text-transform:uppercase; font-size:1.5rem; letter-spacing:.03em}
@@ -2180,6 +2185,11 @@ td a:hover{color:var(--accent); text-decoration:underline}
 
 /* ============ LIVE ============ */
 #view-live [hidden]{display:none !important}
+.platform-chat{display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:20px; padding:clamp(24px,3vw,40px); min-height:340px; background:radial-gradient(ellipse at 85% 5%,color-mix(in srgb,var(--accent) 10%,transparent),transparent 65%)}
+.platform-chat-mark{display:grid; place-items:center; width:56px; height:56px; border:1px solid var(--line2); border-radius:16px; color:var(--accent); font-size:30px}
+.platform-chat h3{font:700 clamp(30px,3vw,42px)/1 var(--disp); text-transform:uppercase}
+.platform-chat p:not(.eyebrow){color:var(--ink2); line-height:1.7; font-size:.9rem; max-width:36ch}
+.platform-chat .btn{white-space:normal}
 .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
 /* nav + hero dot, the Live pill and the viewer count exist only while the shop is on air */
 .live-dot{display:none; width:6px; height:6px; border-radius:50%; background:var(--crit); margin-left:7px; vertical-align:2px}
@@ -2854,7 +2864,7 @@ footer::before{
 .collector-home .section-head h2{font-size:clamp(32px,3.5vw,48px); letter-spacing:-.015em; text-transform:uppercase; line-height:1.04}
 .collector-kicker{font:10px var(--mono); color:var(--accent); letter-spacing:.13em; margin-bottom:14px}
 .collector-note{font:12px var(--body); color:var(--ink3)}
-.collector-mosaic{display:grid; grid-template-columns:1.12fr 1fr; grid-template-rows:auto auto; gap:16px}
+.collector-mosaic{display:grid; grid-template-columns:minmax(0,1.12fr) minmax(0,1fr); grid-template-rows:auto auto; gap:16px}
 .tile-number{font:9px var(--mono); letter-spacing:.12em}
 .discovery-tile{grid-row:span 2; padding:32px; border:1px solid var(--line2); border-radius:14px; background:radial-gradient(ellipse at 95% 90%,color-mix(in srgb,var(--collect-detail) 12%,transparent),transparent 60%),var(--surface); display:flex; flex-direction:column; position:relative; overflow:hidden}
 .discovery-tile .tile-number{color:var(--ink3)}
@@ -2878,6 +2888,24 @@ footer::before{
 .discovery-pick h4{font:600 22px/1.1 var(--disp); margin:7px 0; text-wrap:balance}
 .discovery-pick p{font-size:12px; color:var(--ink2); margin:10px 0}
 .discovery-pick .linklike{font-size:10px; min-height:36px}
+.discovery-pick > div{min-width:0; flex:1}
+.discovery-actions{display:flex; flex-wrap:wrap; align-items:center; gap:14px 24px; margin-top:18px}
+.discovery-actions .linklike{display:inline-flex; align-items:center; padding:10px 0; font-size:12px; min-height:44px}
+.discovery-actions .stock-badge{margin:0}
+.show-tile{display:flex; flex-direction:column; gap:22px; min-width:0; min-height:260px; padding:28px; border:1px solid var(--line2); border-radius:14px; background:radial-gradient(ellipse at 85% 20%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 65%),var(--surface2); color:var(--ink); text-decoration:none; overflow:hidden}
+.show-tile .tile-number{color:var(--ink3)}
+.show-tile h3{font:700 34px/1 var(--disp); text-transform:uppercase}
+.show-tile p{max-width:35ch; margin-top:10px; font-size:13px; line-height:1.6; color:var(--ink2)}
+.show-tile-art{display:flex; align-items:center; justify-content:space-around; gap:24px; min-height:130px; color:var(--accent)}
+.show-ticket{display:flex; flex-direction:column; gap:8px; padding:14px 18px; border:1px dashed currentColor; border-radius:6px; font:9px var(--mono); transform:rotate(-7deg); transition:transform .25s}
+.show-ticket b{font:700 27px/.95 var(--disp)}
+.show-ticket small{font-size:8px; letter-spacing:.12em}
+.show-tile-art svg{width:46%; max-width:175px; opacity:.55; transform:rotate(7deg); transition:transform .25s,opacity .25s}
+.show-tile:hover .show-ticket,.show-tile:focus-visible .show-ticket{transform:rotate(-2deg)}
+.show-tile:hover svg,.show-tile:focus-visible svg{transform:rotate(2deg); opacity:.85}
+.collector-home .why-loaded{padding-top:clamp(56px,6vw,88px)}
+.event-game-clocks{margin:28px 0 36px}
+.event-game-clocks .playnow-btn{height:100%}
 .play-tile{display:flex; flex-direction:column; min-height:345px; padding:28px; background:radial-gradient(ellipse at 50% 30%,color-mix(in srgb,var(--accent) 9%,transparent),transparent 65%),var(--collect-play-bg); color:var(--collect-play-ink); border:1px solid var(--line2); border-radius:14px; text-decoration:none; overflow:hidden; position:relative}
 .pack-stack{height:200px; position:relative; perspective:800px}
 .pack-stack i{position:absolute; top:18px; left:50%; width:120px; height:168px; border:1px solid var(--accent-dim); background:var(--accent); transform:translateX(-50%) rotate(-18deg); transition:transform .45s cubic-bezier(.2,.7,.2,1); border-radius:2px; box-shadow:0 12px 22px #0003}
@@ -2936,7 +2964,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   .discovery-tile{grid-column:1/-1;grid-row:auto;display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
   .discovery-tile h3{font-size:42px}.discovery-display{margin:0;min-width:0}
   .discovery-pick{flex-direction:column;gap:14px}.discovery-orbit{right:0;bottom:12%}
-  .play-tile,.trade-tile{padding:22px}
+  .play-tile,.trade-tile,.show-tile{padding:22px}
   .play-tile h3,.trade-tile h3{font-size:28px}
   .trade-tile > div{flex-direction:column;align-items:flex-start;gap:24px}
   .trade-stamp{width:70px;height:70px}
@@ -3020,6 +3048,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
 }
 @media (prefers-reduced-motion: reduce){
   .playnow-btn{transition:none}
+  .show-ticket,.show-tile-art svg{transition:none}
+  .show-tile:hover .show-ticket,.show-tile:focus-visible .show-ticket{transform:rotate(-7deg)}
+  .show-tile:hover svg,.show-tile:focus-visible svg{transform:rotate(7deg)}
   .playnow-btn:hover,.playnow-btn:focus-visible{transform:none}
 }
 
@@ -3213,6 +3244,11 @@ a:hover .round-arrow{transform:rotate(45deg)}
             </div><div class="discovery-display" id="discoveryResult"><div class="mystery-card" aria-hidden="true"><span>TOP LOADED</span><b>?</b><small>YOUR NEXT FAVORITE</small></div><span class="discovery-orbit" aria-hidden="true">✳</span></div>
           </section>
         <a class="play-tile" href="#/rip" data-go="rip"><span class="tile-number">02 / FREE PACK SIMULATOR</span><div class="pack-stack" aria-hidden="true"><i></i><i></i><i><span>TOP LOADED</span><b>RIP<br>IT.</b><small>JUST A SIMULATION</small></i></div><div class="play-tile-bottom"><div><h3>Chase the feeling.</h3><p>Free simulation. No real pack is opened, no cards are awarded, and nothing is purchased.</p></div><span class="round-arrow" aria-hidden="true">↗</span></div></a>
+        <a class="show-tile" href="#/show" data-go="show">
+          <span class="tile-number">IN GOOD COMPANY / THE CARD SHOW</span>
+          <div class="show-tile-art" aria-hidden="true"><span class="show-ticket">ADMIT<br><b>EVERY<br>COLLECTOR.</b><small>TCG + SPORTS</small></span><svg viewBox="0 0 160 100" fill="none"><rect x="2" y="2" width="156" height="96" rx="6" stroke="currentColor"/><path d="M58 2v96M102 2v96" stroke="currentColor" stroke-dasharray="3 5"/><g fill="currentColor"><rect x="14" y="14" width="30" height="16" rx="2"/><rect x="14" y="42" width="30" height="16" rx="2"/><rect x="14" y="70" width="30" height="16" rx="2"/><rect x="66" y="14" width="28" height="16" rx="2"/><rect x="66" y="70" width="28" height="16" rx="2"/><rect x="116" y="14" width="30" height="16" rx="2"/><rect x="116" y="42" width="30" height="16" rx="2"/><rect x="116" y="70" width="30" height="16" rx="2"/></g></svg></div>
+          <div class="play-tile-bottom"><div><h3>Meet at the show.</h3><p>Fresh finds. Familiar faces. Join us at the Hilton Cincinnati Airport.</p></div><span class="round-arrow" aria-hidden="true">↗</span></div>
+        </a>
         </div>
         <p class="collector-source">Set checklists and market references via <a href="https://tcgcsv.com/" target="_blank" rel="noopener noreferrer">TCGCSV / TCGplayer</a>. Stock badges use our latest inventory · <span id="triFresh">refreshed daily</span>. Availability is confirmed at checkout.</p>
       </div>
@@ -3255,7 +3291,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       </div>
     </div>
 
-    <div class="section" style="padding-top:0">
+    <div class="section why-loaded">
       <div class="wrap">
         <div class="section-head">
           <h2>Why Top Loaded</h2>
@@ -3294,7 +3330,6 @@ a:hover .round-arrow{transform:rotate(45deg)}
       <div class="wrap">
         <div class="section-head">
           <h2>Good to know</h2>
-          <span class="demo-tag">confirm policy details before launch</span>
         </div>
         <div class="faq">
           <details class="panel">
@@ -3303,11 +3338,11 @@ a:hover .round-arrow{transform:rotate(45deg)}
           </details>
           <details class="panel">
             <summary>How do you grade card condition?</summary>
-            <p>Every single in the case and on the site carries a condition label &mdash; NM (near mint), LP (lightly played), MP (moderately played), HP (heavily played), or DMG (damaged) &mdash; checked by hand before it's listed. If something arrives not as described, email <a href="mailto:toploadedtcg@gmail.com">toploadedtcg@gmail.com</a> and we'll make it right.</p>
+            <p>Check each listing's condition: NM (near mint), LP (lightly played), MP (moderately played), HP (heavily played), or DMG (damaged). Have a question about a card or an order? Email <a href="mailto:toploadedtcg@gmail.com">toploadedtcg@gmail.com</a>.</p>
           </details>
           <details class="panel">
             <summary>Can you hold a card for me?</summary>
-            <p>Usually, yes &mdash; call <a href="tel:+15132222573">(513) 222-2573</a> during open hours and we can set an in-stock item aside for a short hold while you head over.</p>
+            <p>Call <a href="tel:+15132222573">(513) 222-2573</a> during opening hours to check availability and ask about a hold before heading over.</p>
           </details>
           <details class="panel">
             <summary>How does selling a collection work?</summary>
@@ -3332,7 +3367,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       <div class="view-head">
         <p class="eyebrow">Our inventory &middot; Singles &amp; sealed</p>
         <h1>The case, online</h1>
-        <p class="lede">Browse our TCGplayer inventory snapshot, refreshed three times a day. Availability can change between imports; confirm the exact listing on TCGplayer, or call <a href="tel:+15132222573">(513) 222-2573</a> to check with the shop.</p>
+        <p class="lede">Find your next favorite single or sealed product. Purchase on TCGplayer or visit the shop. Stock can change &mdash; confirm availability on the listing, or call <a href="tel:+15132222573">(513) 222-2573</a>.</p>
       </div>
 
       <div class="shop-tools" role="group" aria-label="Filters">
@@ -3506,6 +3541,10 @@ a:hover .round-arrow{transform:rotate(45deg)}
         <p class="lede">Play runs on our 8-top &mdash; one big table of eight &mdash; and when more of you show up we split into a second list so everyone plays. Weekly events below.</p>
       </div>
       <div class="next-up" id="evNextUp"></div>
+      <section class="event-game-clocks" aria-labelledby="eventGamesTitle">
+        <div class="section-head"><div><p class="collector-kicker">YOUR NEXT SEAT AT THE TABLE</p><h2 id="eventGamesTitle">Next up in every game</h2></div><span class="collector-note">All times Eastern</span></div>
+        <ul class="playnow-grid" id="eventPlayGrid" aria-label="Countdown to each game’s next play event"></ul>
+      </section>
       <div class="sched" id="schedList" role="list" aria-label="Weekly schedule"></div>
       <div class="section" style="padding-bottom:0">
         <div class="tri">
@@ -3610,7 +3649,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
             </div>
             <div class="live-embed" id="liveEmbed" hidden></div>
             <span class="live-pill" id="livePill"><i aria-hidden="true"></i><span id="livePillText">Live</span></span>
-            <span class="viewers" id="viewerCount"><b id="viewerNum">214</b> watching</span>
+            <span class="viewers" id="viewerCount" hidden><b id="viewerNum"></b> watching</span>
           </div>
           <div class="player-bar">
             <b id="liveTitle">Live stream</b>
@@ -3633,14 +3672,21 @@ a:hover .round-arrow{transform:rotate(45deg)}
             <span id="chatHead">Chat</span>
             <span class="chat-head-r">
               <button class="chat-as" id="chatAs" type="button" hidden></button>
-              <span class="demo-tag" id="chatTag">simulated</span>
+              <span class="demo-tag" id="chatTag" hidden></span>
               <button class="chat-pause" id="chatPause" type="button" aria-pressed="false" aria-label="Pause the simulated chat" hidden>
                 <svg class="ic-pause" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1.5" width="3" height="9" rx=".8" fill="currentColor"/><rect x="7" y="1.5" width="3" height="9" rx=".8" fill="currentColor"/></svg>
                 <svg class="ic-play" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.8v8.4l7-4.2z" fill="currentColor"/></svg>
               </button>
             </span>
           </div>
-          <div class="chat-wrap">
+          <div class="platform-chat" id="livePlatformChat" hidden>
+            <span class="platform-chat-mark" aria-hidden="true">↗</span>
+            <p class="eyebrow">EVERYONE IN ONE CONVERSATION</p>
+            <h3>Cards on camera.<br>Join the table.</h3>
+            <p id="liveChatCopy"></p>
+            <a class="btn" id="liveChatLink" target="_blank" rel="noopener noreferrer">Watch &amp; chat ↗</a>
+          </div>
+          <div class="chat-wrap" id="chatWrap">
             <!-- aria-live is "off" while the feed is simulated; 50-live.js flips it to "polite" for real chat -->
             <div class="chat-body" id="chatBody" tabindex="0" role="log" aria-live="off" aria-label="Chat messages"></div>
             <button class="chat-new" id="chatNew" type="button" hidden>New messages &darr;</button>
@@ -3666,7 +3712,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
         <div class="section-head">
           <h2 id="spotHead">Live stream claims</h2>
         </div>
-        <p class="lede" style="max-width:64ch">Claim a card with the host during the stream. Confirmed claims appear below with your public stream handle, the card and its price. When checkout is connected, the host sends you a secure Square payment link. Only Square-confirmed payments are marked paid; shipping and applicable tax are shown at checkout.</p>
+        <p class="lede" style="max-width:64ch">See a card you love? Claim it with the host. Follow your card, price and claim status here, and arrange payment and delivery with the shop.</p>
         <div class="claim-cols">
           <section class="claim-feed" aria-labelledby="claimFeedHead">
             <div class="feed-head">
@@ -3840,22 +3886,19 @@ a:hover .round-arrow{transform:rotate(45deg)}
     <div class="wrap">
       <div class="view-head" style="padding-top:36px; padding-bottom:20px">
         <h1>Today at Top Loaded</h1>
-        <p class="lede"><span id="adminDate">Today</span> &middot; register and website, one inventory.</p>
+        <p class="lede"><span id="adminDate">Today</span> &middot; your shop at a glance.</p>
       </div>
 
       <div class="stat-row stat-row-6">
         <div class="stat">
-          <span class="lab">Today's sales <span class="demo-tag">sample</span></span>
-          <span class="val"><span class="pre">$</span><span id="statSales">1,284</span></span>
-          <span class="sub up">Square totals land here once it's connected</span>
-          <div class="spark" aria-hidden="true">
-            <i style="height:36%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:68%"></i><i style="height:58%"></i><i style="height:80%"></i><i class="today" style="height:92%"></i>
-          </div>
+          <span class="lab">Today's sales</span>
+          <span class="val" id="statSales">&mdash;</span>
+          <span class="sub">View sales in Square</span>
         </div>
         <div class="stat">
-          <span class="lab">Orders today <span class="demo-tag">sample</span></span>
-          <span class="val" id="statOrders">23</span>
-          <span class="sub">18 in-store &middot; 5 online pickup</span>
+          <span class="lab">Orders today</span>
+          <span class="val" id="statOrders">&mdash;</span>
+          <span class="sub">View orders in Square</span>
         </div>
         <div class="stat">
           <span class="lab">Products in the case</span>
@@ -3961,7 +4004,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
           <div class="log" id="tcgLog" tabindex="0" role="region" aria-label="Import log"></div>
           <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; align-items:center">
             <button class="btn btn-ghost" id="tcgRun" type="button">Run import now</button>
-            <a class="linklike" href="https://github.com/ArtofJammin/toploaded-demo/actions/workflows/inventory.yml" target="_blank" rel="noopener noreferrer">Open the Actions tab <span class="vh">(opens in a new tab)</span>&nearr;</a>
+            <a class="linklike" href="https://github.com/ArtofJammin/TopLoaded/actions/workflows/inventory.yml" target="_blank" rel="noopener noreferrer">Open the Actions tab <span class="vh">(opens in a new tab)</span>&nearr;</a>
           </div>
         </div>
       </div>
@@ -4072,8 +4115,8 @@ a:hover .round-arrow{transform:rotate(45deg)}
           <dl class="kv" style="margin-top:18px">
             <dt><label for="setLiveTitle">Stream title</label></dt><dd><input id="setLiveTitle" style="width:100%"></dd>
             <dt><label for="setLivePlatform">Platform</label></dt>
-            <dd><select id="setLivePlatform"><option value="">Not set</option><option value="whatnot">Whatnot</option><option value="youtube">YouTube</option><option value="twitch">Twitch</option><option value="tiktok">TikTok</option></select></dd>
-            <dt><label for="setLiveEmbed">Embed URL</label></dt><dd><input id="setLiveEmbed" type="url" placeholder="https://&hellip;" style="width:100%"></dd>
+            <dd><select id="setLivePlatform"><option value="">Not set</option><option value="facebook">Facebook</option><option value="tiktok">TikTok</option><option value="whatnot">Whatnot</option><option value="youtube">YouTube</option><option value="twitch">Twitch</option></select></dd>
+            <dt><label for="setLiveEmbed">Stream or profile URL</label></dt><dd><input id="setLiveEmbed" type="url" placeholder="https://&hellip;" style="width:100%" aria-describedby="livePlatformHelp"><small id="livePlatformHelp">Facebook / TikTok: paste your live video or profile link. Viewers watch and chat on that platform; claims remain on the site. YouTube and Twitch video links can play here.</small></dd>
             <dt>Schedule</dt><dd><div id="liveSchedEditor" class="rows-editor"></div><button class="linklike" type="button" id="liveSchedAdd" style="margin-top:6px">+ Add stream</button></dd>
           </dl>
           <div class="card-actions"><button class="btn" id="liveApply" type="button">Save live settings</button><span class="save-state" role="status" data-state-for="cardLive"></span></div>
@@ -4101,7 +4144,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
             <div class="field full"><label for="setRevPlace">Google Place ID</label><input id="setRevPlace" placeholder="The shop's verified Google Place ID"></div>
           </div>
           <p class="card-note" id="revSourceNote"></p>
-          <label class="floor-auto-reviews"><input id="setRevTcgAuto" type="checkbox" checked> Include automatically refreshed TCGplayer highlights</label><p class="card-note">Up to three short, genuine five-star comments, refreshed each morning from the shop's public feedback. No order or account IDs are stored. <a href="https://github.com/ArtofJammin/toploaded-demo/actions/workflows/reviews.yml" target="_blank" rel="noopener noreferrer">Refresh job ↗</a></p>
+          <label class="floor-auto-reviews"><input id="setRevTcgAuto" type="checkbox" checked> Include automatically refreshed TCGplayer highlights</label><p class="card-note">Up to three short, genuine five-star comments, refreshed each morning from the shop's public feedback. No order or account IDs are stored. <a href="https://github.com/ArtofJammin/TopLoaded/actions/workflows/reviews.yml" target="_blank" rel="noopener noreferrer">Refresh job ↗</a></p>
           <div id="revEditor"></div>
           <p class="card-note" id="revPreview" role="status"></p>
           <div class="card-actions"><button class="btn" id="revApply" type="button">Publish reviews</button><button class="btn btn-ghost" id="revAdd" type="button">Add review</button><span class="save-state" role="status" data-state-for="cardReviews"></span></div>
@@ -4177,7 +4220,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       <div class="account-layout">
         <div class="account-panel">
           <div id="accountGuest">
-            <h2>Sign in with your email</h2><p>No password to remember. We will email a private sign-in code that expires in 10 minutes.</p>
+            <h2 id="accountGuestTitle">Your store credit</h2><p id="accountGuestIntro">Check your credit at the counter, or sign in when online access is available.</p>
             <form id="accountEmailForm"><label for="accountEmail">Email address</label><input id="accountEmail" type="email" autocomplete="email" maxlength="200" placeholder="you@example.com" required><button class="btn" id="accountSend" type="submit" disabled>Email me a sign-in code</button></form>
             <form id="accountCodeForm" hidden><label for="accountCode">Paste the code from your email</label><input id="accountCode" type="text" autocomplete="one-time-code" autocapitalize="none" spellcheck="false" maxlength="64" required aria-describedby="accountCodeHint"><p id="accountCodeHint">Use the full 32-character code. Never share it with anyone.</p><button class="btn" id="accountVerify" type="submit">Sign in</button><button class="linklike" id="accountRestart" type="button">Use another email or request a new code</button></form>
           </div>
@@ -4192,7 +4235,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
         </div>
         <aside class="account-panel account-benefits" aria-label="Account information">
           <p class="account-kicker">KEEP THE GOOD STUFF CLOSE</p><h2>Your collection.<br>Your next chapter.</h2>
-          <ul><li><b>Store credit, clearly.</b><span>Balances and trade history come from the shop's ledger, not sample numbers.</span></li><li><b>A private way to sign in.</b><span>Access belongs to the email linked by the shop. Staff/admin accounts stay separate.</span></li><li><b>Your saved cards.</b><span>Wishlists and recently viewed cards currently stay on this browser.</span></li></ul>
+          <ul><li><b>Store credit, clearly.</b><span>Keep track of the credit earned from your trades.</span></li><li><b>Make it yours.</b><span>Ask the counter to link your email to your credit record.</span></li><li><b>Your saved cards.</b><span>Keep a wishlist and revisit your favorites on this browser.</span></li></ul>
           <a class="btn btn-ghost" href="#/shop?wish=1">Open my wishlist &rarr;</a><a class="linklike" href="#/visit" data-go="visit">Need help? Contact the shop &rarr;</a>
         </aside>
       </div>
@@ -4265,7 +4308,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     </details>
     <div class="foot-bottom">
       <span>&copy; <span id="footYear">2026</span> Top Loaded Trading Cards</span>
-      <span>Inventory snapshot from our TCGplayer store &middot; <span id="footVersion">site v2</span></span>
+      <span>Buy &middot; Sell &middot; Trade<span id="footVersion" hidden></span></span>
       <span class="spacer"></span>
       <button class="adminlink" data-go="staff">Staff</button>
       <button class="adminlink" data-go="admin">Admin</button>
@@ -4324,11 +4367,12 @@ a:hover .round-arrow{transform:rotate(45deg)}
     <div class="cart-sums">
       <div class="sum"><span>Subtotal</span><b id="cartSubtotal">$0.00</b></div>
       <div class="sum" id="cartShipRow"><span id="cartShipLbl">Pickup</span><b id="cartShip">Free</b></div>
-      <div class="sum total"><span>Total</span><b id="cartTotal">$0.00</b></div>
+      <div class="sum total"><span>Estimated total</span><b id="cartTotal">$0.00</b></div>
     </div>
     <div class="cart-err" id="cartErr" role="alert" hidden></div>
-    <button class="btn" id="checkoutBtn" type="button">Checkout</button>
-    <p class="drawer-note" id="cartNoteLine">Pickup in store or ship &middot; payments run through Square</p>
+    <button class="btn" id="checkoutBtn" type="button" hidden>Checkout</button>
+    <a class="btn" id="cartTcgLink" href="https://www.tcgplayer.com/search/all/product?seller=5c356cdf&amp;view=grid" target="_blank" rel="noopener">Visit our TCGplayer store &#8599;</a>
+    <p class="drawer-note" id="cartNoteLine">Purchase on TCGplayer or visit the shop. Saved items are not reserved.</p>
   </div>
 </aside>
 
@@ -4356,7 +4400,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       <button class="btn btn-ghost" type="button" id="loginCancel">Cancel</button>
     </div>
   </form>
-  <p class="drawer-note" id="loginHint" style="text-align:left; margin-top:14px">Demo gate &mdash; real staff accounts run through the API.</p>
+  <p class="drawer-note" id="loginHint" style="text-align:left; margin-top:14px">For authorized shop staff.</p>
   <button class="btn btn-ghost" type="button" id="apiResetOverride" hidden>Remove device-only API override</button>
 </div>
 
@@ -4453,7 +4497,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   </div>
 </div>
 
-<script id="siteConfig">window.TL_DEFAULT_CONFIG={"title":"Top Loaded","tagline":"Trading Cards · NKY","phone":"(513) 222-2573","phoneRaw":"+15132222573","email":"toploadedtcg@gmail.com","address":{"line1":"2514 Hazelwood Dr","city":"Crescent Springs","state":"KY","zip":"41017"},"timezone":"America/New_York","hours":{"mon":null,"tue":["11:00","18:00"],"wed":["11:00","18:00"],"thu":["11:00","18:00"],"fri":["11:00","18:00"],"sat":["10:00","16:00"],"sun":["10:00","16:00"]},"hoursText":{"wk":"Tue–Fri · 11 AM – 6 PM","we":"Sat–Sun · 10 AM – 4 PM"},"banner":{"on":false,"text":""},"logo":null,"show":{"date":"2026-09-05","start":"10:00","end":"16:00","setup":"08:00","hours":"10 AM – 4 PM","venue":"Hilton Cincinnati Airport","address":"7373 Turfway Rd, Florence, KY 41042","tables":24,"booked":null,"cadence":"First Saturday or Sunday of every month","tablePrices":[{"n":1,"price":30},{"n":2,"price":60},{"n":3,"price":90}],"floorplan":{"room":"hilton-ballroom","rows":6,"cols":10,"booths":[]}},"events":[{"id":"op-wed","day":"Wed","dow":3,"name":"One Piece Locals","small":"Bandai official · winner & participation packs","time":"5:00 PM","start":"17:00","fee":"TBD","game":"op","signup":"tcgplus"},{"id":"op-sat","day":"Sat","dow":6,"name":"One Piece Locals","small":"Bandai official · winner & participation packs","time":"11:00 AM","start":"11:00","fee":"TBD","game":"op","signup":"tcgplus"},{"id":"gd-sat","day":"Sat","dow":6,"name":"Gundam Card Game","small":"Bandai official · winner & participation packs","time":"1:00 PM","start":"13:00","fee":"TBD","game":"gundam","signup":"tcgplus"},{"id":"pk-sun","day":"Sun","dow":0,"name":"Pokemon League","small":"All ages · league promo prizing","time":"11:00 AM","start":"11:00","fee":"TBD","game":"pk","signup":"form"}],"live":{"on":false,"title":"Streaming from the shop floor","platform":"","embed":"","spotPrice":24.99,"spots":12,"packsPerSpot":3,"schedule":[]},"links":{"tcgplus":"https://www.bandai-tcg-plus.com/","facebook":"https://www.facebook.com/toploadedtradingcards","instagram":"https://www.instagram.com/toploadedtcg","tcgplayer":"https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf","whatnot":"","googleMaps":"https://www.google.com/maps/search/?api=1&query=Top+Loaded+Trading+Cards+2514+Hazelwood+Dr+Crescent+Springs+KY+41017","googleReviews":"https://share.google/ESpQQCzYsIL1Ffqo8","appleMaps":"https://maps.apple.com/place?place-id=I96E3F1088FE2244C"},"buy":{"rates":{"bulk":0.55,"standard":0.6,"hot":0.7,"graded":0.8},"creditBonus":0.1},"ticker":[["Charizard ex · 151","$85"],["Umbreon VMAX Alt","$450"],["Shanks OP-09 Leader","$42"],["The One Ring","$40"],["Prismatic ETBs","$70"],["Luffy OP-05 Alt","$88"],["Ragavan MH2","$41"],["Base Set holos","ask"],["Sealed booster boxes","top rates"]],"testimonials":[],"rip":{"prices":{"pk":4.49,"op":4.49,"mtg":5.49}},"reviews":{"tcgplayerAuto":true,"source":"google","googlePlaceId":"","minRating":5,"items":[]},"updatedAt":null};</script>
+<script id="siteConfig">window.TL_DEFAULT_CONFIG={"title":"Top Loaded","tagline":"Trading Cards · NKY","phone":"(513) 222-2573","phoneRaw":"+15132222573","email":"toploadedtcg@gmail.com","address":{"line1":"2514 Hazelwood Dr","city":"Crescent Springs","state":"KY","zip":"41017"},"timezone":"America/New_York","hours":{"mon":null,"tue":["11:00","18:00"],"wed":["11:00","18:00"],"thu":["11:00","18:00"],"fri":["11:00","18:00"],"sat":["10:00","16:00"],"sun":["10:00","16:00"]},"hoursText":{"wk":"Tue–Fri · 11 AM – 6 PM","we":"Sat–Sun · 10 AM – 4 PM"},"banner":{"on":false,"text":""},"logo":null,"show":{"date":"2026-09-05","start":"10:00","end":"16:00","setup":"08:00","hours":"10 AM – 4 PM","venue":"Hilton Cincinnati Airport","address":"7373 Turfway Rd, Florence, KY 41042","tables":24,"booked":null,"cadence":"First Saturday or Sunday of every month","tablePrices":[{"n":1,"price":30},{"n":2,"price":60},{"n":3,"price":90}],"floorplan":{"room":"hilton-ballroom","rows":6,"cols":10,"booths":[]}},"events":[{"id":"op-wed","day":"Wed","dow":3,"name":"One Piece Locals","small":"Bandai official · winner & participation packs","time":"5:00 PM","start":"17:00","fee":"TBD","game":"op","signup":"tcgplus"},{"id":"op-sat","day":"Sat","dow":6,"name":"One Piece Locals","small":"Bandai official · winner & participation packs","time":"11:00 AM","start":"11:00","fee":"TBD","game":"op","signup":"tcgplus"},{"id":"gd-sat","day":"Sat","dow":6,"name":"Gundam Card Game","small":"Bandai official · winner & participation packs","time":"1:00 PM","start":"13:00","fee":"TBD","game":"gundam","signup":"tcgplus"},{"id":"pk-sun","day":"Sun","dow":0,"name":"Pokemon League","small":"All ages · league promo prizing","time":"11:00 AM","start":"11:00","fee":"TBD","game":"pk","signup":"form"}],"live":{"on":false,"title":"Streaming from the shop floor","platform":"facebook","embed":"","spotPrice":24.99,"spots":12,"packsPerSpot":3,"schedule":[]},"links":{"tcgplus":"https://www.bandai-tcg-plus.com/","facebook":"https://www.facebook.com/toploadedtradingcards","instagram":"https://www.instagram.com/toploadedtcg","tcgplayer":"https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf","whatnot":"","googleMaps":"https://www.google.com/maps/search/?api=1&query=Top+Loaded+Trading+Cards+2514+Hazelwood+Dr+Crescent+Springs+KY+41017","googleReviews":"https://share.google/ESpQQCzYsIL1Ffqo8","appleMaps":"https://maps.apple.com/place?place-id=I96E3F1088FE2244C"},"buy":{"rates":{"bulk":0.55,"standard":0.6,"hot":0.7,"graded":0.8},"creditBonus":0.1},"ticker":[["Charizard ex · 151","$85"],["Umbreon VMAX Alt","$450"],["Shanks OP-09 Leader","$42"],["The One Ring","$40"],["Prismatic ETBs","$70"],["Luffy OP-05 Alt","$88"],["Ragavan MH2","$41"],["Base Set holos","ask"],["Sealed booster boxes","top rates"]],"testimonials":[],"rip":{"prices":{"pk":4.49,"op":4.49,"mtg":5.49}},"reviews":{"tcgplayerAuto":true,"source":"google","googlePlaceId":"","minRating":5,"items":[]},"updatedAt":null};</script>
 <script id="cardArtData"></script>
 <script>
 (function(){
@@ -4503,6 +4547,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   */
   var TL = window.TL = window.TL || {};
   TL.version = "2.0";
+  TL.production = !!document.querySelector('meta[name="tl-site-mode"][content="production"]');
   var _bus = {};
   TL.on = function(ev, fn){ (_bus[ev] = _bus[ev] || []).push(fn); return function(){ TL.off(ev, fn); }; };
   TL.off = function(ev, fn){ var l = _bus[ev]; if(!l) return; var i = l.indexOf(fn); if(i > -1) l.splice(i, 1); };
@@ -5403,36 +5448,38 @@ a:hover .round-arrow{transform:rotate(45deg)}
     }
     return order.map(function(g){ return next[g]; }).sort(function(a, b){ return a.rank - b.rank; });
   }
-  var pnKey = "";
-  function renderPlayNow(){
-    var grid = $("#playNowGrid"); if(!grid) return;
+  var pnKeys = {};
+  function renderPlayNow(target){
+    var gridId = target || "playNowGrid", grid = document.getElementById(gridId); if(!grid) return;
+    var tagName = target ? "div" : "a";
     var rows = playNightsByGame();
     if(!rows.length){
-      if(pnKey !== "empty"){ pnKey = "empty"; grid.innerHTML = '<li class="playnow-empty">The weekly schedule is being set — <a href="#/events" data-go="events">see the play nights page</a>.</li>'; }
+      if(pnKeys[gridId] !== "empty"){ pnKeys[gridId] = "empty"; grid.innerHTML = '<li class="playnow-empty">New play dates are on the way. Contact the shop to find your next game.</li>'; }
       return;
     }
     var key = rows.map(function(r){ return r.game + r.ev.name + r.when.getTime(); }).join("|");
-    if(key !== pnKey){
-      pnKey = key;
+    if(key !== pnKeys[gridId]){
+      pnKeys[gridId] = key;
       grid.innerHTML = rows.map(function(r){
         var label = (TL.gameLabel ? TL.gameLabel(r.game) : r.game) || "Play night";
         var icon = document.getElementById("game-icon-" + r.game)
           ? '<svg class="game-icon" width="30" height="30" aria-hidden="true" focusable="false"><use href="#game-icon-' + esc(r.game) + '"></use></svg>' : "";
         return '<li class="playnow-card" data-game="' + esc(r.game) + '">' +
-          '<a class="playnow-btn" href="#/events" data-go="events">' +
+          '<' + tagName + ' class="playnow-btn"' + (target ? '' : ' href="#/events" data-go="events"') + '>' +
             '<span class="playnow-mark">' + icon + '</span>' +
             '<span class="playnow-game">' + esc(label) + '</span>' +
             '<span class="playnow-ev">' + esc(r.ev.name) + '</span>' +
             '<span class="playnow-when" data-when></span>' +
             '<span class="playnow-cd" data-cd role="timer" aria-live="off"></span>' +
-            (r.ev.fee ? '<span class="playnow-fee">' + esc(/tbd/i.test(r.ev.fee) ? "Entry TBD" : "Entry " + r.ev.fee) + '</span>' : "") +
-          '</a></li>';
+            (r.ev.fee && !/tbd/i.test(r.ev.fee) ? '<span class="playnow-fee">' + esc("Entry " + r.ev.fee) + '</span>' : "") +
+          '</' + tagName + '></li>';
       }).join("");
     }
     var cells = grid.querySelectorAll(".playnow-card");
     for(var i = 0; i < rows.length && i < cells.length; i++){
       setText(cells[i].querySelector("[data-when]"), fmtWhen(rows[i].when));
-      renderCd(cells[i].querySelector("[data-cd]"), rows[i].when);
+      if(rows[i].running) setHtml(cells[i].querySelector("[data-cd]"), '<span class="now">Happening now</span>');
+      else renderCd(cells[i].querySelector("[data-cd]"), rows[i].when);
     }
   }
   function startNextUp(){
@@ -5444,7 +5491,8 @@ a:hover .round-arrow{transform:rotate(45deg)}
   function stopNextUp(){ if(nuTimer){ clearInterval(nuTimer); nuTimer = 0; } }
   TL.on("motion:change",function(){if(homeActive)startNextUp();});
   document.addEventListener("visibilitychange", function(){ if(document.hidden) stopNextUp(); else if(homeActive) startNextUp(); });
-  TL.on("config:change", function(){ if(homeActive){ pnKey = ""; renderPlayNow(); } });
+  TL.on("config:change", function(){ pnKeys = {}; if(homeActive) renderPlayNow(); });
+  TL.renderPlayNights = renderPlayNow;
 
   /* ---- the wall ---- */
   var wallLive = false, wallImagesStarted = false;
@@ -5580,13 +5628,13 @@ a:hover .round-arrow{transform:rotate(45deg)}
     if(!list.length){
       var g = REVIEW_SOURCES.google.link(), tcg = (TL.config.links && TL.config.links.tcgplayer) || "";
       box.innerHTML = '<div class="panel review-empty">' +
-        '<p class="quote">Reviews from Google and TCGplayer land here.</p>' +
+        '<p class="quote">Pull up a chair. See what our community has to say.</p>' +
         '<p class="p-set quote-who">Been in lately? Telling people what you thought is the best thing you can do for a small shop.</p>' +
         '<p class="review-links">' +
           (g ? '<a class="btn btn-ghost" href="' + esc(g) + '" target="_blank" rel="noopener noreferrer">Read &amp; leave a Google review ↗</a>' : "") +
           (tcg ? '<a class="btn btn-ghost" href="' + esc(tcg) + '" target="_blank" rel="noopener noreferrer">Our TCGplayer feedback ↗</a>' : "") +
         '</p></div>';
-      if(tag){ tag.textContent = "No reviews published yet"; tag.hidden = false; }
+      if(tag){ tag.textContent = ""; tag.hidden = true; }
       return;
     }
     box.innerHTML = list.map(function(t){
@@ -5594,17 +5642,21 @@ a:hover .round-arrow{transform:rotate(45deg)}
       var who = [t.who, src.label].filter(Boolean).join(" · ");
       return '<div class="panel review-card">' + reviewStars(t.rating) +
         (t.source==="google"&&reviewRemote&&reviewRemote.mode==="google"?'<p><span class="google-maps-attribution" translate="no">Google Maps</span></p>':'')+
-        '<p class="quote">“' + esc(t.q) + '”</p>' + (t.excerpt?'<p class="p-set">Review excerpt</p>':'')+
+        '<p class="quote">“' + esc(t.q) + '”</p>' +
         (t.authorUrl ? '<a class="review-author" href="'+esc(t.authorUrl)+'" target="_blank" rel="noopener noreferrer">'+(t.photo?'<img src="'+esc(t.photo)+'" alt="" width="32" height="32" loading="lazy">':'')+esc(t.who)+'</a>' : '')+
         '<p class="p-set quote-who">' + (href
           ? '<a href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">' + esc(who) + ' ↗</a>'
           : esc(who)) + (t.at&&Number.isFinite(Date.parse(t.at))?' · '+esc(new Date(t.at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:TL.config.timezone||'America/New_York'})):'')+'</p></div>';
     }).join("");
-    if(reviewRemote && reviewRemote.mode==="google")box.insertAdjacentHTML("beforeend",'<p class="review-attribution">Google-selected reviews ordered by relevance, filtered to five stars. <a href="'+esc(reviewUrl(reviewRemote.allReviews))+'" target="_blank" rel="noopener">View all reviews</a> · <a href="'+esc(reviewUrl(reviewRemote.terms))+'">Terms</a> · <a href="'+esc(reviewUrl(reviewRemote.privacy))+'">Privacy</a></p>');
-    if(verifiedGoogle.length)box.insertAdjacentHTML('beforeend','<p class="review-attribution">Selected five-star Google excerpts · verified '+esc(new Date(reviewGoogleSnapshot.generated).toLocaleDateString())+'. Saved highlights, not a live Google feed or an overall rating.</p>');
-    if(tag){ tag.hidden = false;tag.textContent=min===5?'Selected five-star highlights · not an overall rating':"Selected positive reviews · "+min+"+ stars, not an overall rating"; }
-    var googleLink=reviewUrl(REVIEW_SOURCES.google.link());if(googleLink)box.insertAdjacentHTML('beforeend','<p class="review-attribution"><a href="'+esc(googleLink)+'" target="_blank" rel="noopener noreferrer">Read &amp; leave a Google review ↗</a></p>');
-    if(automatic.length)box.insertAdjacentHTML('beforeend','<p class="review-attribution">TCGplayer highlights: recent five-star feedback with short comments. Last refreshed '+esc(new Date(reviewSnapshot.generated).toLocaleDateString())+'. <a href="https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf/feedback" target="_blank" rel="noopener noreferrer">Read all feedback ↗</a></p>');
+    if(tag){ tag.hidden = true; tag.textContent=""; }
+    var googleLink=reviewUrl(reviewRemote && reviewRemote.allReviews)||reviewUrl(REVIEW_SOURCES.google.link()),reviewLinks=[];
+    if(googleLink)reviewLinks.push('<a href="'+esc(googleLink)+'" target="_blank" rel="noopener noreferrer">More on Google ↗</a>');
+    reviewLinks.push('<a href="https://www.tcgplayer.com/sellers/Top-Loaded-TCG/5c356cdf/feedback" target="_blank" rel="noopener noreferrer">More on TCGplayer ↗</a>');
+    if(reviewRemote && reviewRemote.mode==="google"){
+      if(reviewUrl(reviewRemote.terms))reviewLinks.push('<a href="'+esc(reviewUrl(reviewRemote.terms))+'">Terms</a>');
+      if(reviewUrl(reviewRemote.privacy))reviewLinks.push('<a href="'+esc(reviewUrl(reviewRemote.privacy))+'">Privacy</a>');
+    }
+    box.insertAdjacentHTML('beforeend','<p class="review-attribution">'+reviewLinks.join(' <span aria-hidden="true">·</span> ')+'</p>');
   }
   TL.on("config:change", function(){reviewRemote=null;renderTestimonials();fetchReviews();});
   TL.on("api:ready",fetchReviews);
@@ -6675,12 +6727,12 @@ a:hover .round-arrow{transform:rotate(45deg)}
     qty.hidden = out;
     $("#qvInc").disabled = out || QV.qty >= it.stock;
     $("#qvDec").disabled = true;
-    var rs = $("#qvRestock"); rs.hidden = !out; rs.reset();
+    var rs = $("#qvRestock"); rs.hidden = !out || (TL.production && !TL.api.online); rs.reset();
     var tcg = $("#qvTcg");
     if(it.tcg && it.url){ tcg.href = it.url; tcg.hidden = false; } else { tcg.hidden = true; tcg.removeAttribute("href"); }
     qvSyncWish();
     qvSyncNav();
-    $("#qvStatus").textContent = "";
+    $("#qvStatus").textContent = out && TL.production && !TL.api.online ? "For restock inquiries, call the shop at (513) 222-2573." : "";
     if(TL.recent) TL.recent.push(it.id);
     TL.emit("quickview:item", it);
   }
@@ -6789,6 +6841,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     if(!email){ toast("Add your email first"); return; }
     var payload = {email: email, productId: it.tcgId || it.id, productName: it.name, website: e.target.querySelector(".qv-hp").value || ""};
     function local(){
+      if(TL.production) throw new Error("Restock request was not sent");
       var forms = TL.store.get("forms", []); if(!Array.isArray(forms)) forms = [];
       forms.push({id: TL.uid(), kind: "restock", at: new Date().toISOString(), status: "new", local: true, email: email, productId: payload.productId, productName: it.name});
       TL.store.set("forms", forms);
@@ -6800,6 +6853,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
       $("#qvRestock").hidden = true;
       $("#qvStatus").textContent = "You’re on the list — we’ll email " + email + " when " + it.name + " is back.";
       toast("We’ll email you when it’s back");
+    }).catch(function(){
+      if(btn) btn.disabled = false;
+      $("#qvStatus").textContent = "Your request wasn’t sent. Please contact the shop about restocks.";
     });
   });
   document.addEventListener("keydown", function(e){
@@ -7229,12 +7285,14 @@ a:hover .round-arrow{transform:rotate(45deg)}
     var it = l.item, q = l.qty, live = cartIsLive(it), name = esc(it.name), idA = esc(it.id);
     var meta = live ? "Live break · rip & ship" : cartGameLabel(it) + (it.set ? " · " + it.set : "");
     var hint = cartStockHint(it, q), tags = "";
+    var productId = /^tcg-(\d{1,12})$/.exec(String(it.id));
+    var buyLink = TL.production && productId ? '<a class="ct-buy linklike" href="https://www.tcgplayer.com/product/' + productId[1] + '?seller=5c356cdf" target="_blank" rel="noopener">Buy on TCGplayer ↗</a>' : '';
     if(live) tags += '<i class="ct-live">Live</i>';
     else if(it.cond) tags += '<i class="ct-cond">' + esc(it.cond) + "</i>";
     else if(it.type === "sealed") tags += '<i class="ct-cond">Sealed</i>';
     tags += '<i class="ct-stock' + (it.stock <= 0 ? " out" : "") + '"' + (hint ? "" : " hidden") + ">" + esc(hint) + "</i>";
     return cartThumb(it) +
-      '<div class="ct"><b class="ct-name">' + name + '</b><span class="ct-meta">' + esc(meta) + '</span><span class="ct-tags">' + tags + "</span></div>" +
+      '<div class="ct"><b class="ct-name">' + name + '</b><span class="ct-meta">' + esc(meta) + '</span><span class="ct-tags">' + tags + '</span>' + buyLink + '</div>' +
       '<span class="lp">' + cartLinePrice(it, q) + "</span>" +
       '<div class="ct-ctrl"><div class="qty" role="group" aria-label="Quantity of ' + name + '">' +
         '<button type="button" data-dec="' + idA + '" aria-label="' + (q > 1 ? "Remove one " : "Remove ") + name + '">&minus;</button>' +
@@ -7305,6 +7363,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   /* Square is only promised when the API is up AND /health says Square is configured; until
      that answer arrives (or when it says no) the drawer tells the demo truth up front. */
   function cartSquareLive(){
+    if(TL.production) return false; /* Ordinary cart checkout is currently sandbox-only. */
     var ints = TL.api.integrations || (TL.api.health && TL.api.health.integrations) || null;
     return !!(TL.api.online && ints && ints.shopCheckout === true);
   }
@@ -7317,7 +7376,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     return m;
   }
   function cartRenderSums(lines){
-    var sub = cartSubtotal(), ship = cartShipping(), tot = Math.round((sub + ship) * 100) / 100;
+    var sub = cartSubtotal(), ship = TL.production ? 0 : cartShipping(), tot = Math.round((sub + ship) * 100) / 100;
     var shipping = cartOpts.fulfillment === "ship", quote = cartShipQuote(lines);
     $("#cartSubtotal").textContent = money(sub);
     $("#cartShipLbl").textContent = shipping ? "Shipping" : "Pickup";
@@ -7358,7 +7417,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     } else {
       clearTimeout(cartEmptyTimer);
       cartRenderLines(body, lines);
-      form.hidden = false;
+      form.hidden = !!TL.production;
     }
     cartRenderSums(lines);
   }
@@ -7495,7 +7554,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   }
   function cartCheckout(){
     if(cartBusy) return;
-    if(TL.api.base && !cartSquareLive()){cartError("Online shop checkout is not activated. Your cart is saved; buy through TCGplayer or visit the store.",false);return;}
+    if((TL.production || TL.api.base) && !cartSquareLive()){cartError("Your cart is saved. Complete your purchase on TCGplayer or visit the shop.",false);return;}
     cartHideError();
     var lines = cartLines();
     if(!lines.length){ toast("Cart is empty — go pull some hits"); return; }
@@ -7585,10 +7644,15 @@ a:hover .round-arrow{transform:rotate(45deg)}
     try { var p = new URL(s); if(p.protocol !== "http:" && p.protocol !== "https:") return null; return p.href; } catch(e){ return null; }
   }
   function cartUpdateMode(){
+    var tcg = $("#cartTcgLink"), checkout = $("#checkoutBtn");
+    if(tcg) tcg.hidden = !TL.production;
+    if(checkout) checkout.hidden = !!TL.production;
+    $("#cartShipRow").hidden = !!TL.production;
     if(!cartBusy){ var b = $("#checkoutBtn"); if(b) b.textContent = cartCheckoutLabel(); }
     var n = $("#cartNoteLine");
     if(!n) return;
-    if(cartSquareLive()) n.textContent = "Square sandbox checkout — testing only, not a real purchase";
+    if(TL.production) n.textContent = "Use each card’s TCGplayer link to purchase. Your saved cart does not transfer to TCGplayer or reserve stock. Prices exclude any shipping and tax.";
+    else if(cartSquareLive()) n.textContent = "Square sandbox checkout — testing only, not a real purchase";
     else if(TL.api.online) n.textContent = "Online shop checkout is not activated. Buy through TCGplayer or visit the store; live claims use a separate checkout.";
     else n.textContent = "Demo mode — no payment or reservation. Live checkout requires a verified API and exact inventory mapping.";
   }
@@ -7798,6 +7862,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     var body = {}; Object.keys(fields).forEach(function(k){ if(fields[k] !== undefined && fields[k] !== "") body[k] = fields[k]; });
     body.website = "";
     if(!TL.api.online){
+      if(TL.production) return Promise.reject({status:503,error:"Your request wasn’t sent. Please call or email the shop."});
       var rec = formsQueueLocal(kind, fields);
       return Promise.resolve({ok: true, id: rec.id, local: true});
     }
@@ -7902,6 +7967,20 @@ a:hover .round-arrow{transform:rotate(45deg)}
     form.dataset.formsBound = "1";
     opts = opts || {};
     var kind = opts.kind || form.dataset.kind || "contact";
+    var contact = null;
+    function connection(){
+      if(!TL.production) return;
+      var offline = !TL.api.online;
+      form.hidden = offline;
+      if(offline && !contact){
+        contact = document.createElement("div"); contact.className = "form-contact";
+        contact.innerHTML = '<p>Have a question or want to join us? Get in touch with the shop.</p><div class="form-fail-actions"><a class="btn btn-sm" href="tel:+15132222573">Call the shop</a><a class="form-alt" href="' + esc(formsMailto("Top Loaded — " + kind + " inquiry", [])) + '">Email us ↗</a></div>';
+        form.insertAdjacentElement("afterend", contact);
+      }
+      if(contact) contact.hidden = !offline;
+    }
+    TL.api.ready.then(connection);
+    TL.on("api:ready", connection);
     form.setAttribute("novalidate", "");
     form.addEventListener("input", function(e){ if(e.target && e.target.getAttribute && e.target.getAttribute("aria-invalid")) formsClearFieldError(e.target); });
     form.addEventListener("submit", function(e){
@@ -7939,6 +8018,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
         formsSetBusy(form, false);
         var why = err && err.status === 429 ? "Too many sends from this connection — give it a few minutes." :
                   err && err.status === 400 ? "The shop's server didn't like something in the form: " + ((err.data && err.data.error) || err.error || "check the fields") + "." :
+                  TL.production ? "Your request wasn’t sent. Please call or email the shop." :
                   err && err.status === 0 ? "Couldn't reach the shop's server — check your connection." :
                   "The shop's server hiccuped (" + ((err && err.error) || "error") + ").";
         formsShowFail(form, why + " Your answers are still here.", mailto);
@@ -8175,7 +8255,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     cardBusy(card, "on");
     setState($("#syncStatus"), "", "Working…");
     if(!TL.api.online){
-      window.open("https://github.com/ArtofJammin/toploaded-demo/actions/workflows/inventory.yml", "_blank", "noopener,noreferrer");
+      window.open("https://github.com/ArtofJammin/TopLoaded/actions/workflows/inventory.yml", "_blank", "noopener,noreferrer");
       logLine(logEl, "warn", "GitHub opened — sign in with repository access, choose Run workflow and select main. Nothing is dispatched until you confirm there. If the tab was blocked, use Open the Actions tab below.");
       done("warn", "Continue on GitHub · choose Run workflow");
       return;
@@ -8366,7 +8446,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       renderAdminDate(); renderConn(); renderIntegrations();
       if(TL.api.online) refreshHealth();
       ensureSummary(); renderShowStat();
-      statNum($("#statSales"), 1284, {from: 0}); statNum($("#statOrders"), 23, {from: 0});
+      $("#statSales").textContent = "—"; $("#statOrders").textContent = "—";
       if(invSummary) applySummary(invSummary);
       openAdminInventory();
     }
@@ -8509,12 +8589,13 @@ a:hover .round-arrow{transform:rotate(45deg)}
     pack: 7, packs: 36, ripped: 0, hitPool: [], hits: [], hitMap: {}, lastRip: "", onCamera: ""
   };
   function liveCfg(){ return (TL.config && TL.config.live) || {}; }
-  function liveIsOn(){ return !!liveCfg().on; }
+  function liveIsOn(){ return !!liveCfg().on && (!TL.production || !!lvParseEmbed(liveCfg())); }
   function liveOnline(){ return !!(TL.api && TL.api.online) && lv.api !== false; }
   /* spots and chat are simulated when there is no API at all, or the live endpoints answer 404.
      While the health check is still pending (API configured, api:ready not yet fired) the answer is
      "not yet" — the grid shows a loading state instead of sample seats. */
   function lvDemoMode(){
+    if(TL.production) return false;
     if(lv.api === false) return true;
     if(lv.api === true) return false;
     if(!TL.api || !TL.api.base) return true;
@@ -8545,12 +8626,12 @@ a:hover .round-arrow{transform:rotate(45deg)}
     var on = liveIsOn(), online = liveOnline();
     if(online){
       lvRefresh(); lvEvery("spots", lvRefresh, 10000);
-      lvPollChat(); lvEvery("chat", lvPollChat, 3000);
+      if(!lvChatDestination()){ lvPollChat(); lvEvery("chat", lvPollChat, 3000); }
       if(on){ lvHeartbeat(); lvEvery("viewers", lvHeartbeat, 20000); }
     } else {
       lvChatMode("sim");
       lvSimStart();
-      if(on) lvEvery("viewers", lvSimViewers, 5000);
+      if(on && !TL.production) lvEvery("viewers", lvSimViewers, 5000);
     }
     if(on) lvScheduleRip(); else { lvRenderOffair(); lvEvery("clock", lvRenderOffair, 60000); }
   }
@@ -8592,16 +8673,47 @@ a:hover .round-arrow{transform:rotate(45deg)}
   }
   /* ---- embed ---- */
   function lvParseEmbed(cfg){
-    var url = String(cfg.embed || "").trim(), plat = String(cfg.platform || "").toLowerCase(), m;
-    if(!url && plat === "whatnot" && TL.config.links && TL.config.links.whatnot) url = String(TL.config.links.whatnot).trim();
-    if(!url || !/^https?:\/\//i.test(url)) return null;
-    var host = encodeURIComponent(location.hostname || "localhost");
-    if((m = url.match(/youtube\.com\/channel\/(UC[\w-]+)\/live/i))) return {kind: "youtube", src: "https://www.youtube.com/embed/live_stream?channel=" + m[1] + "&autoplay=1&mute=1&playsinline=1", href: url};
-    if((m = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|live\/|shorts\/)|youtu\.be\/)([\w-]{6,})/i))) return {kind: "youtube", src: "https://www.youtube.com/embed/" + m[1] + "?autoplay=1&mute=1&playsinline=1", href: url};
-    if((m = url.match(/twitch\.tv\/videos\/(\d+)/i))) return {kind: "twitch", src: "https://player.twitch.tv/?video=v" + m[1] + "&parent=" + host + "&autoplay=true&muted=true", href: url};
-    if((m = url.match(/twitch\.tv\/([\w]+)/i))) return {kind: "twitch", src: "https://player.twitch.tv/?channel=" + m[1] + "&parent=" + host + "&autoplay=true&muted=true", href: url};
-    if(/whatnot\.com/i.test(url) || plat === "whatnot") return {kind: "whatnot", href: url};
-    return {kind: "link", href: url};
+    var url = String(cfg.embed || "").trim(), plat = String(cfg.platform || "").toLowerCase(), m, u;
+    if(!url && /^(facebook|tiktok|whatnot)$/.test(plat)) url = String((TL.config.links || {})[plat] || "").trim();
+    try { u = new URL(url); } catch(e){ return null; }
+    if(u.protocol !== "https:" || u.username || u.password || u.port) return null;
+    var domain = u.hostname.toLowerCase().replace(/^www\./, ""), path = u.pathname;
+    var host = encodeURIComponent(location.hostname || "localhost"), video = null;
+    if(domain === "youtube.com" || domain === "youtu.be"){
+      if((m = path.match(/^\/channel\/(UC[\w-]+)\/live\/?$/))) return {kind:"youtube", src:"https://www.youtube.com/embed/live_stream?channel="+m[1]+"&autoplay=1&mute=1&playsinline=1", href:u.href};
+      video = domain === "youtu.be" ? path.slice(1) : u.searchParams.get("v") || ((path.match(/^\/(?:embed|live|shorts)\/([\w-]+)/) || [])[1]);
+      if(video && /^[\w-]{6,}$/.test(video)) return {kind:"youtube", src:"https://www.youtube.com/embed/"+video+"?autoplay=1&mute=1&playsinline=1", href:u.href};
+      return {kind:"youtube", href:u.href};
+    }
+    if(domain === "twitch.tv"){
+      if((m = path.match(/^\/videos\/(\d+)\/?$/))) return {kind:"twitch",src:"https://player.twitch.tv/?video=v"+m[1]+"&parent="+host+"&autoplay=true&muted=true",href:u.href};
+      if((m = path.match(/^\/([\w]+)\/?$/))) return {kind:"twitch",src:"https://player.twitch.tv/?channel="+m[1]+"&parent="+host+"&autoplay=true&muted=true",href:u.href};
+      return {kind:"twitch",href:u.href};
+    }
+    if(domain === "player.twitch.tv"){
+      var channel = u.searchParams.get("channel");
+      if(channel && /^\w+$/.test(channel)) return {kind:"twitch",src:"https://player.twitch.tv/?channel="+channel+"&parent="+host+"&autoplay=true&muted=true",href:"https://www.twitch.tv/"+channel};
+      return null;
+    }
+    if(domain === "facebook.com" || domain === "m.facebook.com" || domain === "fb.watch") return {kind:"facebook",href:u.href};
+    if(domain === "tiktok.com" || domain === "vm.tiktok.com" || domain === "vt.tiktok.com") return {kind:"tiktok",href:u.href};
+    if(domain === "whatnot.com") return {kind:"whatnot",href:u.href};
+    return null;
+  }
+  function lvPlatformLabel(kind){ return {facebook:"Facebook",tiktok:"TikTok",youtube:"YouTube",twitch:"Twitch",whatnot:"Whatnot"}[kind] || "the stream"; }
+  function lvChatDestination(){ var emb=lvParseEmbed(liveCfg()); return emb && /^(facebook|tiktok|whatnot)$/.test(emb.kind) ? emb : null; }
+  function lvRenderNativeChat(){
+    var destination=lvChatDestination(), panel=lvEl("livePlatformChat"), wrap=lvEl("chatWrap"), head=lvEl("chatHead");
+    if(panel) panel.hidden=!destination;
+    if(wrap) wrap.hidden=!!destination;
+    if(head) head.textContent=destination ? "Stream chat" : "Shop chat";
+    if(destination){
+      var name=lvPlatformLabel(destination.kind), link=lvEl("liveChatLink");
+      if(link){ link.href=destination.href; link.textContent=(liveIsOn()?"Watch & chat on ":"Follow us on ")+name+" ↗"; }
+      var copy=lvEl("liveChatCopy");
+      if(copy) copy.textContent=liveIsOn()?"Watch, comment and claim cards with the host on "+name+". Your confirmed claims stay listed below.":"Catch our next stream on "+name+". That’s where you’ll find the host, the cards and the conversation.";
+    }
+    return !!destination;
   }
   /* ---- rendering ---- */
   function lvLoadCfg(){
@@ -8629,7 +8741,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     var sub = lvEl("liveSub"), tag = lvEl("liveDemoTag"), screen = lvEl("liveScreen");
     if(on){
       if(emb && emb.src){ if(sub) sub.textContent = "Streaming live on " + (emb.kind === "youtube" ? "YouTube" : "Twitch") + " · claim a card with the host"; if(tag) tag.hidden = true; }
-      else if(emb){ if(sub) sub.textContent = "Streaming live on Whatnot — open the stream to watch and bid"; if(tag) tag.hidden = true; }
+      else if(emb){ if(sub) sub.textContent = "Live on " + lvPlatformLabel(emb.kind) + " — watch and chat with the host"; if(tag) tag.hidden = true; }
       else { if(sub) sub.textContent = "Simulated stream — the live site embeds Whatnot, YouTube, or Twitch here"; if(tag){ tag.hidden = false; tag.textContent = "simulated stream"; } }
     } else {
       var ns = lvNextStream();
@@ -8643,7 +8755,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
     /* every card on the strip is drawn from our own inventory by the simulation — there is no real stream log yet */
     var ht = lvEl("hitsDemoTag"); if(ht) ht.hidden = false;
     var vn = lvEl("viewerNum"); if(vn && on && !vn.dataset.set){ vn.dataset.set = "1"; vn.textContent = lv.viewers; }
-    var ct = lvEl("chatTag"); if(ct){ ct.hidden = liveOnline() && lv.api === true; ct.textContent = on ? "simulated" : "replay · simulated"; }
+    var ct = lvEl("chatTag"); if(ct){ ct.hidden = TL.production || (liveOnline() && lv.api === true); ct.textContent = on ? "simulated" : "replay · simulated"; }
+    var viewers = lvEl("viewerCount"); if(viewers) viewers.hidden = !!TL.production;
+    lvRenderNameRow();
     if(was !== on){ lvDispatch("tl:live-state", {on: on}); }
   }
   function lvRenderPlayer(){
@@ -8665,10 +8779,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
       f.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
       host.appendChild(f);
     } else {
-      var wn = emb.kind === "whatnot";
-      host.innerHTML = '<div class="embed-card"><span class="embed-k">' + (wn ? "Live on Whatnot" : "Live stream") + '</span><b>' + esc(lvTitle()) + '</b>' +
-        '<a class="btn" href="' + esc(emb.href) + '" target="_blank" rel="noopener noreferrer">Watch on ' + (wn ? "Whatnot" : "the stream") + ' ↗<span class="sr-only"> (opens in a new tab)</span></a>' +
-        '<span class="embed-sub">Whatnot has no embed — the stream runs in their app, claims and chat stay here.</span></div>';
+      host.innerHTML = '<div class="embed-card"><span class="embed-k">Live on ' + esc(lvPlatformLabel(emb.kind)) + '</span><b>' + esc(lvTitle()) + '</b>' +
+        '<a class="btn" href="' + esc(emb.href) + '" target="_blank" rel="noopener noreferrer">Watch &amp; chat ↗<span class="sr-only"> (opens in a new tab)</span></a>' +
+        '<span class="embed-sub">Join the host on ' + esc(lvPlatformLabel(emb.kind)) + '. Follow your confirmed claims here.</span></div>';
     }
   }
   function lvRenderOffair(){
@@ -8690,7 +8803,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       var next = !!(ns && ns.entry === s);
       return '<div class="panel' + (next ? " next" : "") + '"><span class="num">' + esc(s.day || "") + ' · ' + esc(s.time || "") +
         (next ? '<em class="next-tag">Next up</em>' : "") + '</span><h3>' + esc(s.name || "Stream") + '</h3><p>' + esc(s.desc || "") + '</p></div>';
-    }).join("") || '<p class="lede">Stream schedule coming soon — follow us on Instagram for go-live posts.</p>';
+    }).join("") || '<p class="lede">New stream dates are on the way. Follow our social pages for go-live announcements.</p>';
   }
   function lvRenderRip(){
     var el = lvEl("ripLabel"); if(!el) return;
@@ -8707,16 +8820,24 @@ a:hover .round-arrow{transform:rotate(45deg)}
     var on = liveIsOn(), email = TL.store.get("liveNotify", "");
     wrap.hidden = on;
     if(on) return;
+    if(TL.production && !liveOnline()){
+      form.hidden = true; msg.hidden = false;
+      var follow=lvChatDestination() || {kind:"facebook",href:"https://www.facebook.com/toploadedtradingcards"};
+      msg.innerHTML = 'Catch the next stream. <a href="'+esc(follow.href)+'" target="_blank" rel="noopener">Follow Top Loaded on '+esc(lvPlatformLabel(follow.kind))+' ↗</a>';
+      return;
+    }
     if(email){
       form.hidden = true; msg.hidden = false;
       msg.innerHTML = "We'll email <b>" + esc(email) + "</b> before we go live. <button class=\"linklike\" type=\"button\" id=\"notifyChange\">Change</button>";
     } else { form.hidden = false; msg.hidden = true; msg.textContent = ""; var b = form.querySelector("button"); if(b) b.disabled = false; }
   }
   function lvRenderNameRow(){
+    var nativeChat=lvRenderNativeChat();
+    ["chatForm", "chatReacts"].forEach(function(id){ var el = lvEl(id); if(el) el.hidden = nativeChat || !!(TL.production && !liveOnline()); });
     var row = lvEl("chatNameRow"), as = lvEl("chatAs"); if(!row) return;
     var online = liveOnline();
     row.hidden = !(online && !lv.name);
-    if(as){ as.hidden = !lv.name; as.textContent = "as " + lv.name; as.setAttribute("aria-label", "Chatting as " + lv.name + " — change display name"); }
+    if(as){ as.hidden = nativeChat || !lv.name; as.textContent = "as " + lv.name; as.setAttribute("aria-label", "Chatting as " + lv.name + " — change display name"); }
   }
   /* ---- spots ---- */
   function lvSaveSpots(){ TL.store.set("liveSpots", {mine: lv.mine, at: lv.claimTimes}); }
@@ -8888,6 +9009,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   }
   /* ---- viewers ---- */
   function lvSetViewers(n){
+    if(TL.production) return; /* Site heartbeat counts are not platform viewer counts. */
     lv.viewers = n;
     var num = lvEl("viewerNum"), vc = lvEl("viewerCount");
     if(num){ num.dataset.set = "1"; TL.countUp(num, n); }
@@ -8925,27 +9047,30 @@ a:hover .round-arrow{transform:rotate(45deg)}
     if(stick || opts.me || opts.seed){ body.scrollTop = body.scrollHeight; } else lvNewPill(true);
   }
   function lvChatMode(mode){
+    if(TL.production && mode === "sim") mode = "unavailable";
     if(lv.chatMode === mode) return;
     lv.chatMode = mode;
     var body = lvEl("chatBody"); if(!body) return;
     body.innerHTML = "";
     lv.chatSeen = {}; lv.chatSeenN = 0; lv.chatSince = 0;
-    if(mode === "sim"){
+    if(mode === "unavailable"){
+      pushChat(null, "Join the conversation on our stream. We’ll see you there!", true, {seed: true});
+    } else if(mode === "sim"){
       pushChat(null, liveIsOn() ? "Welcome to the stream — chat is simulated for this demo" : "Off air — sample chat, not a real stream replay", true, {seed: true});
       CHAT_FEED.slice(0, 4).forEach(function(c){ pushChat(c[0], c[1], false, {seed: true}); });
       lv.chatIdx = 4;
     } else {
-      pushChat(null, liveIsOn() ? "You're in the live chat — be cool, we ship what we pull" : "Chat is open while we're off air — say hi", true, {seed: true});
+      pushChat(null, liveIsOn() ? "Welcome to the stream — say hi and enjoy the cards" : "Chat is open while we're off air — say hi", true, {seed: true});
     }
     lvNewPill(false);
     /* filler is never announced; real chat is read politely (own sends are also reported through the toast) */
     body.setAttribute("aria-live", mode === "api" ? "polite" : "off");
     if(mode === "sim"){ lv.simN = 0; lv.simIdle = false; }
-    var ct = lvEl("chatTag"); if(ct) ct.hidden = mode === "api";
+    var ct = lvEl("chatTag"); if(ct) ct.hidden = TL.production || mode === "api";
     lvRenderChatPause();
   }
   /* ---- simulated feed: runs while the view shows, stops after LV_SIM_MAX lines until the visitor interacts, and has a visible pause ---- */
-  function lvSimRunning(){ return lv.active && !document.hidden && lv.chatMode === "sim" && !lv.chatPaused && !lv.simIdle; }
+  function lvSimRunning(){ return !TL.production && lv.active && !document.hidden && lv.chatMode === "sim" && !lv.chatPaused && !lv.simIdle; }
   function lvSimStart(){ lvStop("chat"); if(lvSimRunning()) lvEvery("chat", lvSimChat, 4200); lvRenderChatPause(); }
   function lvSimChat(){
     if(!lvSimRunning()){ lvStop("chat"); lvRenderChatPause(); return; }
@@ -9001,13 +9126,14 @@ a:hover .round-arrow{transform:rotate(45deg)}
   }
   /* returns false when the message could not be taken yet (a display name is needed first) — the caller keeps the text */
   function lvSendChat(text){
+    if(lvChatDestination() || (TL.production && !liveOnline())){ toast("Join the chat on our stream"); return false; }
     if(liveOnline()){
       if(!lv.name){ lvRenderNameRow(); var ni = lvEl("chatNameInput"); if(ni){ lvEl("chatNameRow").hidden = false; ni.focus(); } toast("Pick a display name, then hit Send again"); return false; }
       TL.api.post("/live/chat", {user: lv.name, text: text}).then(function(d){
         var m = d && (d.message || (d.id ? d : null));
         if(m && m.id){ lvAddServerMsg(m); } else lvPollChat();
       }).catch(function(e){
-        if(e && e.status === 404){ lv.api = false; pushChat(lv.name || "you", text, false, {me: true}); if(lv.active) lvStart(); return; }
+        if(e && e.status === 404){ lv.api = false; if(!TL.production) pushChat(lv.name || "you", text, false, {me: true}); else toast("Message didn’t send. Join the chat on our stream."); lvRenderNameRow(); if(lv.active) lvStart(); return; }
         toast(e && e.status === 429 ? "Slow down — chat is rate limited" : "Message didn't send — try again");
       });
     } else pushChat(lv.name || "you", text, false, {me: true});
@@ -9069,8 +9195,9 @@ a:hover .round-arrow{transform:rotate(45deg)}
     var pool = lv.hitPool, order = [3, 1, 6, 2, 4];
     for(var i = order.length - 1; i >= 0; i--){ var it = pool[order[i] % pool.length]; if(it) lvAddHit(it, false); }
   }
-  function lvScheduleRip(){ lvLater("rip", function(){ lvRip(); lvScheduleRip(); }, 16000 + Math.random() * 6000); }
+  function lvScheduleRip(){ if(TL.production) return; lvLater("rip", function(){ lvRip(); lvScheduleRip(); }, 16000 + Math.random() * 6000); }
   function lvRip(item){
+    if(TL.production) return;
     if(!liveIsOn()) return;
     lv.pack = (lv.pack % lv.packs) + 1;
     lv.ripped++;
@@ -9108,7 +9235,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   TL.on("api:ready", function(){
     lv.apiReady = true;
     /* offline: the board becomes a labelled sample; online: it stays "checking" until the first /live answer */
-    if(lv.booted){ lvLoadCfg(); lvRenderSpots(); lvRenderNameRow(); lvRenderState(); }
+    if(lv.booted){ lvLoadCfg(); lvRenderSpots(); lvRenderNameRow(); lvRenderState(); lvRenderNotify(); }
     if(lv.active) lvStart();
   });
   TL.on("live:change", function(){
@@ -9161,6 +9288,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     });
     var reacts = lvEl("chatReacts");
     if(reacts) reacts.addEventListener("click", function(e){
+      if(lvChatDestination() || (TL.production && !liveOnline())) return;
       var b = e.target.closest("[data-react]"); if(!b) return;
       var now = Date.now(); if(now - lv.lastReact < 350) return; lv.lastReact = now;
       var em = b.dataset.react;
@@ -9168,7 +9296,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       lvSimResume();
       if(liveOnline()){
         TL.api.post("/live/chat", {user: lv.name || "guest", text: em}).then(function(d){ var m = d && (d.message || (d.id ? d : null)); if(m && m.id) lvAddServerMsg(m); })
-          .catch(function(err){ if(err && err.status === 404){ lv.api = false; pushChat(lv.name || "you", em, false, {me: true}); if(lv.active) lvStart(); } });
+          .catch(function(err){ if(err && err.status === 404){ lv.api = false; if(!TL.production) pushChat(lv.name || "you", em, false, {me: true}); lvRenderNameRow(); if(lv.active) lvStart(); } });
       } else pushChat(lv.name || "you", em, false, {me: true});
     });
     var nf = lvEl("notifyForm");
@@ -9180,6 +9308,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ toast("Enter a valid email address"); if(inp) inp.focus(); return; }
       if(btn) btn.disabled = true;
       function local(){
+        if(TL.production) throw new Error("Notification signup was not sent");
         var forms = TL.store.get("forms", []); if(!Array.isArray(forms)) forms = [];
         forms.push({id: TL.uid(), kind: "newsletter", at: new Date().toISOString(), status: "new", local: true, email: email, topic: "live"});
         TL.store.set("forms", forms);
@@ -9191,7 +9320,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
           TL.store.set("liveNotify", email);
           lvRenderNotify();
           toast("You're on the list — we'll email you before we go live");
-        }, function(){ if(btn) btn.disabled = false; toast("Too many tries — wait a few minutes"); });
+        }, function(){ if(btn) btn.disabled = false; toast("Signup wasn’t sent. Please try again later or follow our social pages."); });
     });
   })();
   TL.live = TL.live || {};
@@ -9216,8 +9345,8 @@ a:hover .round-arrow{transform:rotate(45deg)}
         lastSig=sig;list.innerHTML=rows.map(function(c){return '<li class="claim-entry"><div><b>'+esc(c.card)+'</b><br><small>'+esc(c.handle)+' · '+esc(new Date(c.at).toLocaleString())+'</small></div><div>'+money(c.price)+' · '+esc(c.status)+controls(c)+'</div></li>';}).join("");
       }
       empty.hidden=!!rows.length;$("#claimCount").textContent=rows.length?rows.length+" posted":"";
-      empty.textContent=TL.api.online?"No confirmed card claims posted yet.":"The shared claims board is not connected yet. Follow the stream host for claim confirmations.";
-      note.hidden=false;note.textContent=TL.api.online?"Refreshes every 5 seconds. Linked checkout payments are confirmed by Square; fulfillment and non-checkout claims are maintained by staff.":"No sample or device-only claims are displayed as real purchases.";
+      empty.textContent=TL.api.online?"No card claims posted yet.":"Claims will appear here during the stream. Follow the host to claim a card.";
+      note.hidden=!TL.api.online;note.textContent=TL.api.online?"Updated during the stream. Confirm your claim with the host.":"";
     }
     function refresh(){
       render();if(!active || document.hidden || busy || !TL.api.online)return;
@@ -9313,7 +9442,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   }
   function evSlug(s){ return String(s || "event").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
   function shopLocation(){ var a = TL.config.address || {}; return (TL.config.title === "Top Loaded" ? "Top Loaded Trading Cards" : (TL.config.title || "Top Loaded")) + ", " + [a.line1, a.city, (a.state || "") + " " + (a.zip || "")].filter(Boolean).join(", ").replace(/\s+,/g, ","); }
-  function siteUrl(view){ return (location.origin && location.origin !== "null" ? location.origin + location.pathname : "https://artofjammin.github.io/toploaded-demo/") + "#/" + (view || ""); }
+  function siteUrl(view){ return (location.origin && location.origin !== "null" ? location.origin + location.pathname : "https://artofjammin.github.io/TopLoaded/") + "#/" + (view || ""); }
 
   /* ---- calendar builders ---- */
   function icsText(s){ return String(s || "").replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n"); }
@@ -9539,7 +9668,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   }
   var nuLastKey = null;
   function evSetText(node, txt){ if(node && node.textContent !== txt) node.textContent = txt; }
-  function tickEvents(){ if(document.hidden) return; var up = evUpcoming(); evRenderNextUp(up);
+  function tickEvents(){ if(document.hidden) return; TL.renderPlayNights("eventPlayGrid"); var up = evUpcoming(); evRenderNextUp(up);
     var nextEl = $("#schedList .is-next .next-tag"); if(nextEl && up.length){ evSetText(nextEl, up[0].occ.running ? "Happening now" : "Next up · " + evFmtUntil(up[0].occ.mins)); }
     var rowNow = $("#schedList .is-next"); if(rowNow && up.length && rowNow.dataset.ev !== (up[0].ev.id || "")) renderSched(); }
   function tcgplusIsGeneric(u){ return !u || /^https?:\/\/(www\.)?bandai-tcg-plus\.com\/?$/i.test(String(u).trim()); }
@@ -9808,7 +9937,13 @@ a:hover .round-arrow{transform:rotate(45deg)}
 
   /* ---- wiring ---- */
   var evTimer = null, showTimer = null, visitTimer = null;
-  function evRenderAll(){ renderSched(); renderSignups(); renderShow(); renderVisit(); renderFooter(); }
+  function evRenderAll(){ renderSched(); TL.renderPlayNights("eventPlayGrid"); renderSignups(); renderShow(); renderVisit(); renderFooter(); }
+  function startEventClocks(){
+    clearInterval(evTimer); evTimer = null;
+    if(TL.current !== "events" || document.hidden) return;
+    tickEvents(); evTimer = setInterval(tickEvents, reduceMotion ? 60000 : 1000);
+  }
+  TL.on("motion:change", startEventClocks);
   TL.on("init", function(){
     evRenderAll();
     bindSignup(); bindVendor(); bindBuylist(); bindNewsletter();
@@ -9817,7 +9952,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   TL.on("config:change", function(){ evRenderAll(); });
   TL.on("view:change", function(d){
     if(!d) return;
-    if(d.name === "events" && !evTimer){ tickEvents(); evTimer = setInterval(tickEvents, 60000); }
+    if(d.name === "events") startEventClocks();
     if(d.name === "show" && !showTimer){ tickShow(); showTimer = setInterval(function(){ if(!document.hidden) tickShow(); }, reduceMotion ? 60000 : 1000); }
     if(d.name === "visit"){ evLoadMap(); if(!visitTimer){ renderVisit(); visitTimer = setInterval(function(){ if(!document.hidden) tickVisit(); }, 60000); } }
     if(d.name === "admin") evEditorFallback();
@@ -9829,6 +9964,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     if(d.name === "visit" && visitTimer){ clearInterval(visitTimer); visitTimer = null; }
   });
   document.addEventListener("visibilitychange", function(){
+    startEventClocks();
     if(document.hidden) return;
     if(evTimer) tickEvents(); if(showTimer) tickShow(); if(visitTimer) tickVisit();
   });
@@ -9901,7 +10037,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
     function match(b){var q=($('#floorSearch').value||'').trim().toLowerCase(),type=$('#floorType').value;return (!type||b.type===type)&&(!q||(b.label+' '+b.id+' '+labels[b.type]).toLowerCase().includes(q));}
     function details(i){
       var b=publicBooths[i];selected=b?i:-1;
-      $('#showFloorDetail').innerHTML=b?'<p class="eyebrow">'+esc(labels[b.type])+' vendor area</p><h3>'+esc(b.label)+'</h3><dl><dt>Booth reference</dt><dd>'+esc(b.id)+'</dd><dt>Find it</dt><dd>Row '+b.r+' · Column '+b.c+'</dd><dt>Footprint</dt><dd>'+b.w+' × '+b.h+' grid squares</dd></dl><p class="card-note">Location shown on the published show layout. A listing is not a live availability or booking guarantee.</p>':'<h3>Explore the floor</h3><p>Choose a vendor on the map or in the directory.</p>';
+      $('#showFloorDetail').innerHTML=b?'<p class="eyebrow">'+esc(labels[b.type])+' vendor area</p><h3>'+esc(b.label)+'</h3><p>Find this vendor in the highlighted area of the map.</p>':'<h3>Explore the floor</h3><p>Choose a vendor on the map or in the directory.</p>';
       $$('#showFloorGuide [data-floor-booth]').forEach(function(el){el.setAttribute('aria-pressed',String(Number(el.dataset.floorBooth)===selected));});
     }
     function filter(){
@@ -12128,8 +12264,11 @@ a:hover .round-arrow{transform:rotate(45deg)}
       enabled = false;
       try { if(TL.api.online) enabled = !!(await call("GET","/account/status")).enabled; } catch(e){}
       $("#accountSend").disabled = !enabled;
+      $("#accountEmailForm").hidden = !enabled || !!challenge;
+      $("#accountGuestTitle").textContent = enabled ? "Sign in with your email" : "Store credit at the counter";
+      $("#accountGuestIntro").textContent = enabled ? "No password to remember. We’ll email a private sign-in code that expires in 10 minutes." : "Visit us or contact the shop to check your balance and plan your next trade.";
       if(token){ await refresh(); return; }
-      status.textContent = enabled ? "Use the email the shop has on your credit record. New here? You can sign in, then ask the counter to link your credit." : "Online account access is not connected yet. Please ask the shop to check your store credit; no credit balance is shown here until secure sign-in is available.";
+      status.textContent = enabled ? "Use the email the shop has on your credit record. New here? You can sign in, then ask the counter to link your credit." : "Call (513) 222-2573 or stop by 2514 Hazelwood Drive.";
     }
     $("#accountEmailForm").addEventListener("submit", async function(e){
       e.preventDefault(); if(!enabled) return;
@@ -12200,7 +12339,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
   }
   var releaseLoginTrap = null;
   TL.auth = {
-    role: function(){ return TL.api.role || null; },
+    role: function(){ return TL.production && !(TL.api.online && TL.api.token) ? null : TL.api.role || null; },
     can: function(view){
       var r = TL.auth.role();
       if(view === "admin") return r === "admin";
@@ -12211,7 +12350,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       if(target) pendingView = target;
       var m = $("#loginModal"); if(!m) return;
       var hint = $("#loginHint");
-      if(hint) hint.textContent = TL.api.online ? "Passcodes are checked by the shop's API." : TL.api.base ? "The configured API is unavailable. Reconnect before signing in." : "Demo gate — real staff accounts run through the API.";
+      if(hint) hint.textContent = TL.api.online ? "For authorized shop staff." : "Staff sign-in is currently unavailable. Please contact the shop manager.";
       m.hidden = false;
       $("#loginOverlay").classList.add("open");
       $("#loginPin").value = "";
@@ -12242,7 +12381,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
           return null;
         });
       }
-      if(TL.api.base) return Promise.reject({status:0,error:"The configured API is unavailable. Demo passcodes cannot unlock server access."});
+      if(TL.production || TL.api.base) return Promise.reject({status:0,error:"Staff sign-in is currently unavailable. Please contact the shop manager."});
       return demoRole(pin).then(function(role){
         if(role) TL.api.setAuth(null, role);
         return role;
@@ -12294,12 +12433,12 @@ a:hover .round-arrow{transform:rotate(45deg)}
   /* a role that was granted by the API is re-validated once the API answers */
   TL.on("api:ready", function(d){
     var hint=$("#loginHint");
-    if(hint)hint.textContent=TL.api.online?"Passcodes are checked by the shop's API.":TL.api.base?"The configured API is unavailable. Reconnect before signing in.":"Demo gate — real staff accounts run through the API.";
+    if(hint)hint.textContent=TL.api.online?"For authorized shop staff.":"Staff sign-in is currently unavailable. Please contact the shop manager.";
     function resumeRole(){
       document.documentElement.setAttribute("data-role",TL.api.role||"");
       if(pendingView && TL.auth.can(pendingView)){var target=pendingView;closeLogin();go(target,{}, {noTransition:true});}
     }
-    if(!d || !d.online){ if(TL.api.base) TL.api.setAuth(null, null); else resumeRole(); return; }
+    if(!d || !d.online){ if(TL.production || TL.api.base) TL.api.setAuth(null, null); else resumeRole(); return; }
     if(TL.api.token) TL.api.get("/auth/me").then(function(me){if(me && me.role){TL.api.setAuth(TL.api.token,me.role);resumeRole();}}).catch(function(){TL.api.setAuth(null,null);});
     else if(TL.api.role) TL.api.setAuth(null, null); /* demo role is not valid against a live API */
   });
@@ -12750,7 +12889,7 @@ a:hover .round-arrow{transform:rotate(45deg)}
       return '<div class="discovery-pick"><span class="discovery-art' + (card.inStock ? '" role="button" tabindex="0" data-discovery-view aria-label="View ' + TL.esc(card.name) : '') + '">' + img + '</span>' +
         '<div><span class="case-label">A LITTLE DISCOVERY</span><h4>' + TL.esc(card.name) + '</h4>' +
         '<p>' + TL.esc(card.set || "") + (card.rarity ? ' · ' + TL.esc(card.rarity) : "") + '</p>' +
-        '<p>' + price + '</p>' + badge + action + '</div></div>';
+        '<p>' + price + '</p><div class="discovery-actions">' + badge + action + '</div></div></div>';
     }
 
     form.addEventListener("submit", function(e){

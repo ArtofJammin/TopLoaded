@@ -240,7 +240,7 @@ test('real mode: builds a Square Payment Link request from server prices and sto
     assert.deepEqual(b.order.line_items[1].base_price_money, { amount: 781, currency: 'USD' });
     assert.equal(b.order.fulfillments, undefined, 'ship orders let Square collect the address');
     assert.equal(b.checkout_options.ask_for_shipping_address, true);
-    assert.equal(b.checkout_options.redirect_url, `https://artofjammin.github.io/toploaded-demo/#/shop?order=${r.data.orderId}`);
+    assert.equal(b.checkout_options.redirect_url, `https://artofjammin.github.io/TopLoaded/#/shop?order=${r.data.orderId}`);
     assert.equal(b.pre_populated_data.buyer_email, 'buyer@example.com');
     assert.equal(b.description, 'gift');
     const stored = await env.KV.get('order:' + r.data.orderId, 'json');

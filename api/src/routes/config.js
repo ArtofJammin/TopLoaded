@@ -19,7 +19,7 @@ const TYPES = {
   events: 'array', live: 'object', links: 'object', buy: 'object', ticker: 'array', testimonials: 'array',
   rip: 'object', reviews: 'object', updatedAt: 'string?',
 };
-const EMBED_HOSTS = ['youtube.com', 'www.youtube.com', 'youtu.be', 'twitch.tv', 'www.twitch.tv', 'player.twitch.tv', 'whatnot.com', 'www.whatnot.com'];
+const EMBED_HOSTS = ['youtube.com', 'www.youtube.com', 'youtu.be', 'twitch.tv', 'www.twitch.tv', 'player.twitch.tv', 'whatnot.com', 'www.whatnot.com', 'facebook.com', 'www.facebook.com', 'm.facebook.com', 'fb.watch', 'tiktok.com', 'www.tiktok.com', 'vm.tiktok.com', 'vt.tiktok.com'];
 function isHttpUrl(u) { try { const x = new URL(u); return x.protocol === 'https:' || x.protocol === 'http:'; } catch { return false; } }
 function checkStrings(node, path, depth) {
   if (depth > 6) throw new HttpError(400, `${path} is nested too deeply`);
@@ -52,8 +52,8 @@ export function validatePatch(patch) {
   }
   if (patch.live && typeof patch.live.embed === 'string' && patch.live.embed) {
     let host = '';
-    try { const u = new URL(patch.live.embed); if (u.protocol !== 'https:') throw 0; host = u.hostname.toLowerCase(); } catch { throw new HttpError(400, 'live.embed must be an https URL'); }
-    if (!EMBED_HOSTS.includes(host)) throw new HttpError(400, 'live.embed must be a YouTube, Twitch or Whatnot URL');
+    try { const u = new URL(patch.live.embed); if (u.protocol !== 'https:' || u.username || u.password || u.port) throw 0; host = u.hostname.toLowerCase(); } catch { throw new HttpError(400, 'live.embed must be an https URL without credentials or a custom port'); }
+    if (!EMBED_HOSTS.includes(host)) throw new HttpError(400, 'live.embed must be a Facebook, TikTok, YouTube, Twitch or Whatnot URL');
   }
   if (patch.hours) for (const [d, v] of Object.entries(patch.hours)) {
     if (v === null) continue;

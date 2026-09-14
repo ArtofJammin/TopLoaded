@@ -21,7 +21,7 @@
             </div>
             <div class="live-embed" id="liveEmbed" hidden></div>
             <span class="live-pill" id="livePill"><i aria-hidden="true"></i><span id="livePillText">Live</span></span>
-            <span class="viewers" id="viewerCount"><b id="viewerNum">214</b> watching</span>
+            <span class="viewers" id="viewerCount" hidden><b id="viewerNum"></b> watching</span>
           </div>
           <div class="player-bar">
             <b id="liveTitle">Live stream</b>
@@ -44,14 +44,21 @@
             <span id="chatHead">Chat</span>
             <span class="chat-head-r">
               <button class="chat-as" id="chatAs" type="button" hidden></button>
-              <span class="demo-tag" id="chatTag">simulated</span>
+              <span class="demo-tag" id="chatTag" hidden></span>
               <button class="chat-pause" id="chatPause" type="button" aria-pressed="false" aria-label="Pause the simulated chat" hidden>
                 <svg class="ic-pause" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1.5" width="3" height="9" rx=".8" fill="currentColor"/><rect x="7" y="1.5" width="3" height="9" rx=".8" fill="currentColor"/></svg>
                 <svg class="ic-play" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.8v8.4l7-4.2z" fill="currentColor"/></svg>
               </button>
             </span>
           </div>
-          <div class="chat-wrap">
+          <div class="platform-chat" id="livePlatformChat" hidden>
+            <span class="platform-chat-mark" aria-hidden="true">↗</span>
+            <p class="eyebrow">EVERYONE IN ONE CONVERSATION</p>
+            <h3>Cards on camera.<br>Join the table.</h3>
+            <p id="liveChatCopy"></p>
+            <a class="btn" id="liveChatLink" target="_blank" rel="noopener noreferrer">Watch &amp; chat ↗</a>
+          </div>
+          <div class="chat-wrap" id="chatWrap">
             <!-- aria-live is "off" while the feed is simulated; 50-live.js flips it to "polite" for real chat -->
             <div class="chat-body" id="chatBody" tabindex="0" role="log" aria-live="off" aria-label="Chat messages"></div>
             <button class="chat-new" id="chatNew" type="button" hidden>New messages &darr;</button>
@@ -77,7 +84,7 @@
         <div class="section-head">
           <h2 id="spotHead">Live stream claims</h2>
         </div>
-        <p class="lede" style="max-width:64ch">Claim a card with the host during the stream. Confirmed claims appear below with your public stream handle, the card and its price. When checkout is connected, the host sends you a secure Square payment link. Only Square-confirmed payments are marked paid; shipping and applicable tax are shown at checkout.</p>
+        <p class="lede" style="max-width:64ch">See a card you love? Claim it with the host. Follow your card, price and claim status here, and arrange payment and delivery with the shop.</p>
         <div class="claim-cols">
           <section class="claim-feed" aria-labelledby="claimFeedHead">
             <div class="feed-head">
