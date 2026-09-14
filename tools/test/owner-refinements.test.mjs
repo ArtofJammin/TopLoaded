@@ -74,8 +74,8 @@ function floorContext(){
 test('full show map keeps the original 49 tables and adds the confirmed 4+1 Top Loaded booth',()=>{
   const {f,grid,config}=floorContext(),ballroom=config.booths.filter(b=>/^t\d+$/.test(b.id)),shop=config.booths.filter(b=>b.type==='shop');
   assert.equal(config.room,'hilton-show');assert.equal(config.rows,grid.rows);assert.equal(config.cols,grid.cols);
-  assert.equal(ballroom.length,49);assert.equal(ballroom[0].r,89);assert.equal(ballroom[0].c,21);
-  assert.equal(shop.length,5);assert.equal(shop.filter(b=>b.w>b.h).length,4);assert.equal(shop.filter(b=>b.h>b.w).length,1);
+  assert.equal(ballroom.length,49);assert.equal(ballroom[0].r,89);assert.equal(ballroom[0].c,7);
+  assert.equal(shop.length,5);assert.equal(shop.filter(b=>b.w>b.h).length,3);assert.equal(shop.filter(b=>b.h>b.w).length,2);
   assert.ok(shop.every(b=>f.area(b,config.room)==='Business center'));
   assert.ok(config.booths.every((b,i)=>f.canPlace(config.booths,b,config,i)));
   assert.equal(f.stats(shop).total,0,'five physical shop tables must not become five vendor assignments');
@@ -83,18 +83,25 @@ test('full show map keeps the original 49 tables and adds the confirmed 4+1 Top 
 test('room outlines and all entrances are in the same zoomable map coordinate system',()=>{
   const {f,grid,config}=floorContext(),svg=f.backdrop(config.room);
   assert.equal(grid.rooms.length,3);assert.equal(grid.doors.length,3);
-  for(const label of ['Convention','Entrance','Far door','Middle door','Near door','BUSINESS CENTER','PRE-FUNCTION','TRIPLE CROWN'])assert.ok(svg.includes(label));
-  assert.ok(svg.includes('viewBox="0 0 224 168"'));
+  for(const label of ['Convention','Entrance','Door 1','Door 2','Door 3','BUSINESS CENTER','PRE-FUNCTION','TRIPLE CROWN','ATM','CHAIRS + COFFEE TABLE','HOTEL LOBBY','RESTAURANT / LOUNGE','Not the card show'])assert.ok(svg.includes(label),label);
+  assert.ok(svg.includes('viewBox="0 0 272 212"'));
+  assert.equal(grid.obstacles.filter(x=>x.type==='pillar').length,4);
+  assert.deepEqual(grid.doors.map(x=>x.c),[45,81,115]);
   assert.match(read('src/js/60-settings.js'),/TL.floorplan.backdrop/);
 });
-test('outer runs contain two tables plus one end table and never obstruct the entrance routes',()=>{
-  const {f,config}=floorContext(),booths=config.booths.slice();
+test('six two-table outer runs and two connecting caps match the annotated plan; missing positions can be restored',()=>{
+  const {f,grid,config}=floorContext(),booths=config.booths.filter(b=>!b.id.startsWith('pf-'));
+  const outer=config.booths.filter(b=>b.id.startsWith('pf-'));
+  assert.equal(outer.length,14);assert.equal(config.booths.length,68);
+  assert.deepEqual(outer.map(({r,c,w,h})=>({r,c,w,h})),grid.outerRuns.flat());
   const initial=booths.length;
-  for(let i=0;i<4;i++){const run=f.outerRun(booths,config.room);assert.equal(run.length,3);assert.ok(run[0].h>run[0].w);assert.equal(run[1].r,run[0].r+run[0].h);assert.equal(run[2].r,run[1].r+run[1].h);booths.push(...run);}
-  assert.equal(booths.length,initial+12);assert.equal(f.outerRun(booths,config.room).length,0);
+  for(let i=0;i<6;i++){const run=f.outerRun(booths,config.room);assert.equal(run.length,[2,3,2,2,2,3][i]);assert.ok(run[0].h>run[0].w);assert.equal(run[1].r,run[0].r+run[0].h);booths.push(...run);}
+  assert.equal(booths.length,initial+14);assert.equal(f.outerRun(booths,config.room).length,0);
   assert.ok(booths.every((b,i)=>f.canPlace(booths,b,config,i)));
-  assert.equal(f.canPlace([],{r:78,c:25,w:6,h:3},config,-1),false);
+  booths.pop();assert.equal(f.outerRun(booths,config.room).length,1);
+  assert.equal(f.canPlace([],{r:48,c:25,w:6,h:3},config,-1),false);
   assert.equal(f.canPlace([],{r:5,c:5,w:6,h:3},config,-1),false,'outside room outline');
+  for(const b of grid.doors.concat(grid.obstacles,grid.context))assert.equal(f.canPlace([],b,config,-1),false,b.label);
   assert.match(read('src/html/18-admin.html'),/id="fpAddOuterRun"/);
 });
 

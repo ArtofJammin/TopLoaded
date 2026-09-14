@@ -3,17 +3,22 @@
     var labels = {tcg:"TCG",sports:"Sports",mixed:"Mixed",unassigned:"Vendor to be announced",shop:"Top Loaded booth",food:"Food",entry:"Entry"};
     function venue(room){return room==='hilton-show'?window.TL_FLOOR_VENUE:null;}
     function inside(b,a){return b.r>=a.r&&b.c>=a.c&&b.r+b.h<=a.r+a.h&&b.c+b.w<=a.c+a.w;}
-    function accessible(b,size){var v=venue(size.room);return !v||(size.rows===v.rows&&size.cols===v.cols&&v.rooms.some(function(a){return inside(b,a);})&&!v.clearways.some(function(a){return overlaps(b,a);}));}
+    function accessible(b,size){var v=venue(size.room);return !v||(size.rows===v.rows&&size.cols===v.cols&&v.rooms.some(function(a){return inside(b,a);})&&!v.clearways.concat(v.obstacles||[]).some(function(a){return overlaps(b,a);}));}
     function area(b,room){var v=venue(room),a=v&&v.rooms.find(function(a){return inside(b,a);});return a?{ballroom:'Ballroom',prefunction:'Pre-function',business:'Business center'}[a.id]:'';}
     function backdrop(room){
       var v=venue(room);if(!v)return '';
-      var out='<svg class="fp-venue" viewBox="0 0 '+v.cols+' '+v.rows+'" preserveAspectRatio="none" role="img" aria-label="Convention Entrance leads through the pre-function area to three ballroom doors and Top Loaded in the business center. Turfway Room is not part of the show.">';
+      var out='<svg class="fp-venue" viewBox="0 0 '+v.cols+' '+v.rows+'" preserveAspectRatio="none" role="img" aria-label="Walkway behind the outer tables leads from the Convention Entrance to the three green ballroom doors. Pillars and seating are in the pre-function area; ATM and Top Loaded are in the business center. Hotel lobby and restaurant are context only. Turfway Room is not the show.">';
+      (v.context||[]).forEach(function(a){out+='<rect class="fp-context" x="'+(a.c-1)+'" y="'+(a.r-1)+'" width="'+a.w+'" height="'+a.h+'"/><text class="fp-room-label" x="'+a.labelC+'" y="'+a.labelR+'">'+esc(a.label)+'</text>';});
       v.rooms.forEach(function(a){out+='<rect class="fp-room fp-room-'+a.id+'" x="'+(a.c-1)+'" y="'+(a.r-1)+'" width="'+a.w+'" height="'+a.h+'"/><text class="fp-room-label" x="'+a.labelC+'" y="'+a.labelR+'">'+esc(a.label)+'</text>';});
       out+='<text class="fp-map-title" x="7" y="10">TOP LOADED CARD SHOW</text><text class="fp-map-sub" x="7" y="17">Ballroom · Pre-function · Business center</text>';
-      out+='<path class="fp-route" d="M216 62V79H17 M177 79V36 M17 79V86 M102 79V86 M188 79V86"/>';
-      out+='<path class="fp-route-arrow" d="m174 40 3-4 3 4 M14 83l3 3 3-3 M99 83l3 3 3-3 M185 83l3 3 3-3 M212 75l4 4 4-4"/>';
-      v.doors.forEach(function(d){out+='<rect class="fp-door" x="'+(d.c-1)+'" y="'+(d.r-1)+'" width="'+d.w+'" height="'+d.h+'"/><text class="fp-door-label" x="'+(d.c+d.w/2-1)+'" y="76" text-anchor="middle">'+esc(d.label)+'</text>';});
-      out+='<rect class="fp-entry-label" x="199" y="43" width="24" height="19" rx="1"/><text class="fp-entry-text" x="211" y="48" text-anchor="middle">ENTER HERE</text><text class="fp-entry-text" x="211" y="54" text-anchor="middle">Convention</text><text class="fp-entry-text" x="211" y="59" text-anchor="middle">Entrance</text>';
+      out+='<rect class="fp-passage" x="195" y="47" width="2" height="6"/><rect class="fp-passage" x="127" y="37" width="10" height="2"/>';
+      out+='<path class="fp-route" d="M215 41V49H27 M132 49V29"/><path class="fp-route-arrow" d="m211 45 4 4 4-4 m-90-12 3-4 3 4"/>';
+      out+='<text class="fp-walk-label" x="9" y="51">WALKWAY</text>';
+      v.doors.forEach(function(d){var x=d.c+d.w/2-1;out+='<path class="fp-route" d="M'+x+' 49V100"/><path class="fp-route-arrow" d="m'+(x-3)+' 96 3 4 3-4"/><rect class="fp-door" x="'+(d.c-1)+'" y="'+(d.r-1)+'" width="'+d.w+'" height="'+d.h+'"/><text class="fp-door-label" x="'+x+'" y="80" text-anchor="middle">'+esc(d.label)+'</text>';});
+      (v.obstacles||[]).forEach(function(a){out+='<g><title>'+esc(a.label)+'</title><rect class="fp-obstacle fp-'+a.type+'" x="'+(a.c-1)+'" y="'+(a.r-1)+'" width="'+a.w+'" height="'+a.h+'" rx="'+(a.type==='pillar'?2:1)+'"/>'+(a.type==='atm'?'<text class="fp-atm-label" x="'+(a.c+a.w/2-1)+'" y="'+(a.r+5)+'" text-anchor="middle">ATM</text>':'')+'</g>';});
+      out+='<text class="fp-room-label" x="155" y="81">CHAIRS + COFFEE TABLE</text>';
+      out+='<rect class="fp-entry-label" x="200" y="21" width="30" height="19" rx="1"/><text class="fp-entry-text" x="215" y="26" text-anchor="middle">ENTER HERE</text><text class="fp-entry-text" x="215" y="32" text-anchor="middle">Convention</text><text class="fp-entry-text" x="215" y="37" text-anchor="middle">Entrance</text>';
+      out+='<text class="fp-context-note" x="209" y="123">Hotel amenities</text><text class="fp-context-note" x="12" y="194">Not the card show</text><text class="fp-context-note" x="105" y="194">Hotel amenities</text><text class="fp-room-label" x="205" y="179">HOTEL MAIN ENTRANCE</text><text class="fp-context-note" x="205" y="185">Use Convention Entrance for the show</text>';
       return out+'</svg>';
     }
     function stats(booths){
@@ -28,10 +33,10 @@
     function overlaps(a,b){return a.c<b.c+b.w && b.c<a.c+a.w && a.r<b.r+b.h && b.r<a.r+a.h;}
     function canPlace(booths,b,size,skip){return fits(b,size) && accessible(b,size) && !booths.some(function(other,i){return i!==skip && overlaps(b,other);});}
     function outerRun(booths,room){
-      var v=venue(room),added=[];if(!v||booths.length+3>100)return added;
-      v.outerRunColumns.some(function(c){
-        var run=[{r:48,c:c,w:5,h:12},{r:60,c:c,w:5,h:12},{r:72,c:c-4,w:13,h:5}];
-        if(run.every(function(b){return canPlace(booths,b,{rows:v.rows,cols:v.cols,room:room},-1);})){added=run;return true;}return false;
+      var v=venue(room),added=[];if(!v)return added;
+      v.outerRuns.some(function(run){
+        var missing=run.filter(function(b){return !booths.some(function(a){return a.r===b.r&&a.c===b.c&&a.w===b.w&&a.h===b.h;});});
+        if(missing.length&&booths.length+missing.length<=100&&missing.every(function(b){return canPlace(booths,b,{rows:v.rows,cols:v.cols,room:room},-1);})){added=missing;return true;}return false;
       });return added;
     }
     function roomMetrics(room,rows,cols){
@@ -49,7 +54,7 @@
     function viewport(root,map,scroll){
       var zoom=1,drag=null,fitMode=true;
       function setZoom(z){
-        var old=zoom; zoom=Math.max(.015,Math.min(2.5,z));
+        var old=zoom; zoom=Math.max(.005,Math.min(2.5,z));
         var x=(scroll.scrollLeft+scroll.clientWidth/2)/old,y=(scroll.scrollTop+scroll.clientHeight/2)/old;
         map.style.setProperty('--fp-cell',(64*zoom)+'px');map.style.setProperty('--fp-row',((Number(map.dataset.rowBase)||64)*zoom)+'px');map.style.setProperty('--fp-gap',((Number(map.dataset.baseGap)||0)*zoom)+'px');
         map.classList.toggle('is-dense',zoom<.6);
@@ -87,6 +92,38 @@
       scroll.addEventListener('pointermove',function(e){if(!drag||e.pointerId!==drag.id)return;scroll.scrollLeft=drag.left+drag.x-e.clientX;scroll.scrollTop=drag.top+drag.y-e.clientY;});
       function stop(){drag=null;scroll.classList.remove('is-panning');}
       scroll.addEventListener('pointerup',stop);scroll.addEventListener('pointercancel',stop);scroll.addEventListener('lostpointercapture',stop);
+      // Public-map gestures only: the admin map keeps its own table-drag editor.
+      if(map.id==='showFloorMap'){
+        var touches={},pinch=null,touchMoved=false;
+        function points(){return Object.values(touches);}
+        function pinchStart(){
+          var p=points(),b=scroll.getBoundingClientRect();if(p.length!==2){pinch=null;return;}
+          var x=(p[0].x+p[1].x)/2-b.left,y=(p[0].y+p[1].y)/2-b.top;
+          pinch={distance:Math.max(1,Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)),zoom:zoom,x:(scroll.scrollLeft+x)/zoom,y:(scroll.scrollTop+y)/zoom};
+        }
+        scroll.addEventListener('pointerdown',function(e){
+          if(e.pointerType!=='touch'){touchMoved=false;return;}
+          if(!points().length)touchMoved=false;
+          touches[e.pointerId]={x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY};pinchStart();
+          if(points().length>1){touchMoved=true;Object.keys(touches).forEach(function(id){scroll.setPointerCapture(Number(id));});}
+        });
+        scroll.addEventListener('pointermove',function(e){
+          var p=touches[e.pointerId];if(!p)return;
+          var dx=p.x-e.clientX,dy=p.y-e.clientY;p.x=e.clientX;p.y=e.clientY;
+          if(Math.hypot(p.x-p.startX,p.y-p.startY)>6)touchMoved=true;
+          if(!touchMoved)return;
+          e.preventDefault();fitMode=false;scroll.setPointerCapture(e.pointerId);
+          var all=points();
+          if(all.length===2&&pinch){
+            var b=scroll.getBoundingClientRect(),x=(all[0].x+all[1].x)/2-b.left,y=(all[0].y+all[1].y)/2-b.top;
+            setZoom(pinch.zoom*Math.hypot(all[0].x-all[1].x,all[0].y-all[1].y)/pinch.distance);
+            scroll.scrollLeft=pinch.x*zoom-x;scroll.scrollTop=pinch.y*zoom-y;
+          }else if(all.length===1){scroll.scrollLeft+=dx;scroll.scrollTop+=dy;}
+        },{passive:false});
+        function touchEnd(e){delete touches[e.pointerId];pinchStart();}
+        scroll.addEventListener('pointerup',touchEnd);scroll.addEventListener('pointercancel',touchEnd);scroll.addEventListener('lostpointercapture',touchEnd);
+        scroll.addEventListener('click',function(e){if(touchMoved&&e.detail!==0){e.preventDefault();e.stopPropagation();}},{capture:true});
+      }
       // Pointer focus happens before click: zooming here moves a small table out
       // from under the pointer and cancels that click. Keyboard focus can zoom;
       // pointer selection zooms only in the click handler after selection.
@@ -126,7 +163,7 @@
       $('#floorScaleNote').textContent=f.room==='hilton-show'?'One map · all three show spaces. Table positions and walking routes are schematic and subject to organizer confirmation.':f.room==='hilton-ballroom'?'Ballroom-only table plan · Triple Crown Ballroom · 96 × 41 ft':'Organizer’s table-layout guide';
       map.innerHTML=backdrop(f.room)+booths.map(function(b,i){return '<button type="button" class="fp-cell t-'+b.type+'" data-floor-booth="'+i+'" aria-pressed="false" aria-label="'+esc(b.label+' · '+labels[b.type]+', row '+b.r+', column '+b.c)+'" title="'+esc(b.label+' · '+labels[b.type])+'" style="grid-row:'+b.r+' / span '+b.h+';grid-column:'+b.c+' / span '+b.w+'"><b>'+esc(b.label)+'</b><i>'+labels[b.type]+'</i></button>';}).join("");
       mix.innerHTML=Object.keys(s.pct).map(function(k){return '<span class="t-'+k+'" style="width:'+s.pct[k]+'%"></span>';}).join("");
-      legend.innerHTML=Object.keys(labels).filter(function(k){return booths.some(function(b){return b.type===k;});}).map(function(k){return '<li><i class="t-'+k+'" aria-hidden="true"></i>'+labels[k]+(s.pct[k]!==undefined?' '+s.pct[k]+'% ('+s.counts[k]+')':'')+'</li>';}).join("");
+      legend.innerHTML=Object.keys(labels).filter(function(k){return booths.some(function(b){return b.type===k;});}).map(function(k){return '<li><i class="t-'+k+'" aria-hidden="true"></i>'+labels[k]+(s.pct[k]!==undefined?' '+s.pct[k]+'% ('+s.counts[k]+')':'')+'</li>';}).join("")+(f.room==='hilton-show'?'<li><i class="key-door" aria-hidden="true"></i>Entrance</li><li><i class="key-walk" aria-hidden="true"></i>Walkway</li><li><i class="key-pillar" aria-hidden="true"></i>Pillar</li><li><i class="key-atm" aria-hidden="true"></i>ATM</li><li><i class="key-chair" aria-hidden="true"></i>Seating</li>':'');
       publicBooths=booths;details(booths.findIndex(function(b){return b.id===selectedId;}));filter();
       $$('#showFloorMap [data-floor-booth]').forEach(function(el,i){el.classList.toggle('is-vertical',booths[i].h>booths[i].w);});
       if(!publicView){

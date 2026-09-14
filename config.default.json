@@ -74,15 +74,15 @@
     ],
     "floorplan": {
       "room": "hilton-show",
-      "rows": 168,
-      "cols": 224,
+      "rows": 212,
+      "cols": 272,
       "booths": [
         {
           "id": "t1",
           "label": "T1",
           "type": "unassigned",
           "r": 89,
-          "c": 21,
+          "c": 7,
           "w": 12,
           "h": 5
         },
@@ -91,7 +91,7 @@
           "label": "T2",
           "type": "unassigned",
           "r": 89,
-          "c": 33,
+          "c": 19,
           "w": 12,
           "h": 5
         },
@@ -100,7 +100,7 @@
           "label": "T3",
           "type": "unassigned",
           "r": 89,
-          "c": 45,
+          "c": 31,
           "w": 12,
           "h": 5
         },
@@ -109,7 +109,7 @@
           "label": "T4",
           "type": "unassigned",
           "r": 89,
-          "c": 57,
+          "c": 56,
           "w": 12,
           "h": 5
         },
@@ -118,7 +118,7 @@
           "label": "T5",
           "type": "unassigned",
           "r": 89,
-          "c": 69,
+          "c": 68,
           "w": 12,
           "h": 5
         },
@@ -127,7 +127,7 @@
           "label": "T6",
           "type": "unassigned",
           "r": 89,
-          "c": 81,
+          "c": 91,
           "w": 12,
           "h": 5
         },
@@ -136,7 +136,7 @@
           "label": "T7",
           "type": "unassigned",
           "r": 89,
-          "c": 93,
+          "c": 103,
           "w": 12,
           "h": 5
         },
@@ -145,7 +145,7 @@
           "label": "T8",
           "type": "unassigned",
           "r": 89,
-          "c": 105,
+          "c": 125,
           "w": 12,
           "h": 5
         },
@@ -154,7 +154,7 @@
           "label": "T9",
           "type": "unassigned",
           "r": 89,
-          "c": 117,
+          "c": 137,
           "w": 12,
           "h": 5
         },
@@ -163,7 +163,7 @@
           "label": "T10",
           "type": "unassigned",
           "r": 89,
-          "c": 129,
+          "c": 149,
           "w": 12,
           "h": 5
         },
@@ -172,7 +172,7 @@
           "label": "T11",
           "type": "unassigned",
           "r": 89,
-          "c": 141,
+          "c": 161,
           "w": 12,
           "h": 5
         },
@@ -181,7 +181,7 @@
           "label": "T12",
           "type": "unassigned",
           "r": 89,
-          "c": 153,
+          "c": 173,
           "w": 12,
           "h": 5
         },
@@ -190,7 +190,7 @@
           "label": "T13",
           "type": "unassigned",
           "r": 89,
-          "c": 165,
+          "c": 185,
           "w": 12,
           "h": 5
         },
@@ -522,16 +522,16 @@
           "id": "tl-wall-1",
           "label": "TL1",
           "type": "shop",
-          "r": 14,
-          "c": 128,
-          "w": 16,
-          "h": 5
+          "r": 16,
+          "c": 143,
+          "w": 5,
+          "h": 16
         },
         {
           "id": "tl-wall-2",
           "label": "TL2",
           "type": "shop",
-          "r": 14,
+          "r": 32,
           "c": 144,
           "w": 16,
           "h": 5
@@ -540,7 +540,7 @@
           "id": "tl-wall-3",
           "label": "TL3",
           "type": "shop",
-          "r": 14,
+          "r": 32,
           "c": 160,
           "w": 16,
           "h": 5
@@ -549,7 +549,7 @@
           "id": "tl-wall-4",
           "label": "TL4",
           "type": "shop",
-          "r": 14,
+          "r": 32,
           "c": 176,
           "w": 16,
           "h": 5
@@ -558,10 +558,136 @@
           "id": "tl-trades",
           "label": "Trades",
           "type": "shop",
-          "r": 19,
+          "r": 16,
           "c": 187,
           "w": 5,
           "h": 16
+        },
+        {
+          "id": "pf-1",
+          "label": "PF1",
+          "type": "unassigned",
+          "r": 58,
+          "c": 39,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "pf-2",
+          "label": "PF2",
+          "type": "unassigned",
+          "r": 70,
+          "c": 39,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "pf-3",
+          "label": "PF3",
+          "type": "unassigned",
+          "r": 58,
+          "c": 58,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "pf-4",
+          "label": "PF4",
+          "type": "unassigned",
+          "r": 70,
+          "c": 58,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "pf-5",
+          "label": "PF5",
+          "type": "unassigned",
+          "r": 58,
+          "c": 63,
+          "w": 12,
+          "h": 5
+        },
+        {
+          "id": "pf-6",
+          "label": "PF6",
+          "type": "unassigned",
+          "r": 58,
+          "c": 75,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "pf-7",
+          "label": "PF7",
+          "type": "unassigned",
+          "r": 70,
+          "c": 75,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "pf-8",
+          "label": "PF8",
+          "type": "unassigned",
+          "r": 58,
+          "c": 95,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "pf-9",
+          "label": "PF9",
+          "type": "unassigned",
+          "r": 70,
+          "c": 95,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "pf-10",
+          "label": "PF10",
+          "type": "unassigned",
+          "r": 58,
+          "c": 107,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "pf-11",
+          "label": "PF11",
+          "type": "unassigned",
+          "r": 70,
+          "c": 107,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "pf-12",
+          "label": "PF12",
+          "type": "unassigned",
+          "r": 58,
+          "c": 131,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "pf-13",
+          "label": "PF13",
+          "type": "unassigned",
+          "r": 70,
+          "c": 131,
+          "w": 5,
+          "h": 12
+        },
+        {
+          "id": "pf-14",
+          "label": "PF14",
+          "type": "unassigned",
+          "r": 53,
+          "c": 131,
+          "w": 12,
+          "h": 5
         }
       ]
     }

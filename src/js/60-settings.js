@@ -558,7 +558,7 @@
      Grid is 1-indexed. Visual edits use the same geometry checks as numeric edits. */
   var BOOTH_OPTS = [["unassigned", "Vendor to be announced"], ["tcg", "TCG"], ["sports", "Sports"], ["mixed", "Mixed"], ["shop", "Top Loaded booth"], ["food", "Food"], ["entry", "Entry"]];
   var BOOTH_LAB = {unassigned:"Vendor to be announced",tcg: "TCG", sports: "Sports", mixed: "Mixed", shop:"Top Loaded booth",food: "Food", entry: "Entry"};
-  var FP_MAX_ROWS = 200, FP_MAX_COLS = 240;
+  var FP_MAX_ROWS = 240, FP_MAX_COLS = 320;
   var fpWork = [], fpReady = false, fpUid = 0, fpSelected = -1, fpPlacing = false, fpViewport = null, fpDrag = null, fpSuppressClick = false;
   function fpSize(){
     return {rows: TL.clamp(Math.round(num(val("setFpRows"), 6)), 1, FP_MAX_ROWS), cols: TL.clamp(Math.round(num(val("setFpCols"), 10)), 1, FP_MAX_COLS),room:val('setFpRoom')};
@@ -692,9 +692,9 @@
   }
   $('#fpAddOuterRun').addEventListener('click',function(){
     var added=TL.floorplan.outerRun(fpWork,val('setFpRoom'));
-    if(!added.length){toast('No complete outer run fits in the remaining space. Move tables or edit the layout first.');return;}
+    if(!added.length){toast('All outer tables are present, or a moved table blocks their original positions.');return;}
     added.forEach(function(b){var n=1;while(fpWork.some(function(a){return a.label==='PF'+n;}))n++;fpWork.push(Object.assign({uid:'bnew'+(++fpUid),id:'',label:'PF'+n,type:'unassigned'},b));});
-    fpSelected=fpWork.length-3;renderFpEditor();fpFocus();toast('Two-table run plus end table added — save to publish');
+    fpSelected=fpWork.length-added.length;renderFpEditor();fpFocus();toast(added.length+' outer tables restored — save to publish');
   });
   function fpPoint(e){
     var map=$('#fpMap'),rect=map.getBoundingClientRect(),css=getComputedStyle(map);
